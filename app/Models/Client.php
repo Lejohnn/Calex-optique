@@ -30,5 +30,10 @@ class Client extends Model
         'portez_vous_des_lunettes',
         'besoin_changer_lunettes',
         'autre_choses',
+        'diagnostic', 
+        'prescription',
+        'examen_particulier',
+        'rendez_vous',
+        'choix_service',
     ];
 }

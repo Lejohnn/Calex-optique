@@ -1,4 +1,4 @@
- 
+
 @extends('layouts.app')
 
 @section('title')
@@ -60,7 +60,7 @@
                                     <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
                                         <i class="la la-plus font-small-2"></i> Ajouter un client
                                     </a>
-                                </div> 
+                                </div>
                                 @if(session('success'))
                                         <br>
                                         <div class="alert alert-success">
@@ -97,6 +97,11 @@
                                         <th>portez_vous_des_lunettes</th>
                                         <th>besoin_changer_lunettes</th>
                                         <th>autre_choses</th>
+                                        <th>Diagnostic</th>
+                                        <th>Prescription</th>
+                                        <th>Examen particulier</th>
+                                        <th>Rendez-vous</th>
+                                        <th>Suite</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -124,6 +129,11 @@
                                         <td>{{ $client->portez_vous_des_lunettes ? 'Oui' : 'Non' }}</td>
                                         <td>{{ $client->besoin_changer_lunettes ? 'Oui' : 'Non' }}</td>
                                         <td>{{ $client->autre_choses }}</td>
+                                        <td>{{ $client->diagnostic }}</td>
+                                        <td>{{ $client->prescription }}</td>
+                                        <td>{{ $client->examen_particulier }}</td>
+                                        <td>{{ $client->rendez_vous }}</td>
+                                        <td>{{ $client->choix_service }}</td>
                                         <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
                                             <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
@@ -168,68 +178,31 @@
     </section>
 </div>
 
-<!-- <script>
-    function confirmDelete(url) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce client?')) {
-            window.location.href = url;
-        }
-    }
-</script> -->
-
-<!-- <script>
-    function confirmDelete(url) {
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce client?')) {
-            event.preventDefault(); // Empêche le rechargement de la page
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    // Réussite de la suppression, redirigez ou mettez à jour la liste des clients
-                    window.location.reload(); // Recharge la page pour afficher la mise à jour
-                },
-                error: function(xhr, status, error) {
-                    // Gestion des erreurs
-                    console.error(xhr.responseText);
-                }
-            });
-        }
-    }
-</script> -->
-
-
 </div>
-
-
-
-        </div>
-
-
-
-
-
-       
-
-        <!-- BEGIN: Vendor JS-->
-    <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-    <script src="{{asset('backend/js/core/app.js')}}"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-    <!-- END: Page JS-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</div>
 
 @endsection
 
- @yield('script')
+
+
+
+
+
+<!-- BEGIN: Vendor JS-->
+<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+<script src="{{asset('backend/js/core/app.js')}}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+

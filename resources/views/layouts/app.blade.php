@@ -229,7 +229,11 @@
                                 <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all messages</a></li>
                             </ul>
                         </li>
-                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{auth()->user()->name}}</span><span class="avatar avatar-online"><img src="{{asset('backend/images/portrait/small/avatar-s-19.png')}}" alt="avatar"><i></i></span></a>
+                        <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                            @if(auth()->check())
+                                <span class="mr-1 user-name text-bold-700">{{ auth()->user()->name }}</span>
+                             @endif
+                        <span class="avatar avatar-online"><img src="{{asset('backend/images/portrait/small/avatar-s-19.png')}}" alt="avatar"><i></i></span></a>
                             <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a><a class="dropdown-item" href="#"><i class="ft-clipboard"></i> Todo</a><a class="dropdown-item" href="#"><i class="ft-check-square"></i> Task</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{route('auth.logout')}}"><i class="ft-power"></i> Logout</a>
@@ -248,7 +252,15 @@
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Clients</span></a>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">gestion des utilisateurs</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{{ route('users.create') }}"><i></i><span data-i18n="Invoice Summary">Ajouter un utilisateur</span></a>
+                        </li>
+                        <li><a class="menu-item" href="{{ route('users.index') }}"><i></i><span data-i18n="Invoice Template">Liste les utilisateur</span></a>
+
+                    </ul>
+                </li>
+                <li class=" nav-item" id="client"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Clients</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('clients.create') }}"><i></i><span data-i18n="Invoice Summary">Ajouter un Client</span></a>
                         </li>
@@ -256,7 +268,17 @@
 
                     </ul>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commande</span></a>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{{ route('commercial.create') }}"><i></i><span data-i18n="Invoice Summary">Enregistrer Un Client</span></a></li>
+                    </ul>
+                </li>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">En fonction des clients</span></a></li>
+                    </ul>
+                </li>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commande</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Enregistrer une nouvelle commande </span></a>
                         </li>
@@ -264,31 +286,21 @@
 
                     </ul>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">En fonction des clients</span></a></li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Ventes</span></a>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Ventes</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Fiche calculé</span></a></li>
                     </ul>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Groupe</span></a></li>
-                    </ul>
-                </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Service Call</span></a>
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Service Call</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">niveau1</span></a></li>
                     </ul>
                 </li>
-                <li class=" nav-item"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">L'éveilleur</span></a>
+                {{-- <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">L'éveilleur</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Campagne Publicitaire</span></a></li>
                     </ul>
-                </li>
+                </li> --}}
 
 
             </ul>
@@ -306,61 +318,33 @@
 
 
 
+            <!-- BEGIN: Vendor JS-->
+            <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+            <!-- BEGIN Vendor JS-->
 
+            <!-- BEGIN: Page Vendor JS-->
+            <script src="{{asset('backend/vendors/js/charts/chartist.min.js')}}"></script>
+            <script src="{{asset('backend/vendors/js/charts/chartist-plugin-tooltip.min.js')}}"></script>
+            <script src="{{asset('backend/vendors/js/charts/raphael-min.js')}}"></script>
+            <script src="{{asset('backend/vendors/js/charts/morris.min.js')}}"></script>
+            <script src="{{asset('backend/vendors/js/timeline/horizontal-timeline.js')}}"></script>
+            <!-- END: Page Vendor JS-->
 
+            <!-- BEGIN: Theme JS-->
+            <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+            <script src="{{asset('backend/js/core/app.js')}}"></script>
+            <!-- END: Theme JS-->
 
+            <!-- BEGIN: Page JS-->
+            <script src="{{asset('backend/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
+            <!-- END: Page JS-->
 
+            <!-- BEGIN: Page Vendor JS-->
+            <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+            <!-- END: Page Vendor JS-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @section('script')
-         <!-- BEGIN: Vendor JS-->
-     <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/charts/chartist.min.js')}}"></script>
-    <script src="{{asset('backend/vendors/js/charts/chartist-plugin-tooltip.min.js')}}"></script>
-    <script src="{{asset('backend/vendors/js/charts/raphael-min.js')}}"></script>
-    <script src="{{asset('backend/vendors/js/charts/morris.min.js')}}"></script>
-    <script src="{{asset('backend/vendors/js/timeline/horizontal-timeline.js')}}"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-    <script src="{{asset('backend/js/core/app.js')}}"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <script src="{{asset('backend/js/scripts/pages/dashboard-ecommerce.js')}}"></script>
-    <!-- END: Page JS-->
-
-
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <!-- END: Page Vendor JS-->
-
-
-
-    <!-- BEGIN: Page JS-->
-    <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-    <!-- END: Page JS-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    @endsection
+            <!-- BEGIN: Page JS-->
+            <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <!-- END: Page JS-->
+ 

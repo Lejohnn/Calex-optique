@@ -21,12 +21,17 @@
                                     <a href="{{ route('clients.index') }}" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des clients
                                     </a>
+                                    <!-- Bouton pour générer le PDF -->
+                                    <a href="{{ route('generate.pdf') }}" class="btn btn-success btn-sm">
+                                        <i class="far fa-file-pdf"></i> Générer PDF
+                                    </a>
                                 </div>
                             </div>
                             <div class="card-content collapse show">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+
+                                        <fieldset class="col-md-6">
                                             <div class="client-detail">
                                                 <h4 class="mb-3">Informations générales:</h4>
                                                 <ul>
@@ -42,8 +47,8 @@
                                                     <li><strong>Assurance:</strong> {{ $client->assurance }}</li>
                                                 </ul>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
+                                        </fieldset>
+                                        <fieldset class="col-md-6">
                                             <div class="client-detail">
                                                 <h4 class="mb-3">Informations supplémentaires:</h4>
                                                 <ul>
@@ -58,9 +63,15 @@
                                                     <li><strong>Portez-vous des lunettes ?</strong> {{ $client->portez_vous_des_lunettes ? 'Oui' : 'Non' }}</li>
                                                     <li><strong>Avez-vous besoin de changer de lunettes ?</strong> {{ $client->besoin_changer_lunettes ? 'Oui' : 'Non' }}</li>
                                                     <li><strong>Autre chose à mentionner au besoin:</strong> {{ $client->autre_choses }}</li>
+                                                    <li><strong>Diagnostic:</strong> {{ $client->diagnostic }}</li>
+                                                    <li><strong>Prescription:</strong> {{ $client->prescription }}</li>
+                                                    <li><strong>Examen particulier:</strong> {{ $client->examen_particulier }}</li>
+                                                    <li><strong>Rendez-vous:</strong> {{ $client->rendez_vous }}</li>
                                                 </ul>
                                             </div>
-                                        </div>
+                                        </fieldset>
+                                        <p><strong>Choix du service:</strong> {{ $client->choix_service }}</p>
+
                                     </div>
                                 </div>
                             </div>
@@ -72,30 +83,25 @@
     </div>
 </div>
 
-
-
-
-
-  
-
-        <!-- BEGIN: Vendor JS-->
-        <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-    <!-- BEGIN Vendor JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <!-- END: Page Vendor JS-->
-
-    <!-- BEGIN: Theme JS-->
-    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-    <script src="{{asset('backend/js/core/app.js')}}"></script>
-    <!-- END: Theme JS-->
-
-    <!-- BEGIN: Page JS-->
-    <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-    <!-- END: Page JS-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 @endsection
 
- @yield('script')
+
+
+
+<!-- BEGIN: Vendor JS-->
+<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+<script src="{{asset('backend/js/core/app.js')}}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

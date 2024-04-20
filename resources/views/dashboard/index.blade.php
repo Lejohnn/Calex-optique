@@ -1,4 +1,4 @@
- 
+
 @extends('layouts.app')
 
 @section('title')
@@ -252,9 +252,8 @@
 
                 <!--/ Products sell and New Orders -->
 @endsection
-@yield('script')
-
-       <!-- BEGIN: Vendor JS-->
+<div hidden>
+     <!-- BEGIN: Vendor JS-->
        <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
 
@@ -271,3 +270,5 @@
     <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
     <!-- END: Page JS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</div>

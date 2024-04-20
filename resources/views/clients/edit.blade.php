@@ -102,11 +102,12 @@
                                                 </div>
                                             </fieldset>
                                             <!-- Informations supplémentaires (Médecin/Administrateur) -->
-                                            <h6>
-                                                <i class="step-icon la la-plus"></i>
-                                                Informations supplémentaires (Médecin/Administrateur)
-                                            </h6>
+
                                             <fieldset>
+                                                <h6>
+                                                    <i class="step-icon la la-plus"></i>
+                                                    Informations supplémentaires (Médecin/Administrateur)
+                                                </h6>
                                                 <!-- Ajoutez ici les champs pré-remplis avec les valeurs existantes du client -->
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -185,7 +186,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                            </div>
+                                                </div>
 
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -195,7 +196,51 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="diagnostic">Diagnostic</label>
+                                                            <textarea class="form-control" id="diagnostic" name="diagnostic">{{ $client->diagnostic }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="prescription">Prescription</label>
+                                                            <textarea class="form-control" id="prescription" name="prescription">{{ $client->prescription }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="examen_particulier">Examen particulier</label>
+                                                            <textarea class="form-control" id="examen_particulier" name="examen_particulier">{{ $client->examen_particulier }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="rendez_vous">Rendez-vous</label>
+                                                            <input class="form-control" id="rendez_vous" name="rendez_vous" type="date" value="{{ $client->rendez_vous }}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </fieldset>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="choix_service">Choix du Service <span class="text-danger">*</span></label>
+                                                        <select class="form-control" id="choix_service" name="choix_service">
+                                                            <option value="" selected disabled>Choisissez le service</option>
+                                                            <option value="consultation" {{ $client->choix_service == 'consultation' ? 'selected' : '' }}>Consultation</option>
+                                                            <option value="entretien_lunettes" {{ $client->choix_service == 'entretien_lunettes' ? 'selected' : '' }}>Entretien de lunettes</option>
+                                                            <option value="caisse" {{ $client->choix_service == 'caisse' ? 'selected' : '' }}>Caisse</option>
+                                                            <option value="service_vente" {{ $client->choix_service == 'service_vente' ? 'selected' : '' }}>Service vente</option>
+                                                            <option value="visite_simple" {{ $client->choix_service == 'visite_simple' ? 'selected' : '' }}>Visite Simple</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <!-- Bouton de soumission -->
                                             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                                         </form>
@@ -213,23 +258,23 @@
 
 
 
-@section('script')
 
-   <!-- BEGIN: Vendor JS-->
-   <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-    <!-- BEGIN Vendor JS-->
 
-    <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-    <!-- END: Page Vendor JS-->
 
-    <!-- BEGIN: Theme JS-->
-    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-    <script src="{{asset('backend/js/core/app.js')}}"></script>
-    <!-- END: Theme JS-->
+<!-- BEGIN: Vendor JS-->
+<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+<!-- BEGIN Vendor JS-->
 
-    <!-- BEGIN: Page JS-->
-    <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-    <!-- END: Page JS-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-@endsection
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+<script src="{{asset('backend/js/core/app.js')}}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

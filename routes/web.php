@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -32,6 +34,7 @@ Route::middleware(['auth'])->group(function(){
 
 
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+    Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
 
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
@@ -45,3 +48,22 @@ Route::middleware(['auth'])->group(function(){
 
 });
 
+
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+
+
+
+Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
+Route::post('/commercial/store', [CommercialController::class, 'store'])->name('commercial.store');
+Route::get('/commercial/{id}/edit', [CommercialController::class, 'edit'])->name('commercial.edit');
+Route::put('/commercial/{id}/update', [CommercialController::class, 'update'])->name('commercial.update');
+Route::delete('/commercial/{id}/delete', [CommercialController::class, 'destroy'])->name('commercial.destroy');
+
+Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('generate.pdf');
