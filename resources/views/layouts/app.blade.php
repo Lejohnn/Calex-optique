@@ -315,9 +315,9 @@
 
 
 
+<script src="{{ asset('js/custom.js') }}"></script>
 
-
-
+    @section('script')
             <!-- BEGIN: Vendor JS-->
             <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
             <!-- BEGIN Vendor JS-->
@@ -347,4 +347,4 @@
             <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <!-- END: Page JS-->
- 
+    @endsection
