@@ -42,17 +42,17 @@ class AuthController extends Controller
             // log in the user
             if (Auth::attempt($data)) {
                 $request->session()->regenerate();
-               
-                return redirect()->route('dashboard.index')->with("message", "vous etes conecter!");
+                //dd($user);
+                return redirect()->route('dashboard.index')->with("message", "vous etes conecter!")->with("user",$user);
             }
             return redirect()->back()->with("error", "nom d'utilisateur ou mot de passe incorect")->withInput();
         } catch (\Throwable $th) {
             return redirect()->back()->with("error", "nom d'utilisateur ou mot de passe incorect!")->withInput();
         }
     }
-    
 
-    
+
+
 
     // logout the user
     public function logout(Request $request)

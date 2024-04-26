@@ -102,7 +102,7 @@
                                                 </div>
                                             </fieldset>
                                             <!-- Informations supplémentaires (Médecin/Administrateur) -->
-
+                                            @if(auth()->user()->role_id == 1)
                                             <fieldset>
                                                 <h6>
                                                     <i class="step-icon la la-plus"></i>
@@ -226,6 +226,7 @@
                                                 </div>
 
                                             </fieldset>
+                                            @endif
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">

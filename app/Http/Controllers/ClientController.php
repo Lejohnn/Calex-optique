@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 // use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -64,6 +65,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
                 'rendez_vous' => 'nullable|date',
                 'choix_service' => 'required|string',
             ]);
+            if ($request->choix_service == "consultation"){
+
+            }
 
             // Création d'un nouveau client avec les données du formulaire
             $client = new Client([

@@ -107,7 +107,7 @@
                                             <!-- Informations supplémentaires (Médecin/Administrateur) -->
 
 
-
+                                            @if(auth()->user()->role_id == 1)
                                                 <fieldset>
                                                     <!-- Ajoutez ici les nouveaux champs pour les informations supplémentaires -->
                                                     <h6>
@@ -228,6 +228,8 @@
                                                             </div>
                                                         </div>
                                                 </fieldset>
+
+                                            @endif
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('sexe');
             $table->string('telephone');
-            $table->string('carte_identite')->unique();
+            $table->string('carte_identite',191)->unique();
             $table->date('date_naissance');
             $table->string('lieu_naissance');
             $table->string('profession')->nullable();

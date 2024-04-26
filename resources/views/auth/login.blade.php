@@ -17,7 +17,7 @@
                                 <div class="card border-grey border-lighten-3 px-1 py-1 m-0">
                                     <div class="card-header border-0">
                                         <div class="card-title text-center">
-                                            <img src="" alt="Logo">
+                                            LOGIN
                                         </div>
                                     </div>
                                     <div class="card-content">
@@ -44,7 +44,7 @@
                                                 <button type="submit" class="btn btn-outline-info btn-block"><i class="ft-unlock"></i> Login</button>
                                             </form>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </div>

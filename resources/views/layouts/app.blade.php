@@ -251,8 +251,11 @@
 
     <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="main-menu-content">
+
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">gestion des utilisateurs</span></a>
+                @if(auth()->user()->role_id == 1)
+                <li class=" nav-item" id="admin">
+                    <a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">gestion des utilisateurs</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('users.create') }}"><i></i><span data-i18n="Invoice Summary">Ajouter un utilisateur</span></a>
                         </li>
@@ -260,6 +263,8 @@
 
                     </ul>
                 </li>
+                @endif
+                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2)
                 <li class=" nav-item" id="client"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Clients</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('clients.create') }}"><i></i><span data-i18n="Invoice Summary">Ajouter un Client</span></a>
@@ -268,17 +273,24 @@
 
                     </ul>
                 </li>
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span></a>
+                    @endif
+                    @if(auth()->user()->role_id == 1)
+                         <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('commercial.create') }}"><i></i><span data-i18n="Invoice Summary">Enregistrer Un Client</span></a></li>
                     </ul>
                 </li>
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
+                    @endif
+
+                    @if(auth()->user()->role_id == 1)
+                    <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">En fonction des clients</span></a></li>
                     </ul>
                 </li>
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commande</span></a>
+                    @endif
+                    @if(auth()->user()->role_id == 1)
+                        <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commande</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Enregistrer une nouvelle commande </span></a>
                         </li>
@@ -286,16 +298,22 @@
 
                     </ul>
                 </li>
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Ventes</span></a>
+                    @endif
+
+                    @if(auth()->user()->role_id == 1)
+                         <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Ventes</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Fiche calculé</span></a></li>
                     </ul>
                 </li>
+                    @endif
+                    @if(auth()->user()->role_id == 1)
                 <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Service Call</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">niveau1</span></a></li>
                     </ul>
                 </li>
+                    @endif
                 {{-- <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">L'éveilleur</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Campagne Publicitaire</span></a></li>
