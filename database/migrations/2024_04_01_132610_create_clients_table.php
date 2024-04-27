@@ -36,6 +36,13 @@ return new class extends Migration
             $table->boolean('portez_vous_des_lunettes')->nullable();
             $table->boolean('besoin_changer_lunettes')->nullable();
             $table->text('autre_choses')->nullable();
+            $table->string('choix_service')->nullable();
+            $table->text('diagnostic')->nullable();
+            $table->text('prescription')->nullable();
+            $table->text('examen_particulier')->nullable();
+            $table->dateTime('rendez_vous')->nullable();
+           // $table->integer('rendevou')->constrained('appointments')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

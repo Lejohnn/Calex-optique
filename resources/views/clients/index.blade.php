@@ -78,30 +78,8 @@
                                     <tr>
                                         <th>Nom</th>
                                         <th>Prénom</th>
-                                        <th>Numéro de téléphone</th>
-                                        <th>Date de naissance</th>
-                                        <th>Lieu de naissance</th>
-                                        <th>Numero CNI</th>
                                         <th>Sexe</th>
-                                        <th>Profession</th>
-                                        <th>Societe d'attache</th>
-                                        <th>Assurance</th>
-                                        <th>disciplines_pratiquees</th>
-                                        <th>date_debut</th>
-                                        <th>activite_interpelant_vision</th>
-                                        <th>antecedents_familiaux</th>
-                                        <th>antecedents_chirurgicaux</th>
-                                        <th>traitements_en_cours</th>
-                                        <th>allergies</th>
-                                        <th>mentions_generales</th>
-                                        <th>portez_vous_des_lunettes</th>
-                                        <th>besoin_changer_lunettes</th>
-                                        <th>autre_choses</th>
-                                        <th>Diagnostic</th>
-                                        <th>Prescription</th>
-                                        <th>Examen particulier</th>
-                                        <th>Rendez-vous</th>
-                                        <th>Suite</th>
+                                        <th>Choix_service</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -110,33 +88,14 @@
                                     <tr>
                                         <td>{{ $client->nom }}</td>
                                         <td>{{ $client->prenom }}</td>
-                                        <td>{{ $client->telephone }}</td>
-                                        <td>{{ $client->date_naissance }}</td>
-                                        <td>{{ $client->lieu_naissance }}</td>
-                                        <td>{{ $client->carte_identite }}</td>
                                         <td>{{ $client->sexe }}</td>
-                                        <td>{{ $client->profession }}</td>
-                                        <td>{{ $client->societe_attache }}</td>
-                                        <td>{{ $client->assurance }}</td>
-                                        <td>{{ $client->disciplines_pratiquees }}</td>
-                                        <td>{{ $client->date_debut }}</td>
-                                        <td>{{ $client->activite_interpelant_vision }}</td>
-                                        <td>{{ $client->antecedents_familiaux }}</td>
-                                        <td>{{ $client->antecedents_chirurgicaux }}</td>
-                                        <td>{{ $client->traitements_en_cours }}</td>
-                                        <td>{{ $client->allergies }}</td>
-                                        <td>{{ $client->mentions_generales }}</td>
-                                        <td>{{ $client->portez_vous_des_lunettes ? 'Oui' : 'Non' }}</td>
-                                        <td>{{ $client->besoin_changer_lunettes ? 'Oui' : 'Non' }}</td>
-                                        <td>{{ $client->autre_choses }}</td>
-                                        <td>{{ $client->diagnostic }}</td>
-                                        <td>{{ $client->prescription }}</td>
-                                        <td>{{ $client->examen_particulier }}</td>
-                                        <td>{{ $client->rendez_vous }}</td>
                                         <td>{{ $client->choix_service }}</td>
                                         <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
+
+                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
                                             <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
+                                            @endif
                                             <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $client->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
                                             <!-- Modal -->
                                             <div class="modal fade" id="deleteConfirmationModal{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $client->id }}" aria-hidden="true">

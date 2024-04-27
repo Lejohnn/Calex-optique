@@ -9,6 +9,7 @@ class Client extends Model
 {
     use HasFactory;
     protected $fillable = [
+        //'id',
         'nom',
         'prenom',
         'telephone',
@@ -40,5 +41,10 @@ class Client extends Model
     public function notifications()
     {
         return $this->hasMany(Notification::class); // Replace Notification with your actual model name
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'client_id'); // Replace 'Order' with your actual model name
     }
 }

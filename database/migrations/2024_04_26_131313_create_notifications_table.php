@@ -16,7 +16,11 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->string('message');
+            $table->integer('status')->default(0);
+            $table->integer('visibility')->default(0);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

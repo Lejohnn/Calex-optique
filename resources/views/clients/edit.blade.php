@@ -22,10 +22,12 @@
                                             @csrf
                                             @method('PUT')
                                             <!-- Informations du client -->
+
                                             <h6>
                                                 <i class="step-icon la la-user"></i>
                                                 Informations du client (Accueil)
                                             </h6>
+
                                             <fieldset>
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -102,7 +104,7 @@
                                                 </div>
                                             </fieldset>
                                             <!-- Informations supplémentaires (Médecin/Administrateur) -->
-                                            @if(auth()->user()->role_id == 1)
+                                            @if(auth()->user()->role_id == 3)
                                             <fieldset>
                                                 <h6>
                                                     <i class="step-icon la la-plus"></i>

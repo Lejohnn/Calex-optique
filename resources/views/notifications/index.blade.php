@@ -13,15 +13,15 @@
         <div class="content-wrapper">
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title">Liste des Clients</h3>
+                    <h3 class="content-header-title">Notifications</h3>
                     <div class="row breadcrumbs-top">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Accueil</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Clients</a>
+                                <li class="breadcrumb-item"><a href="#">Parametres</a>
                                 </li>
-                                <li class="breadcrumb-item active">Tous les clients
+                                <li class="breadcrumb-item active">Notifications
                                 </li>
                             </ol>
                         </div>
@@ -41,7 +41,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">Liste des clients</h2>
+                        <h2 class="card-title">Notifications</h2>
                         <!-- @if (Session::has('success'))
                                     <div class="alert alert-success">
                                         {{Session::get('success')}}
@@ -56,11 +56,6 @@
                                         </ul>
                                     </div>
                                 @endif -->
-                                <div class="heading-elements">
-                                    <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
-                                        <i class="la la-plus font-small-2"></i> Ajouter un client
-                                    </a>
-                                </div>
                                 @if(session('success'))
                                         <br>
                                         <div class="alert alert-success">
@@ -76,86 +71,62 @@
                             <table class="table table-striped table-bordered patients-list">
                                 <thead>
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Prénom</th>
-                                        <th>Numéro de téléphone</th>
-                                        <th>Date de naissance</th>
-                                        <th>Lieu de naissance</th>
-                                        <th>Numero CNI</th>
-                                        <th>Sexe</th>
-                                        <th>Profession</th>
-                                        <th>Societe d'attache</th>
-                                        <th>Assurance</th>
-                                        <th>disciplines_pratiquees</th>
-                                        <th>date_debut</th>
-                                        <th>activite_interpelant_vision</th>
-                                        <th>antecedents_familiaux</th>
-                                        <th>antecedents_chirurgicaux</th>
-                                        <th>traitements_en_cours</th>
-                                        <th>allergies</th>
-                                        <th>mentions_generales</th>
-                                        <th>portez_vous_des_lunettes</th>
-                                        <th>besoin_changer_lunettes</th>
-                                        <th>autre_choses</th>
-                                        <th>Diagnostic</th>
-                                        <th>Prescription</th>
-                                        <th>Examen particulier</th>
-                                        <th>Rendez-vous</th>
-                                        <th>Suite</th>
+                                        <th>message</th>
+                                        <th>status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($clients as $client)
+                                    @foreach($notifications as $notification)
+
+
                                     <tr>
-                                        <td>{{ $client->nom }}</td>
-                                        <td>{{ $client->prenom }}</td>
-                                        <td>{{ $client->telephone }}</td>
-                                        <td>{{ $client->date_naissance }}</td>
-                                        <td>{{ $client->lieu_naissance }}</td>
-                                        <td>{{ $client->carte_identite }}</td>
-                                        <td>{{ $client->sexe }}</td>
-                                        <td>{{ $client->profession }}</td>
-                                        <td>{{ $client->societe_attache }}</td>
-                                        <td>{{ $client->assurance }}</td>
-                                        <td>{{ $client->disciplines_pratiquees }}</td>
-                                        <td>{{ $client->date_debut }}</td>
-                                        <td>{{ $client->activite_interpelant_vision }}</td>
-                                        <td>{{ $client->antecedents_familiaux }}</td>
-                                        <td>{{ $client->antecedents_chirurgicaux }}</td>
-                                        <td>{{ $client->traitements_en_cours }}</td>
-                                        <td>{{ $client->allergies }}</td>
-                                        <td>{{ $client->mentions_generales }}</td>
-                                        <td>{{ $client->portez_vous_des_lunettes ? 'Oui' : 'Non' }}</td>
-                                        <td>{{ $client->besoin_changer_lunettes ? 'Oui' : 'Non' }}</td>
-                                        <td>{{ $client->autre_choses }}</td>
-                                        <td>{{ $client->diagnostic }}</td>
-                                        <td>{{ $client->prescription }}</td>
-                                        <td>{{ $client->examen_particulier }}</td>
-                                        <td>{{ $client->rendez_vous }}</td>
-                                        <td>{{ $client->choix_service }}</td>
+                                            <td>
+                                            @if($notification->status == 0)
+                                                    <a href="{{ route('clients.index') }}" class="text-warning">
+                                                        {{ $notification->message }}
+
+                                                    </a>
+                                            @endif
+
+                                                @if($notification->status == 1)
+                                                    <a href="{{ route('clients.index') }}" class="text-success font-weight-bold">
+                                                        {{ $notification->message }}
+
+                                                    </a>
+                                                @endif
+
+
+                                            </td>
+
                                         <td>
-                                            <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
-                                            <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
-                                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $client->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                                            @if($notification->status == 1)
+                                                <span class="badge badge-success">Lu </span>
+                                            @endif
+                                         @if($notification->status == 0)
+                                                     <span class="badge badge-danger">En Attente</span>
+                                        @endif
+
+                                        <td>
+
+                                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $notification->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="deleteConfirmationModal{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $client->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteConfirmationModal{{ $notification->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $notification->id }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteConfirmationModalLabel{{ $client->id }}">Confirmation de suppression</h5>
+                                                            <h5 class="modal-title" id="deleteConfirmationModalLabel{{ $notification->id }}">Confirmation de suppression</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Êtes-vous sûr de vouloir supprimer le client <strong>{{ $client->nom }}</strong>?
+                                                            Êtes-vous sûr de vouloir supprimer notification <strong>{{ $notification->message }}</strong>?
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                                            <form id="delete-form-{{ $client->id }}" action="{{ route('clients.destroy', $client->id) }}" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
+
+                                                            <form id="delete-form-{{ $notification->id }}" action="{{ route('notifications.editStatus', $notification) }}" method="GET">
                                                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                                                             </form>
                                                         </div>

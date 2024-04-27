@@ -19,7 +19,10 @@
                                 <div class="card-content collapse show">
                                     <div class="card-body">
                                         <form action="{{ route('clients.store') }}" method="POST" class="add-client-form">
+
                                             @csrf
+
+                                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                                             <!-- Informations du client -->
 
                                                 <h6>
@@ -51,7 +54,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="carte_identite">N° de carte Nationale d’identité</label>
-                                                                <input class="form-control" id="carte_identite" name="carte_identite" type="text" />
+                                                                <input class="form-control" id="carte_identite" name="carte_identite" type="text" required />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -107,7 +110,6 @@
                                             <!-- Informations supplémentaires (Médecin/Administrateur) -->
 
 
-                                            @if(auth()->user()->role_id == 1)
                                                 <fieldset>
                                                     <!-- Ajoutez ici les nouveaux champs pour les informations supplémentaires -->
                                                     <h6>
@@ -229,7 +231,6 @@
                                                         </div>
                                                 </fieldset>
 
-                                            @endif
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">

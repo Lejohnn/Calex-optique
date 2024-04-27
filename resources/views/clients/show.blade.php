@@ -13,11 +13,15 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
+
                                 <h3 class="card-title">Détails du client <strong>{{ $client->nom }}</strong></h3>
+
                                 <div class="heading-elements">
+                                    @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
                                     <a href="{{ route('clients.edit', $client->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i> Modifier
                                     </a>
+                                    @endif
                                     <a href="{{ route('clients.index') }}" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des clients
                                     </a>

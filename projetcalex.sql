@@ -288,7 +288,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`, `created_at`, `updated_at`) VALUES
-(1, 'Test User', 'test@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, '2024-04-01 12:12:18', '2024-04-01 12:12:18'),
+(1, 'Test User', 'test@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, '2024-04-01 12:12:18', '2024-04-01 12:12:18'),
 (2, 'SONKOUE JONATHAN', 'jonathansonkoue75@gmail.com', '$2y$10$0Cpc7bwMH0v0yPs07RfkgOwjyaludNYA9g33ViaCH4EnMHFLrd4uq', 1, '2024-04-06 16:14:00', '2024-04-06 16:14:00'),
 (3, 'Junior', 'sonkouejonathan@yahoo.fr', '$2y$10$Jk87jx/pzx42i0pXbRNI1e5562tQjFIrGj1xgTrheJRBf.jyOG6KC', 1, '2024-04-06 16:16:48', '2024-04-20 01:49:59'),
 (5, 'John', 'john@gmail.com', '$2y$10$EnF2o9vChV4vrZpPxTLLSOdbAMWazCcwh6oRaMO5fLedOIJUMlsdu', 2, '2024-04-07 12:30:30', '2024-04-07 12:30:30'),

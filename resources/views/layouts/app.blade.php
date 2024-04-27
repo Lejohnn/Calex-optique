@@ -132,56 +132,32 @@
                         <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-gb"></i><span class="selected-language"></span></a>
                             <div class="dropdown-menu" aria-labelledby="dropdown-flag"><a class="dropdown-item" href="#" data-language="en"><i class="flag-icon flag-icon-us"></i> English</a><a class="dropdown-item" href="#" data-language="fr"><i class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a><a class="dropdown-item" href="#" data-language="de"><i class="flag-icon flag-icon-de"></i> German</a></div>
                         </li>
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon ft-bell"></i><span class="badge badge-pill badge-danger badge-up badge-glow">5</span></a>
+
+                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon ft-bell"></i><span class="badge badge-pill  {{ $notifications_notread == 0 ? '' : 'badge-danger' }}   badge-up badge-glow"> {{ $notifications_notread}}</span></a>
                             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                                 <li class="dropdown-menu-header">
-                                    <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span></h6><span class="notification-tag badge badge-danger float-right m-0">5 New</span>
+                                    <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span></h6><span class="notification-tag badge {{$notifications_notread == 0 ? '' : 'badge-danger'}} float-right m-0">{{ $notifications_notread}} New</span>
                                 </li>
-                                <li class="scrollable-container media-list w-100"><a href="javascript:void(0)">
-                                        <div class="media">
-                                            <div class="media-left align-self-center"><i class="ft-plus-square icon-bg-circle bg-cyan mr-0"></i></div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading">You have new order!</h6>
-                                                <p class="notification-text font-small-3 text-muted">Lorem ipsum dolor sit amet, consectetuer elit.</p><small>
-                                                    <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">30 minutes ago</time></small>
-                                            </div>
-                                        </div>
-                                    </a><a href="javascript:void(0)">
-                                        <div class="media">
-                                            <div class="media-left align-self-center"><i class="ft-download-cloud icon-bg-circle bg-red bg-darken-1 mr-0"></i></div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading red darken-1">99% Server load</h6>
-                                                <p class="notification-text font-small-3 text-muted">Aliquam tincidunt mauris eu risus.</p><small>
-                                                    <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Five hour ago</time></small>
-                                            </div>
-                                        </div>
-                                    </a><a href="javascript:void(0)">
+                                @foreach($notifications as $notification)
+
+                                    @php //dd($notification) @endphp
+                                <li class="scrollable-container media-list w-100 {{ $notification->status ==0 ? 'bg-light text-dark' : ''}}"><a href="javascript:void(0)">
+
+                                    <a href="javascript:void(0)">
                                         <div class="media">
                                             <div class="media-left align-self-center"><i class="ft-alert-triangle icon-bg-circle bg-yellow bg-darken-3 mr-0"></i></div>
                                             <div class="media-body">
-                                                <h6 class="media-heading yellow darken-3">Warning notifixation</h6>
-                                                <p class="notification-text font-small-3 text-muted">Vestibulum auctor dapibus neque.</p><small>
-                                                    <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Today</time></small>
+                                                <h6 class="media-heading {{ $notification->status ==0 ? 'yellow' : 'success font-weight-bold'}} darken-3 ">{{ $notification->status ==0 ? 'notification en attente' : 'Déjà consulté'}}</h6>
+                                                <p class="notification-text font-small-3 text-muted font-weight-bold">{{ $notification->message  }}</p><small>
+                                                    <time class="media-meta text-success font-weight-bold " datetime="2015-06-11T18:29:20+08:00"> {{ Carbon\Carbon::parse($notification->created_at)->locale('fr')->format('l')  }} the {{  $notification->created_at }}
+                                                    </time></small>
                                             </div>
                                         </div>
-                                    </a><a href="javascript:void(0)">
-                                        <div class="media">
-                                            <div class="media-left align-self-center"><i class="ft-check-circle icon-bg-circle bg-cyan mr-0"></i></div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading">Complete the task</h6><small>
-                                                    <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last week</time></small>
-                                            </div>
-                                        </div>
-                                    </a><a href="javascript:void(0)">
-                                        <div class="media">
-                                            <div class="media-left align-self-center"><i class="ft-file icon-bg-circle bg-teal mr-0"></i></div>
-                                            <div class="media-body">
-                                                <h6 class="media-heading">Generate monthly report</h6><small>
-                                                    <time class="media-meta text-muted" datetime="2015-06-11T18:29:20+08:00">Last month</time></small>
-                                            </div>
-                                        </div>
-                                    </a></li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
+                                    </a>
+                                </li>
+
+                                @endforeach
+                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="{{route('notifications.index')}}">Read all notifications</a></li>
                             </ul>
                         </li>
                         <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon ft-mail"></i></a>
@@ -264,11 +240,13 @@
                     </ul>
                 </li>
                 @endif
-                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2)
+                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 2)
                 <li class=" nav-item" id="client"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Clients</span></a>
                     <ul class="menu-content">
+                        @if(auth()->user()->role_id == 2)
                         <li><a class="menu-item" href="{{ route('clients.create') }}"><i></i><span data-i18n="Invoice Summary">Ajouter un Client</span></a>
                         </li>
+                        @endif
                         <li><a class="menu-item" href="{{ route('clients.index') }}"><i></i><span data-i18n="Invoice Template">Liste des Clients</span></a>
 
                     </ul>
@@ -314,6 +292,11 @@
                     </ul>
                 </li>
                     @endif
+                        <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Parametre</span></a>
+                            <ul class="menu-content">
+                                <li><a class="menu-item" href="{{ route('notifications.index') }}"><i></i><span data-i18n="Invoice Summary">Notifications</span></a></li>
+                            </ul>
+                        </li>
                 {{-- <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">L'éveilleur</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Campagne Publicitaire</span></a></li>
