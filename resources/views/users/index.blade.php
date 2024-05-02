@@ -3,6 +3,8 @@
 @section('title', 'Liste des Utilisateurs')
 
 @section('contenu')
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
@@ -26,7 +28,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-bordered users-list">
+                                        <table class="table table-striped table-bordered users-list datatable">
                                             <thead>
                                                 <tr>
                                                     <th>Nom</th>
@@ -88,7 +90,6 @@
 
 
 
-
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -106,3 +107,8 @@
 <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
 <!-- END: Page JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable();
+    });
+</script>

@@ -13,15 +13,15 @@
         <div class="content-wrapper">
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2">
-                    <h3 class="content-header-title">Notifications</h3>
+                    <h3 class="content-header-title">Liste des Clients</h3>
                     <div class="row breadcrumbs-top">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Accueil</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Parametres</a>
+                                <li class="breadcrumb-item"><a href="#">Clients</a>
                                 </li>
-                                <li class="breadcrumb-item active">Notifications
+                                <li class="breadcrumb-item active">Tous les clients
                                 </li>
                             </ol>
                         </div>
@@ -41,7 +41,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">Notifications</h2>
+                        <h2 class="card-title">Liste des clients</h2>
                         <!-- @if (Session::has('success'))
                                     <div class="alert alert-success">
                                         {{Session::get('success')}}
@@ -56,6 +56,11 @@
                                         </ul>
                                     </div>
                                 @endif -->
+                                <div class="heading-elements">
+                                    <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
+                                        <i class="la la-plus font-small-2"></i> Ajouter un client
+                                    </a>
+                                </div>
                                 @if(session('success'))
                                         <br>
                                         <div class="alert alert-success">
@@ -71,62 +76,45 @@
                             <table class="table table-striped table-bordered patients-list">
                                 <thead>
                                     <tr>
-                                        <th>message</th>
-                                        <th>status</th>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                        <th>Sexe</th>
+                                        <th>Choix_service</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($notifications as $notification)
-
-
+                                    @foreach($clients as $client)
                                     <tr>
-                                            <td>
-                                            @if($notification->status == 0)
-                                                    <a href="{{ route('clients.list') }}" class="text-warning">
-                                                        {{ $notification->message }}
-
-                                                    </a>
-                                            @endif
-
-                                                @if($notification->status == 1)
-                                                    <a href="{{ route('clients.list') }}" class="text-success font-weight-bold">
-                                                        {{ $notification->message }}
-
-                                                    </a>
-                                                @endif
-
-
-                                            </td>
-
+                                        <td>{{ $client->nom }}</td>
+                                        <td>{{ $client->prenom }}</td>
+                                        <td>{{ $client->sexe }}</td>
+                                        <td>{{ $client->choix_service }}</td>
                                         <td>
-                                            @if($notification->status == 1)
-                                                <span class="badge badge-success">Lu </span>
+                                            <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
+
+                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
+                                            <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                             @endif
-                                         @if($notification->status == 0)
-                                                     <span class="badge badge-danger">En Attente</span>
-                                        @endif
-
-                                        <td>
-
-                                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $notification->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $client->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
                                             <!-- Modal -->
-                                            <div class="modal fade" id="deleteConfirmationModal{{ $notification->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $notification->id }}" aria-hidden="true">
+                                            <div class="modal fade" id="deleteConfirmationModal{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $client->id }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteConfirmationModalLabel{{ $notification->id }}">Confirmation de suppression</h5>
+                                                            <h5 class="modal-title" id="deleteConfirmationModalLabel{{ $client->id }}">Confirmation de suppression</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            Êtes-vous sûr de vouloir supprimer notification <strong>{{ $notification->message }}</strong>?
+                                                            Êtes-vous sûr de vouloir supprimer le client <strong>{{ $client->nom }}</strong>?
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-
-                                                            <form id="delete-form-{{ $notification->id }}" action="{{ route('notifications.editStatus', $notification) }}" method="GET">
+                                                            <form id="delete-form-{{ $client->id }}" action="{{ route('clients.destroy', $client->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
                                                                 <button type="submit" class="btn btn-danger">Supprimer</button>
                                                             </form>
                                                         </div>
@@ -155,10 +143,6 @@
 @endsection
 
 
-
-
-
-
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -176,4 +160,3 @@
 <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
 <!-- END: Page JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-

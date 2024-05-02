@@ -22,7 +22,7 @@
                                         <i class="fas fa-edit"></i> Modifier
                                     </a>
                                     @endif
-                                    <a href="{{ route('clients.index') }}" class="btn btn-outline-secondary btn-sm">
+                                    <a href="{{ route('clients.list') }}" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des clients
                                     </a>
                                     <!-- Bouton pour générer le PDF -->

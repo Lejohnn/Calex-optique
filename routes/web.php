@@ -7,6 +7,8 @@ use App\Http\Controllers\CommercialController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CallServiceController;
+
 
 
 /*
@@ -29,15 +31,20 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });
 
+// Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+
 
 Route::middleware(['auth'])->group(function(){
+
+
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.list');
+
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
 
 
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
     Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
 
-    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
     Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
     Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
@@ -63,10 +70,27 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 
 
-Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
-Route::post('/commercial/store', [CommercialController::class, 'store'])->name('commercial.store');
+// Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
+
+// Route::post('/commercial/store', [CommercialController::class, 'store'])->name('commercial.store');
+Route::post('/commercial/store', [CommercialController::class, 'store'])->name('commercial.store')
+    ->middleware('setUserIdForProspect');
+
+Route::get('/commercial', [CommercialController::class, 'index'])->name('commercial.index');
+Route::get('/commercial/{id}', [CommercialController::class, 'show'])->name('commercial.show');
+
 Route::get('/commercial/{id}/edit', [CommercialController::class, 'edit'])->name('commercial.edit');
 Route::put('/commercial/{id}/update', [CommercialController::class, 'update'])->name('commercial.update');
 Route::delete('/commercial/{id}/delete', [CommercialController::class, 'destroy'])->name('commercial.destroy');
+Route::get('/commercial/prospects', [CommercialController::class, 'prospectsByCommercial'])->name('commercial.prospects');
+
+// Route::put('/commercial/{id}/update-status', 'CommercialController@updateStatus')->name('commercial.updateStatus');
+Route::put('/commercial/{id}/update-status', [CommercialController::class, 'updateStatus'])->name('commercial.updateStatus');
 
 Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('generate.pdf');
+
+
+Route::get('/prospects', [CallServiceController::class, 'showProspects'])->name('call_service.prospects');
+// Route::get('/clients', [CallServiceController::class, 'showClients'])->name('call_service.clients');
+Route::get('/clients', [CallServiceController::class, 'showClients'])->name('call_service.showClients');
+

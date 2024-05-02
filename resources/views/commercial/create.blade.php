@@ -14,58 +14,92 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title text-center">Fiche journalière</h4>
-                                    <h5 class="text-center">Date: <input class="form-control" id="date" name="date" type="date" /></h5>
-                                    <h5 class="text-center">Nom du commercial: <input class="form-control" id="nom_commercial" name="nom_commercial" type="text" /></h5>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body">
-                                        <!-- Informations du client -->
-
+                                    <h4 class="card-title text-center"><u>Fiche journalière</u></h4>
+                                    <!-- Boutons de navigation -->
+                                    <div class="text-center">
+                                        <button class="btn btn-primary btn-switch" data-target="entreprise">Entreprise</button>
+                                        <button class="btn btn-primary btn-switch" data-target="rdv">Rendez-vous du jour</button>
+                                        <button class="btn btn-primary btn-switch" data-target="nettoyage">Nettoyage</button>
+                                    </div>
+                                    <form action="{{ route('commercial.store') }}" method="POST">
+                                        @csrf <!-- Ajout du jeton CSRF -->
                                         <div class="form-group">
-                                            <label for="entreprise">Entreprise visitée</label>
-                                            <input class="form-control" id="entreprise" name="entreprise" type="text" />
+                                            <label for="date">Date<span class="text-danger">*</span></label>
+                                            <input class="form-control" id="date" name="date" type="date" required>
                                         </div>
-
                                         <div class="form-group">
-                                            <label for="responsable">Nom/Titre du responsable contacté</label>
-                                            <input class="form-control" id="responsable" name="responsable" type="text" />
+                                            <label for="nom_commercial">Nom du commercial<span class="text-danger">*</span></label>
+                                            <input class="form-control" id="commercial_name" name="commercial_name" type="text" required>
                                         </div>
-
                                         <div class="form-group">
-                                            <label for="contact">Contact</label>
-                                            <input class="form-control" id="contact" name="contact" type="text" />
+                                            <label for="date_rdv">Date du rendez-vous<span class="text-danger">*</span></label>
+                                            <input class="form-control" id="date_rdv" name="date_rdv" type="date" required>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="heure">Heure</label>
-                                            <input class="form-control" id="heure" name="heure" type="text" />
+                                                                 <!-- Section Entreprise -->
+                                        <div class="form-section" id="entreprise-section">
+                                            <h5 class="text-center">Entreprises</h5>
+                                            <div class="form-group">
+                                                <label for="entreprise_nom">Entreprise visitée</label>
+                                                <input class="form-control" id="entreprise_nom" name="entreprise_nom" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entreprise_responsable">Nom/Titre du responsable contacté</label>
+                                                <input class="form-control" id="entreprise_responsable" name="entreprise_responsable" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entreprise_contact">Contact</label>
+                                                <input class="form-control" id="entreprise_contact" name="entreprise_contact" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entreprise_heure">Heure du Rendez-vous</label>
+                                                <input class="form-control" id="entreprise_heure" name="entreprise_heure" type="text">
+                                            </div>
                                         </div>
-
-                                        <h6 class="text-center">(Prestations offertes ou obtenues)</h6>
-
-                                        <div class="form-group">
-                                            <label for="nom_prenom">Nom/Prenom</label>
-                                            <input class="form-control" id="nom_prenom" name="nom_prenom" type="text" />
+                                                                        <!-- Section Rendez-vous -->
+                                        <div class="form-section" id="rdv-section" style="display: none;">
+                                        <h4 class="text-center"> <u>Prestations offertes ou obtenues</u></h4> <br>
+                                            <h5 class="text-center">Rendez-vous du jour</h5>
+                                            <div class="form-group">
+                                                <label for="rdv_nom_prenom">Nom/Prenom</label>
+                                                <input class="form-control" id="rdv_nom_prenom" name="rdv_nom_prenom" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rdv_contact">Contact</label>
+                                                <input class="form-control" id="rdv_contact" name="rdv_contact" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rdv_societe">Société</label>
+                                                <input class="form-control" id="rdv_societe" name="rdv_societe" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rdv_heure">Heure du Rendez-vous</label>
+                                                <input class="form-control" id="rdv_heure" name="rdv_heure" type="text">
+                                            </div>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="contact">Contact</label>
-                                            <input class="form-control" id="contact" name="contact" type="text" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="societe">Société</label>
-                                            <input class="form-control" id="societe" name="societe" type="text" />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="heure">Heure</label>
-                                            <input class="form-control" id="heure" name="heure" type="text" />
+                                                                     <!-- Section Nettoyage -->
+                                        <div class="form-section" id="nettoyage-section" style="display: none;">
+                                            <h4 class="text-center"> <u>Prestations offertes ou obtenues</u></h4> <br>
+                                            <h5 class="text-center"> Nettoyage</h5>
+                                            <div class="form-group">
+                                                <label for="nettoyage_nom_prenom">Nom/Prenom</label>
+                                                <input class="form-control" id="nettoyage_nom_prenom" name="nettoyage_nom_prenom" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nettoyage_contact">Contact</label>
+                                                <input class="form-control" id="nettoyage_contact" name="nettoyage_contact" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nettoyage_societe">Société</label>
+                                                <input class="form-control" id="nettoyage_societe" name="nettoyage_societe" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nettoyage_heure">Heure du Rendez-vous</label>
+                                                <input class="form-control" id="nettoyage_heure" name="nettoyage_heure" type="text">
+                                            </div>
                                         </div>
                                         <!-- Bouton de soumission -->
                                         <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -77,4 +111,34 @@
 </div>
 @endsection
 
+
+<!-- BEGIN: Vendor JS-->
+<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+<script src="{{asset('backend/js/core/app.js')}}"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        // Fonction pour basculer la visibilité des sections
+        $(".btn-switch").click(function() {
+            var target = $(this).data("target");
+            $(".form-section").hide();
+            $("#" + target + "-section").show();
+        });
+    });
+</script>
 @yield('script')

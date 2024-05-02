@@ -10,14 +10,23 @@ class Prospect extends Model
     use HasFactory;
 
     protected $fillable = [
+        'date',
         'commercial_name',
-        'company',
-        'owner',
-        'contact',
-        'name',
-        'society',
-        'person_contact',
+        'entreprise_nom',
+        'entreprise_responsable',
+        'entreprise_contact',
+        'entreprise_heure',
+        'rdv_nom_prenom',
+        'rdv_contact',
+        'rdv_societe',
+        'rdv_heure',
+        'nettoyage_nom_prenom',
+        'nettoyage_contact',
+        'nettoyage_societe',
+        'nettoyage_heure',
         'user_id',
+        'date_rdv',
+        'statut',
     ];
 
     public function user()

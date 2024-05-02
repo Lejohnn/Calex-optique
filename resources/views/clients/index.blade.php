@@ -8,6 +8,8 @@
 @section('contenu')
          <!-- END: Main Menu-->
     <!-- BEGIN: Content-->
+    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
@@ -36,6 +38,7 @@
             </div>
             <div class="content-body">
     <!-- List Of All Patients -->
+
     <section id="patients-list">
         <div class="row">
             <div class="col-12">
@@ -73,7 +76,7 @@
                         <div class="card-body card-dashboard">
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered patients-list">
+                            <table class="table table-striped table-bordered patients-list datatable">
                                 <thead>
                                     <tr>
                                         <th>Nom</th>
@@ -164,4 +167,8 @@
 <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
 <!-- END: Page JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable();
+    });
+</script>
