@@ -62,8 +62,8 @@
                                                 <th>Société du Nettoyage</th>
                                                 <th>Heure du Nettoyage</th>
                                                 <th>Date du Rendez-vous</th>
-                                                <th>Statut</th>
-                                                <th>Actions</th>
+                                                {{-- <th>Statut</th>
+                                                <th>Actions</th> --}}
                                             </tr>
                                         </thead>
                                         <tbody >
@@ -102,7 +102,7 @@
                                                 <td>{{ $commercial->nettoyage_societe }}</td>
                                                 <td>{{ $commercial->nettoyage_heure }}</td>
                                                 <td>{{ $commercial->date_rdv }}</td>
-                                                <td>
+                                                {{-- <td>
                                                     <form action="{{ route('commercial.updateStatus', $commercial->id) }}" method="POST">
                                                         @csrf
                                                         @method('PUT')
@@ -113,8 +113,8 @@
                                                             <option value="ok" {{ $commercial->statut === 'ok' ? 'selected' : '' }}>Ok</option>
                                                         </select>
                                                     </form>
-                                                </td>
-                                                <td>
+                                                </td> --}}
+                                                {{-- <td>
                                                     <a href="{{ route('commercial.show', $commercial->id) }}"><i class="ft-eye text-info"></i></a>
                                                     <a href="{{ route('commercial.edit', $commercial->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                                     <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $commercial->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
@@ -142,7 +142,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                             @endforeach
                                         </tbody>

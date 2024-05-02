@@ -56,11 +56,11 @@
                                         </ul>
                                     </div>
                                 @endif -->
-                                <div class="heading-elements">
+                                {{-- <div class="heading-elements">
                                     <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
                                         <i class="la la-plus font-small-2"></i> Ajouter un client
                                     </a>
-                                </div>
+                                </div> --}}
                                 @if(session('success'))
                                         <br>
                                         <div class="alert alert-success">
@@ -80,7 +80,8 @@
                                         <th>Prénom</th>
                                         <th>Sexe</th>
                                         <th>Choix_service</th>
-                                        <th>Actions</th>
+                                        <th>Rendez-vous</th>
+                                        {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,7 +91,8 @@
                                         <td>{{ $client->prenom }}</td>
                                         <td>{{ $client->sexe }}</td>
                                         <td>{{ $client->choix_service }}</td>
-                                        <td>
+                                        <td>{{ $client->rendez_vous }}</td>
+                                        {{-- <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
 
                                             @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
@@ -121,7 +123,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> --}}
 
 
 

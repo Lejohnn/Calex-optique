@@ -37,7 +37,7 @@ Route::middleware(['guest'])->group(function(){
 Route::middleware(['auth'])->group(function(){
 
 
-    Route::get('/clients', [ClientController::class, 'index'])->name('clients.list');
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -92,5 +92,5 @@ Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('gen
 
 Route::get('/prospects', [CallServiceController::class, 'showProspects'])->name('call_service.prospects');
 // Route::get('/clients', [CallServiceController::class, 'showClients'])->name('call_service.clients');
-Route::get('/clients', [CallServiceController::class, 'showClients'])->name('call_service.showClients');
+Route::get('/clients_call', [CallServiceController::class, 'showClients'])->name('call_service.showClients');
 

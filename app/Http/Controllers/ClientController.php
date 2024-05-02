@@ -24,7 +24,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
             $clients = Client::all();
             $notifications = $this->notificationService->notification_template()[0];
             $notifications_notread = $this->notificationService->notification_template()[1];
-            return view('clients.list', compact('clients','notifications','notifications_notread'));
+            return view('clients.index', compact('clients','notifications','notifications_notread'));
         }
 
         // public function createcopy()
@@ -130,7 +130,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
                 $notification->save();
 
                 // Redirection vers une page appropriée avec un message de succès
-                return redirect()->route('clients.list')
+                return redirect()->route('clients.index')
                     ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. une notification à été envoyé au responsable')
                     ->with('notifications', $notifications)
                     ->with('notifications_notread' , $notifications_notread);
@@ -226,7 +226,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
             ->update(['status' => 1]);
 
         // Redirection vers une page appropriée avec un message de succès
-        return redirect()->route('clients.list')
+        return redirect()->route('clients.index')
             ->with('success', 'Client "'.$client->nom.'" modifié avec succès.')
             ->with('notifications', $notifications)
             ->with('notifications_notread', $notifications_notread);
@@ -241,7 +241,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
             // Suppression du client
             $client->delete();
 
-            return redirect()->route('clients.list')
+            return redirect()->route('clients.index')
                 ->with('success', 'Client "'.$clientName.'" supprimé avec succès.')
                 ->with('notifications', $notifications)
                 ->with('notifications_notread', $notifications_notread);
