@@ -22,6 +22,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
         public function index()
         {
             $clients = Client::all();
+            //dd($clients, auth()->user()->role_id);
+            if (auth()->user()->role_id == 3){
+                $clients = Client::Where('choix_service', 'consultation')->get();
+            }
             $notifications = $this->notificationService->notification_template()[0];
             $notifications_notread = $this->notificationService->notification_template()[1];
             return view('clients.index', compact('clients','notifications','notifications_notread'));
@@ -221,7 +225,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
             'rendez_vous' => $request->input('rendez_vous'),
             'choix_service' => $request->input('choix_service'),
         ]);
-        Notification::where('user_id', auth()->user()->role->id)
+        Notification::where('client_id', $client->id)
             ->where('visibility', 0)
             ->update(['status' => 1]);
 

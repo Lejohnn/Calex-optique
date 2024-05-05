@@ -83,14 +83,14 @@
                                     <tr>
                                             <td>
                                             @if($notification->status == 0)
-                                                    <a href="{{ route('clients.list') }}" class="text-warning">
+                                                    <a href="{{ route('clients.index') }}" class="text-warning">
                                                         {{ $notification->message }}
 
                                                     </a>
                                             @endif
 
                                                 @if($notification->status == 1)
-                                                    <a href="{{ route('clients.list') }}" class="text-success font-weight-bold">
+                                                    <a href="{{ route('clients.index') }}" class="text-success font-weight-bold">
                                                         {{ $notification->message }}
 
                                                     </a>

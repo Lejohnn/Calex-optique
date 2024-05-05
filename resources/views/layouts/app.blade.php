@@ -167,7 +167,7 @@
                 </li>
             @endif
 
-                @if(auth()->user()->role_id == 1)
+                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 6 )
                      <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span></a>
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ route('commercial.create') }}"><i></i><span data-i18n="Invoice Summary">Enregistrer Un Client</span></a></li>
@@ -176,7 +176,7 @@
                 </li>
                     @endif
 
-                    @if(auth()->user()->role_id == 1)
+                    @if(auth()->user()->role_id == 0)
                     <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">En fonction des clients</span></a></li>
