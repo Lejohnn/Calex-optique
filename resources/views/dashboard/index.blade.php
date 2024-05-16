@@ -21,9 +21,10 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h2>nbre de factures du jours</h2>
-                                            <h3 class="info">850</h3>
+                                            <h2>nbre de factures aujourd'hui</h2>
+                                            <h3 class="info">{{$billingMangement[0]}}</h3>
                                             <h6>l'argent généré par ces factures</h6>
+                                            <h3 class="info"><span>{{$billingMangement[1]}}</span>  FCFA</h3>
                                         </div>
                                         <div>
                                             <i class="icon-basket-loaded info font-large-2 float-right"></i>
