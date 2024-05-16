@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CallServiceController;
+use App\Http\Controllers\CaisseController;
 
 
 
@@ -40,6 +41,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.index');
+
 
 
     Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
@@ -93,4 +95,22 @@ Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('gen
 Route::get('/prospects', [CallServiceController::class, 'showProspects'])->name('call_service.prospects');
 // Route::get('/clients', [CallServiceController::class, 'showClients'])->name('call_service.clients');
 Route::get('/clients_call', [CallServiceController::class, 'showClients'])->name('call_service.showClients');
+Route::get('/caisse/facture', [CaisseController::class, 'showInvoice'])->name('caisse.facture');
+Route::post('/generer-facture', [CaisseController::class, 'generateInvoice'])->name('generate.invoice');
+// Route pour afficher la liste des factures
+Route::get('/factures', [CaisseController::class, 'voirFactures'])->name('caisse.views');
+Route::get('/factures/{id}', [CaisseController::class, 'detailFacture'])->name('factures.details');
 
+
+Route::get('/ordonnance/generate', [ClientController::class, 'showordonnance'])->name('ordonnance.views');
+
+Route::post('/ordonnance/generate', [ClientController::class, 'generate'])->name('ordonnance.generate');
+
+
+
+Route::get('/fact', function () {
+    return view('other.facture');
+});
+// Route::get('/facture', function () {
+//     return view('caisse.facture');
+// });

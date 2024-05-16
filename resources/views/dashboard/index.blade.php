@@ -61,8 +61,8 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h3 class="success">146</h3>
-                                            <h6>New Customers</h6>
+                                            <h3 class="success">146/5000</h3>
+                                            <h6>Nouveaux Clients/Total</h6>
                                         </div>
                                         <div>
                                             <i class="icon-user-follow success font-large-2 float-right"></i>

@@ -252,6 +252,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
         }
 
 
+        // public function open() {
+        //     return view ('clients.facture');
+        // }
 
         public function generatePDF()
     {
@@ -279,4 +282,55 @@ use Barryvdh\DomPDF\Facade\Pdf;
         // Télécharger le PDF
         return $pdf->download('liste_clients.pdf');
     }
+
+
+
+    public function generate(Request $request){
+        // Collecter les données nécessaires pour l'ordonnance
+        $nom_patient = $request->input('nom_patient');
+        $medicaments = $request->input('medicaments');
+        $instructions = $request->input('instructions');
+
+        // Informations de l'en-tête
+        $header = '
+            <p style="font-size: 40px; color: #1E90FF; text-align: center;">CALEX\'<span style="color: red;">OP</span>TIC</p>
+            <p style="font-size: 10px;"><strong>Pierre Calvin NGATCHA KAMTCHOUM</strong><br>Opticien diplomé de l\'académie de Paris<br>Examen de vue et de prise de Mesure<br>Tél : 696 15 04 29 / 677 87 19 51<br>Situé en face de l\'Ecole de Police</p>
+            <hr style="margin-bottom: 10px;">
+        ';
+
+        // Générer le contenu HTML pour l'ordonnance
+        $html = '
+            <style>
+                body { font-family: Arial, sans-serif; }
+                h3 { text-align: center; } /* Bleu vif foncé */
+                p { margin-bottom: 10px; }
+            </style>
+            ' . $header . '
+            <h3>ORDONNANCE MEDICALE</h3>
+            <p><strong>Nom du Patient:</strong> ' . $nom_patient . '</p>
+            <p><strong>Médicaments:</strong></p>
+            <p>' . $medicaments . '</p>
+            <p><strong>Instructions:</strong></p>
+            <p>' . $instructions . '</p>
+        ';
+
+        // Générer le PDF à partir du contenu HTML
+        $pdf = PDF::loadHTML($html);
+
+        // Télécharger le PDF
+        return $pdf->download('ordonnance.pdf');
+    }
+
+
+
+    public function showordonnance(){
+        // Récupérer les notifications
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        // Retourner la vue avec les factures et les notifications
+        return view('clients.ordonnance', compact('notifications', 'notifications_notread'));
+
+    }
+
     }

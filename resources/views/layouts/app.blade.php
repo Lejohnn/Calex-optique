@@ -81,7 +81,7 @@
                     <ul class="nav navbar-nav float-right">
                         <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon ft-bell"></i><span class="badge badge-pill  {{ $notifications_notread == 0 ? '' : 'badge-danger' }}   badge-up badge-glow"> {{ $notifications_notread}}</span></a>
                             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
+                                <li class="dropdown-me  nu-header">
                                     <h6 class="dropdown-header m-0"><span class="grey darken-2">Notifications</span></h6><span class="notification-tag badge {{$notifications_notread == 0 ? '' : 'badge-danger'}} float-right m-0">{{ $notifications_notread}} New</span>
                                 </li>
                                 @foreach($notifications as $notification)
@@ -111,7 +111,7 @@
                             @if(auth()->check())
                                 <span class="mr-1 user-name text-bold-700">{{ auth()->user()->name }}</span>
                              @endif
-                        <span class="avatar avatar-online"><img src="{{asset('backend/images/portrait/small/avatar-s-19.png')}}" alt="avatar"><i></i></span></a>
+                        <span class="avatar avatar-online"><img src="{{asset('backend/images/portrait/small/avat.png')}}" alt="avatar"><i></i></span></a>
                             <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a><a class="dropdown-item" href="#"><i class="ft-clipboard"></i> Todo</a><a class="dropdown-item" href="#"><i class="ft-check-square"></i> Task</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{route('auth.logout')}}"><i class="ft-power"></i> Logout</a>
@@ -162,6 +162,12 @@
                                     <span data-i18n="Invoice Template">Liste des Clients</span>
                                 </a>
                             </li>
+                            <li>
+                                <a class="menu-item" href="{{ route('ordonnance.views') }}">
+                                    <i></i>
+                                    <span data-i18n="Invoice Template">Ordonnance</span>
+                                </a>
+                            </li>
                         @endif
                     </ul>
                 </li>
@@ -176,31 +182,8 @@
                 </li>
                     @endif
 
-                    @if(auth()->user()->role_id == 0)
-                    <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Rendez-vous</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">En fonction des clients</span></a></li>
-                    </ul>
-                </li>
-                @endif
-                @if(auth()->user()->role_id == 1)
-                    <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Commande</span></a>
-                <ul class="menu-content">
-                    <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Enregistrer une nouvelle commande </span></a>
-                    </li>
-                    <li><a class="menu-item" href="invoice-template.html"><i></i><span data-i18n="Invoice Template">Visualiser les commandes </span></a>
 
-                </ul>
-                </li>
-                    @endif
 
-                    @if(auth()->user()->role_id == 1)
-                        <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion des Ventes</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="invoice-summary.html"><i></i><span data-i18n="Invoice Summary">Fiche calculé</span></a></li>
-                    </ul>
-                </li>
-                @endif
                 @if(auth()->user()->role_id == 1)
                 <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Service Call</span></a>
                     <ul class="menu-content">
@@ -209,6 +192,16 @@
                     </ul>
                 </li>
                 @endif
+                @if(auth()->user()->role_id == 1)
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion Caisse</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{{ route('clients.index') }}"><i></i><span data-i18n="Invoice Template">Liste des Clients</span></a></li>
+                        <li><a class="menu-item" href="{{ route('caisse.facture') }}"<i></i><span data-i18n="Invoice Summary">generer une facture</span></a></li>
+                        <li><a class="menu-item" href="{{ route('caisse.views') }}"><i></i><span data-i18n="Invoice Summary">visualiser les factures</span></a></li>
+                    </ul>
+                </li>
+                @endif
+              
 
                 <li class="nav-item" id="admin">
                     <a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Paramètres</span></a>
@@ -262,3 +255,5 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <!-- END: Page JS-->
     @endsection
+
+
