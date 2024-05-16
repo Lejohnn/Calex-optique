@@ -178,6 +178,7 @@
                 <ul class="menu-content">
                     <li><a class="menu-item" href="{{ route('commercial.create') }}"><i></i><span data-i18n="Invoice Summary">Enregistrer Un Client</span></a></li>
                     <li><a class="menu-item" href="{{ route('commercial.index') }}"><i></i><span data-i18n="Invoice Summary">Lister les Client</span></a></li>
+                    <li><a class="menu-item" href="{{ route('commercial.stat') }}"><i></i><span data-i18n="Invoice Summary">Statistiques</span></a></li>
                 </ul>
                 </li>
                     @endif
@@ -201,7 +202,14 @@
                     </ul>
                 </li>
                 @endif
-              
+                @if(auth()->user()->role_id == 1)
+                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion Atelier</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="{{ route('clients.index') }}"><i></i><span data-i18n="Invoice Template">Liste des Clients</span></a></li>
+                        <li><a class="menu-item" href=""<i></i><span data-i18n="Invoice Summary">gerer commande</span></a></li>
+                    </ul>
+                </li>
+                @endif
 
                 <li class="nav-item" id="admin">
                     <a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Paramètres</span></a>

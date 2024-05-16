@@ -21,8 +21,9 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
+                                            <h2>nbre de factures du jours</h2>
                                             <h3 class="info">850</h3>
-                                            <h6>Products Sold</h6>
+                                            <h6>l'argent généré par ces factures</h6>
                                         </div>
                                         <div>
                                             <i class="icon-basket-loaded info font-large-2 float-right"></i>
@@ -41,8 +42,9 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h3 class="warning">$748</h3>
-                                            <h6>Net Profit</h6>
+                                            <h5>nb person traités par le medecin /nbre de personnes qui l'ont sollicité</h5>
+                                            <h3 class="warning">4/7</h3>
+                                            {{-- <h6>Net Profit</h6> --}}
                                         </div>
                                         <div>
                                             <i class="icon-pie-chart warning font-large-2 float-right"></i>
@@ -81,8 +83,9 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h3 class="danger">99.89 %</h3>
-                                            <h6>Customer Satisfaction</h6>
+                                            <h5>nb person traités par la caisse /nbre de personnes qui l'ont sollicité</h5>
+                                            <h3 class="danger">6/8</h3>
+                                            {{-- <h6>Customer Satisfaction</h6> --}}
                                         </div>
                                         <div>
                                             <i class="icon-heart danger font-large-2 float-right"></i>
@@ -96,6 +99,8 @@
                         </div>
                     </div>
                 </div>
+                <p>PENSE AUSSI AU GRAPHE QUE TU VOULAIS AJOUTER ET AUX AUTRES IDEES QUE TU M'AVAIS DONNEE</p>
+
                 <!--/ eCommerce statistic -->
 
                 <!-- Products sell and New Orders -->

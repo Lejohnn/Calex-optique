@@ -134,6 +134,14 @@ public function updateStatus(Request $request, $id)
     return redirect()->back()->with('success', 'Statut mis à jour avec succès!');
 }
 
+public function statistique (){
+
+    $notifications = $this->notificationService->notification_template()[0];
+    $notifications_notread = $this->notificationService->notification_template()[1];
+
+    // Retourner la vue en passant les données directement
+    return view('commercial.stat', compact( 'notifications', 'notifications_notread'));
+}
 
 
 // public function prospectsByCommercial(Request $request)

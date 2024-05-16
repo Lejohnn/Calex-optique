@@ -89,6 +89,11 @@ Route::get('/commercial/prospects', [CommercialController::class, 'prospectsByCo
 // Route::put('/commercial/{id}/update-status', 'CommercialController@updateStatus')->name('commercial.updateStatus');
 Route::put('/commercial/{id}/update-status', [CommercialController::class, 'updateStatus'])->name('commercial.updateStatus');
 
+Route::get('/commercialstat', [CommercialController::class, 'statistique'])->name('commercial.stat');
+
+
+
+
 Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('generate.pdf');
 
 
@@ -108,9 +113,9 @@ Route::post('/ordonnance/generate', [ClientController::class, 'generate'])->name
 
 
 
-Route::get('/fact', function () {
-    return view('other.facture');
-});
+// Route::get('/stat', function () {
+//     return view('commercial.stat');
+// });
 // Route::get('/facture', function () {
 //     return view('caisse.facture');
 // });
