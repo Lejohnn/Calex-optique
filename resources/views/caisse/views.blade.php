@@ -3,6 +3,8 @@
 @section('title', 'Liste des Factures')
 
 @section('contenu')
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="content-wrapper">

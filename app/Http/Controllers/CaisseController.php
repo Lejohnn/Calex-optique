@@ -101,6 +101,14 @@ class CaisseController extends Controller
         // Générer le PDF à partir du contenu HTML
         $pdf = PDF::loadHTML($html);
 
+         // Enregistrer la facture en base de données
+            $facture = new Facture();
+            $facture->nom_client = $nom_client;
+            $facture->date_facture = $date_facture;
+            $facture->produits = json_encode($produits); // Convertir les produits en JSON avant de les enregistrer
+            $facture->montant_total_ht = $montant_total_ht;
+            $facture->save();
+
         // Télécharger le PDF
         return $pdf->download('facture.pdf');
     }
