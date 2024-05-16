@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Illuminate\Http\Request;
 use App\Http\Services\NotificationService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -29,9 +30,11 @@ class CaisseController extends Controller
     }
 
     public function generateInvoice(Request $request)
+
     {
         // Collecter les données nécessaires pour la facture
-        $nom_client = $request->input('nom_client');
+        $client_id = $request->input('nom_client');
+        $nom_client = Client::Where('id', $client_id)->first();
         $date_facture = $request->input('date_facture');
         $produits = [
             'noms' => $request->input('produit'),
@@ -39,6 +42,7 @@ class CaisseController extends Controller
             'prix_unitaires' => $request->input('prix_unitaire'),
             'reductions' => $request->input('reduction'),
         ];
+;
 
         // Calculer le montant total HT
         $montant_total_ht = 0;
@@ -103,7 +107,7 @@ class CaisseController extends Controller
 
          // Enregistrer la facture en base de données
             $facture = new Facture();
-            $facture->nom_client = $nom_client;
+            $facture->client_id = $client_id;
             $facture->date_facture = $date_facture;
             $facture->produits = json_encode($produits); // Convertir les produits en JSON avant de les enregistrer
             $facture->montant_total_ht = $montant_total_ht;
@@ -155,7 +159,10 @@ class CaisseController extends Controller
     $notifications = $this->notificationService->notification_template()[0];
     $notifications_notread = $this->notificationService->notification_template()[1];
 
-    return view('caisse.facture', compact('notifications', 'notifications_notread'));
+    $clientCaisses = Client::Where('choix_service', 'caisse')->get();
+
+
+    return view('caisse.facture', compact('notifications', 'notifications_notread',"clientCaisses"));
         // return view('caisse.facture');
     }
 }

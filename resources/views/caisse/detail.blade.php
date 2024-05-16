@@ -30,7 +30,7 @@
                                             <div class="facture-detail">
                                                 <h4 class="mb-3">Informations générales:</h4>
                                                 <ul>
-                                                    <li><strong>Nom du Client:</strong> {{ $facture->nom_client }}</li>
+                                                    <li><strong>Nom du Client:</strong> {{ $facture->client->nom }}</li>
                                                     <li><strong>Date de la Facture:</strong> {{ $facture->date_facture }}</li>
                                                     <li><strong>Montant Total HT:</strong> {{ $facture->montant_total_ht }}</li>
                                                 </ul>
@@ -57,7 +57,7 @@
                                                             <td>{{ $nom_produit }}</td>
                                                             <td>{{ $produits['quantites'][$key] }}</td>
                                                             <td>{{ $produits['prix_unitaires'][$key] }}</td>
-                                                            <td>{{ $produits['reductions'][$key] }}</td>
+                                                            <td>{{ $produits['reductions'][$key] === null ? 0 : $produits['reductions'][$key]}}</td>
                                                             <td>{{ (($produits['quantites'][$key] * $produits['prix_unitaires'][$key]) - ($produits['quantites'][$key] * $produits['prix_unitaires'][$key] * ($produits['reductions'][$key] / 100))) }}</td>
                                                         </tr>
                                                         @endforeach

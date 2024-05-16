@@ -3,7 +3,7 @@
 @section('title', 'Liste des Factures')
 
 @section('contenu')
-<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+    <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
 
 <div class="app-content content">
     <div class="content-overlay"></div>
@@ -22,10 +22,10 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="card-content">
-                                <div class="card-body">
+                            <div class="card-body collapse show">
+                                <div class="card-body card-dashboard">
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-striped table-bordered patients-list datatable">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -38,10 +38,10 @@
                                             <tbody>
                                                 @foreach($factures as $facture)
                                                 <tr>
-                                                    <td>{{ $facture->id }}</td>
-                                                    <td>{{ $facture->nom_client }}</td>
+                                                    <td>{{ $facture->id}}</td>
+                                                    <td>{{ $facture->client->nom }}</td>
                                                     <td>{{ $facture->date_facture }}</td>
-                                                    <td>{{ $facture->montant_total_ht }}</td>
+                                                    <td>{{ $facture->montant_total_ht }} FCFA</td>
                                                     <td>
                                                         <a href="{{ route('factures.details', $facture->id) }}" class="btn btn-primary">Détails</a>
                                                     </td>
@@ -66,7 +66,6 @@
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
-
 <!-- BEGIN: Page Vendor JS-->
 <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
 <!-- END: Page Vendor JS-->

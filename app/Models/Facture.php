@@ -19,4 +19,9 @@ class Facture extends Model
     protected $casts = [
         'produits' => 'array',
     ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class); // Replace User with your actual model name
+    }
 }

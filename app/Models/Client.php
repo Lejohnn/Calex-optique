@@ -47,4 +47,9 @@ class Client extends Model
     {
         return $this->hasMany(Order::class, 'client_id'); // Replace 'Order' with your actual model name
     }
+
+    public function factures()
+    {
+        return $this->hasMany(Facture::class); // Replace Facture with your actual model name
+    }
 }

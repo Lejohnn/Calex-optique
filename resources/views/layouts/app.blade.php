@@ -193,7 +193,7 @@
                     </ul>
                 </li>
                 @endif
-                @if(auth()->user()->role_id == 1)
+                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 5)
                 <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion Caisse</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('clients.index') }}"><i></i><span data-i18n="Invoice Template">Liste des Clients</span></a></li>

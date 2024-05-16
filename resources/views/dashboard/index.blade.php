@@ -44,11 +44,15 @@
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
                                             <h5>nb person traités par le medecin /nbre de personnes qui l'ont sollicité</h5>
-                                            <h3 class="warning">Aujourd'hui <span>3</span>/  <span>3</span></h3>
-                                            <h3 class="warning"> Derniere Semaine <span>3</span>/  <span>3</span></h3>
-                                            <h3 class="warning">Dernier mois <span>3</span>/  <span>3</span></h3>
-                                            <h3 class="warning">total <span>3</span>/  <span>3</span></h3>
-                                            {
+
+                                            @foreach($allStatsClients as $allStatsClient)
+                                                <div>
+                                                  <span>{{$allStatsClient[0]}}:  </span> <span class="fw-bold badge bg-warning fs-4 ml-50"><span>{{$allStatsClient[1]}}</span>/  <span>{{$allStatsClient[2]}}</span> </span>
+                                                </div>
+
+                                            @endforeach
+
+
                                             {{-- <h6>Net Profit</h6> --}}
                                         </div>
                                         <div>
@@ -68,7 +72,7 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            <h3 class="success">146/5000</h3>
+                                            <h3 class="success">{{$newClientByTotal[0]}}/{{$newClientByTotal[1]}}</h3>
                                             <h6>Nouveaux Clients/Total</h6>
                                         </div>
                                         <div>
@@ -89,8 +93,12 @@
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
                                             <h5>nb person traités par la caisse /nbre de personnes qui l'ont sollicité</h5>
-                                            <h3 class="danger">6/8</h3>
-                                            {{-- <h6>Customer Satisfaction</h6> --}}
+                                            @foreach($allStatsPatients as $allStatsPatient)
+                                                <div>
+                                                    <span>{{$allStatsPatient[0]}}:  </span> <span class="fw-bold badge bg-danger fs-4 ml-50"><span>{{$allStatsPatient[1]}}</span>/  <span>{{$allStatsPatient[2]}}</span> </span>
+                                                </div>
+
+                                            @endforeach
                                         </div>
                                         <div>
                                             <i class="icon-heart danger font-large-2 float-right"></i>

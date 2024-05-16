@@ -25,6 +25,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
             //dd($clients, auth()->user()->role_id);
             if (auth()->user()->role_id == 3){
                 $clients = Client::Where('choix_service', 'consultation')->get();
+            }else if (auth()->user()->role_id == 5){
+                $clients = Client::Where('choix_service', 'caisse')->get();
             }
             $notifications = $this->notificationService->notification_template()[0];
             $notifications_notread = $this->notificationService->notification_template()[1];

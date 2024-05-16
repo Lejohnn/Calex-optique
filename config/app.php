@@ -15,6 +15,8 @@ return [
     |
     */
 
+
+
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
@@ -212,6 +214,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         "PDF" => Barryvdh\DomPDF\Facade::class,
+        'Form' => LaravelCollective\Html\FormFacade::class,
     ])->toArray(),
 
 ];

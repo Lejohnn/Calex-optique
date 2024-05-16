@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_client');
+            //$table->string('nom_client');
             $table->date('date_facture');
             $table->json('produits');
             $table->decimal('montant_total_ht', 10, 2);
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
             $table->timestamps();
         });
     }

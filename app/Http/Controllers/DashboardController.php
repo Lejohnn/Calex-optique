@@ -73,12 +73,42 @@ class DashboardController extends Controller{
             ->orderBy('created_at')
             ->get()->count();
 
-        $allStatsClient= [[$clientThisDayGood, $clientThisDay],
-            [$clientThisWeekGood, $clientThisWeek],
-            [$clientThisMonthGood, $clientThisMonth],
-            [$clientThisYearGood, $clientThisYear]
+        $allStatsClients= [["Aujourd'hui", $clientThisDayGood, $clientThisDay],
+            ["Semaine en cours",$clientThisWeekGood, $clientThisWeek],
+            ["Mois en cours", $clientThisMonthGood, $clientThisMonth],
+            ["Année en cours",$clientThisYearGood, $clientThisYear]
         ];
 
-        return view('dashboard.index', compact("notifications", "notifications_notread","billingMangement","allStatsClient"));
+        // recuperer les statistisque des nouveaux clients par rapport au nombre total
+        $clientThisDayNew = Notification::whereDate('created_at', $today)
+            ->count();
+        $allclients = Client::all()->count();
+
+        $newClientByTotal = [$clientThisDayNew, $allclients];
+// statistique des patients traités par la caisse
+        $patientGoodCaisseDay = Facture::whereDate('created_at', $today)
+            ->groupBy('client_id')->count();
+
+        $patientsCaisse = Client::where('choix_service', 'caisse')->count();
+
+        $patientGoodCaisseMonth = Facture::where('updated_at', '>=', Carbon::now()->startOfMonth()->format('Y-m-d'))
+            ->where('updated_at', '<=', Carbon::now()->endOfMonth()->format('Y-m-d'))
+            ->groupBy('client_id')->count();
+
+
+
+
+
+        $allStatsPatients= [["Aujourd'hui", $patientGoodCaisseDay, $patientsCaisse],
+            ["Mois en cours", $patientGoodCaisseMonth, $patientsCaisse],
+        ];
+
+        return view('dashboard.index', compact("notifications",
+            "notifications_notread",
+            "billingMangement",
+            "allStatsClients",
+            "newClientByTotal",
+            "allStatsPatients",
+        ));
     }
 }
