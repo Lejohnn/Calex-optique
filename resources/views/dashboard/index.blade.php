@@ -27,7 +27,7 @@
                                             <h3 class="info"><span>{{$billingMangement[1]}}</span>  FCFA</h3>
                                         </div>
                                         <div>
-                                            <i class="icon-basket-loaded info font-large-2 float-right"></i>
+                                            <i class="icon-basket-loaded info font-large-1 float-right"></i>
                                         </div>
                                     </div>
                                     <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
@@ -44,7 +44,11 @@
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
                                             <h5>nb person traités par le medecin /nbre de personnes qui l'ont sollicité</h5>
-                                            <h3 class="warning">4/7</h3>
+                                            <h3 class="warning">Aujourd'hui <span>3</span>/  <span>3</span></h3>
+                                            <h3 class="warning"> Derniere Semaine <span>3</span>/  <span>3</span></h3>
+                                            <h3 class="warning">Dernier mois <span>3</span>/  <span>3</span></h3>
+                                            <h3 class="warning">total <span>3</span>/  <span>3</span></h3>
+                                            {
                                             {{-- <h6>Net Profit</h6> --}}
                                         </div>
                                         <div>
