@@ -232,6 +232,19 @@
                                                 </fieldset>
                                             @endif
                                                 <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="entretien">Entretien:</label>
+                                                        <select id="entretien" name="entretien" class="form-control" required>
+                                                            <option value="non payant">Non payant</option>
+                                                            <option value="payant">Payant</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 " >
+                                                        <label for="montant">Montant:</label>
+                                                        <input class="form-control" type="number" id="montant" name="montant" step="0.01">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label for="choix_service">Choix du Service <span class="text-danger">*</span></label>

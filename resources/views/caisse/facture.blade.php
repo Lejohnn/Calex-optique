@@ -37,6 +37,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nom_client">Nom du Client <span class="text-danger">*</span></label>
+                                                        <label for="nom_client">Nom du Client <span class="text-danger">*</span></label>
 {{--                                                        {!! Form::select('nom_client', $clientCaisse->pluck('nom'), null, ['class' => 'form-control', 'name' => 'nom_client', 'required']) !!}--}}
 {{--                                                        <input class="form-control" id="nom_client" name="nom_client" type="text" required />--}}
 

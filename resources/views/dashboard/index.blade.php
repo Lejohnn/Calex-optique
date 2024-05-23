@@ -112,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <p>PENSE AUSSI AU GRAPHE QUE TU VOULAIS AJOUTER ET AUX AUTRES IDEES QUE TU M'AVAIS DONNEE</p>
+                {{-- <p>PENSE AUSSI AU GRAPHE QUE TU VOULAIS AJOUTER ET AUX AUTRES IDEES QUE TU M'AVAIS DONNEE</p>
 
                 <!--/ eCommerce statistic -->
 
@@ -257,7 +257,7 @@
                                                     <td class="text-truncate">$8500</td>
                                                 </tr>
                                             </tbody>
-                                        </table>
+                                        </table> --}}
                                     </div>
                                 </div>
                             </div>

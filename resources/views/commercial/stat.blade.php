@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <p>SI POSSIBLE, IL FAUT POUVOIR AVOIR LA MËME STATISTIQUE POUR LES COMMERCIAUX SUR UN MOIS, DONC TOUT CE QUI EST A STATE DU JOUR LA MAIS MESURANT CELA SUR LE MOI. LES TROIS AUTRES CASES EN DESSOUS SONT JUSTE LA POUR MONTRER QU'UNE CASE REPRESENTE UN COMMERCIAL  </p>
+                {{-- <p>SI POSSIBLE, IL FAUT POUVOIR AVOIR LA MËME STATISTIQUE POUR LES COMMERCIAUX SUR UN MOIS, DONC TOUT CE QUI EST A STATE DU JOUR LA MAIS MESURANT CELA SUR LE MOI. LES TROIS AUTRES CASES EN DESSOUS SONT JUSTE LA POUR MONTRER QU'UNE CASE REPRESENTE UN COMMERCIAL  </p>
                 <div class="col-xl-3 col-lg-6 col-12">
                     <div class="card pull-up">
                         <div class="card-content">
@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-xl-3 col-lg-6 col-12">
                     <div class="card pull-up">

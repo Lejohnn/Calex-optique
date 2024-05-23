@@ -26,9 +26,9 @@
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des clients
                                     </a>
                                     <!-- Bouton pour générer le PDF -->
-                                    <a href="{{ route('generate.pdf') }}" class="btn btn-success btn-sm">
+                                    {{-- <a href="{{ route('generate.pdf') }}" class="btn btn-success btn-sm">
                                         <i class="far fa-file-pdf"></i> Générer PDF
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                             <div class="card-content collapse show">
@@ -75,6 +75,8 @@
                                             </div>
                                         </fieldset>
                                         <p><strong>Choix du service:</strong> {{ $client->choix_service }}</p>
+                                        {{-- <p><strong>Entretien:</strong> {{ $client->entretien }}</p>
+                                        <p><strong>Montant:</strong> {{ $client->montant }}</p> --}}
 
                                     </div>
                                 </div>

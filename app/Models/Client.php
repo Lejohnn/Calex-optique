@@ -36,6 +36,8 @@ class Client extends Model
         'examen_particulier',
         'rendez_vous',
         'choix_service',
+        'entretien',
+        'montant',
     ];
 
     public function notifications()
