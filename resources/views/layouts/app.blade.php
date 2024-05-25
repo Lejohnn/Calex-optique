@@ -112,8 +112,7 @@
                                 <span class="mr-1 user-name text-bold-700">{{ auth()->user()->name }}</span>
                              @endif
                         <span class="avatar avatar-online"><img src="{{asset('backend/images/portrait/small/avat.png')}}" alt="avatar"><i></i></span></a>
-                            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a><a class="dropdown-item" href="#"><i class="ft-clipboard"></i> Todo</a><a class="dropdown-item" href="#"><i class="ft-check-square"></i> Task</a>
-                                <div class="dropdown-divider"></div>
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{{route('auth.logout')}}"><i class="ft-power"></i> Logout</a>
                             </div>
                         </li>
@@ -151,7 +150,7 @@
                                 @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
                                     Patients
                                 @endif
-                                @if(auth()->user()->role_id != 3 )
+                                @if(auth()->user()->role_id != 3 and auth()->user()->role_id != 4 )
                                     Clients
                                 @endif
                             </span>
@@ -167,7 +166,7 @@
                                         @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
                                             Patients
                                         @endif
-                                        @if(auth()->user()->role_id != 3 )
+                                        @if(auth()->user()->role_id != 3 and auth()->user()->role_id != 4 )
                                             Clients
                                         @endif
                                     </span>
@@ -182,7 +181,7 @@
                                             @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
                                                 Patients
                                             @endif
-                                            @if(auth()->user()->role_id != 3 )
+                                            @if(auth()->user()->role_id != 3 and auth()->user()->role_id != 4 )
                                                 Clients
                                             @endif
                                         </span>
@@ -214,7 +213,7 @@
 
 
 
-                @if(auth()->user()->role_id == 1)
+                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 10)
                 <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Service Call</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="{{ route('call_service.showClients') }}"<i></i><span data-i18n="Invoice Summary">Clients Entreprise</span></a></li>
@@ -231,14 +230,7 @@
                     </ul>
                 </li>
                 @endif
-                @if(auth()->user()->role_id == 1)
-                <li class=" nav-item" id="admin"><a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Gestion Atelier</span></a>
-                    <ul class="menu-content">
-                        <li><a class="menu-item" href="{{ route('clients.index') }}"><i></i><span data-i18n="Invoice Template">Liste des Clients</span></a></li>
-                        <li><a class="menu-item" href=""<i></i><span data-i18n="Invoice Summary">gerer commande</span></a></li>
-                    </ul>
-                </li>
-                @endif
+
 
                 <li class="nav-item" id="admin">
                     <a href="#"><i class="la la-clipboard"></i><span class="menu-title" data-i18n="Invoice">Paramètres</span></a>

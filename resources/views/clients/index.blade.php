@@ -112,7 +112,7 @@
                                         <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
 
-                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 or auth()->user()->role_id == 5 )
 
                                                     <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                             @endif
