@@ -52,6 +52,7 @@
                                                 </ul>
                                             </div>
                                         </fieldset>
+                                    @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
                                         <fieldset class="col-md-6">
                                             <div class="client-detail">
                                                 <h4 class="mb-3">Informations supplémentaires:</h4>
@@ -74,6 +75,7 @@
                                                 </ul>
                                             </div>
                                         </fieldset>
+                                    @endif
                                         <p><strong>Choix du service:</strong> {{ $client->choix_service }}</p>
                                         {{-- <p><strong>Entretien:</strong> {{ $client->entretien }}</p>
                                         <p><strong>Montant:</strong> {{ $client->montant }}</p> --}}

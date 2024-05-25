@@ -142,26 +142,55 @@
                 </ul>
             </li>
             @endif
-            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 2)
+            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 2 or auth()->user()->role_id == 4)
                 <li class="nav-item" id="client">
                     <a href="#">
                         <i class="la la-clipboard"></i>
-                        <span class="menu-title" data-i18n="Invoice">Gestion des Clients</span>
+
+                            <span class="menu-title" data-i18n="Invoice">Gestion des
+                                @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+                                    Patients
+                                @endif
+                                @if(auth()->user()->role_id != 3 )
+                                    Clients
+                                @endif
+                            </span>
+
+
                     </a>
                     <ul class="menu-content">
-                        @if(auth()->user()->role_id == 2 or auth()->user()->role_id == 1 or auth()->user()->role_id == 3 )
+                        @if(auth()->user()->role_id == 2 or auth()->user()->role_id == 1 )
                             <li>
                                 <a class="menu-item" href="{{ route('clients.create') }}">
                                     <i></i>
-                                    <span data-i18n="Invoice Summary">Ajouter un Client</span>
+                                    <span data-i18n="Invoice Summary">Ajouter un
+                                        @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+                                            Patients
+                                        @endif
+                                        @if(auth()->user()->role_id != 3 )
+                                            Clients
+                                        @endif
+                                    </span>
                                 </a>
                             </li>
-                            <li>
-                                <a class="menu-item" href="{{ route('clients.index') }}">
-                                    <i></i>
-                                    <span data-i18n="Invoice Template">Liste des Clients</span>
-                                </a>
-                            </li>
+                        @endif
+                            @if(auth()->user()->role_id == 2 or auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+                                <li>
+                                    <a class="menu-item" href="{{ route('clients.index') }}">
+                                        <i></i>
+                                        <span data-i18n="Invoice Template">Liste des
+                                            @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+                                                Patients
+                                            @endif
+                                            @if(auth()->user()->role_id != 3 )
+                                                Clients
+                                            @endif
+                                        </span>
+                                    </a>
+                                </li>
+                            @endif
+
+                        @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
                             <li>
                                 <a class="menu-item" href="{{ route('ordonnance.views') }}">
                                     <i></i>

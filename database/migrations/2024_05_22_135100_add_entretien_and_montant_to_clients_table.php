@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('clients', function (Blueprint $table) {
             $table->string('entretien')->nullable();
-            $table->decimal('montant', 8, 2)->nullable();
+            $table->double('montant')->nullable();
         });
     }
 

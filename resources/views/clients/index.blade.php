@@ -19,9 +19,9 @@
                     <div class="row breadcrumbs-top">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Accueil</a>
+                                <li class="breadcrumb-item"><a href="">Accueil</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Clients</a>
+                                <li class="breadcrumb-item"><a href="">Clients</a>
                                 </li>
                                 <li class="breadcrumb-item active">Tous les clients
                                 </li>
@@ -59,11 +59,13 @@
                                         </ul>
                                     </div>
                                 @endif -->
-                                <div class="heading-elements">
-                                    <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
-                                        <i class="la la-plus font-small-2"></i> Ajouter un client
-                                    </a>
-                                </div>
+                                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2)
+                                    <div class="heading-elements">
+                                        <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
+                                            <i class="la la-plus font-small-2"></i> Ajouter un client
+                                        </a>
+                                    </div>
+                                @endif
                                 @if(session('success'))
                                         <br>
                                         <div class="alert alert-success">
@@ -82,7 +84,14 @@
                                         <th>Nom</th>
                                         <th>Prénom</th>
                                         <th>Sexe</th>
+                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 2 or auth()->user()->role_id == 3 or auth()->user()->role_id == 10 )
+                                            <th>Rendez-vous</th>
+                                        @endif
                                         <th>Choix_service</th>
+                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 4 )
+                                            <th>Type d'entretien</th>
+                                            <th>Montant</th>
+                                        @endif
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -92,12 +101,22 @@
                                         <td>{{ $client->nom }}</td>
                                         <td>{{ $client->prenom }}</td>
                                         <td>{{ $client->sexe }}</td>
+                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 2 or auth()->user()->role_id == 10 or auth()->user()->role_id == 3 )
+                                            <td>{{ $client->rendez_vous }}</td>
+                                        @endif
                                         <td>{{ $client->choix_service }}</td>
+                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 4 )
+                                            <td>{{ $client->entretien }}</td>
+                                            <td>{{ $client->montant }}</td>
+                                        @endif
                                         <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
 
-                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
-                                            <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
+                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 )
+
+                                                    <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
+                                            @endif
+                                            @if (auth()->user()->role_id == 1 or auth()->user()->role_id == 3 )
                                                 <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $client->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
                                             @endif
 

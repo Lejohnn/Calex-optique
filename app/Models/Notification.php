@@ -19,7 +19,7 @@ class Notification extends Model
         'message',
         'status',
         'visibility',
-        'user_id',
+        'role_id',
         'client_id',
         'created_at',
         'updated_at'
@@ -28,9 +28,9 @@ class Notification extends Model
 
 
 
-    public function user()
+    public function role()
     {
-        return $this->belongsTo(User::class); // Replace User with your actual model name
+        return $this->belongsTo(Role::class); // Replace User with your actual model name
     }
 
     public function client()

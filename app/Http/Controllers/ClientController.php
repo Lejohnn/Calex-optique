@@ -6,6 +6,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Services\NotificationService;
 use App\Models\Client;
 use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 // use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -21,13 +22,35 @@ class ClientController extends Controller
 
     public function index()
     {
+        
         $clients = Client::all();
         //dd($clients, auth()->user()->role_id);
-        if (auth()->user()->role_id == 3){
-            $clients = Client::where('choix_service', 'consultation')->get();
-        } else if (auth()->user()->role_id == 5){
-            $clients = Client::where('choix_service', 'caisse')->get();
+        $data = [
+            [
+                'role_id' => 3,
+                'choix_service' => 'consultation',
+            ],
+            [
+                'role_id' => 4,
+                'choix_service' => 'entretien_lunettes',
+            ],
+            [
+                'role_id' => 5,
+                'choix_service' => 'caisse',
+            ],
+        ];
+        foreach ($data as $roleMapping) {
+
+            $roleId = $roleMapping['role_id'];
+            $serviceChoices = $roleMapping['choix_service'];
+
+            if (auth()->user()->role_id == $roleId){
+                    $clients = Client::where('choix_service', $serviceChoices)->get();
+                }
+
         }
+
+
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
         return view('clients.index', compact('clients', 'notifications', 'notifications_notread'));
@@ -47,10 +70,32 @@ class ClientController extends Controller
         return view('clients.register', compact('notifications', 'notifications_notread'));
     }
 
+
     public function store(Request $request)
     {
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $datas = [
+
+
+
+                 [
+                    'role_id_not' => 3,
+                    'choix_service' => 'consultation',
+                ],
+                [
+                    'role_id_not' => 4,
+                    'choix_service' => 'entretien_lunettes',
+                ],
+                [
+                    'role_id_not' => 5,
+                    'choix_service' => 'caisse',
+                ],
+
+
+        ];
+
 
         // Validation des données du formulaire
         $request->validate([
@@ -81,59 +126,122 @@ class ClientController extends Controller
             'rendez_vous' => 'nullable|date',
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
-            'montant' => 'nullable|numeric',
+            'montant' => 'nullable|double',
         ]);
 
-        if ($request->choix_service == "consultation") {
-            $client = new Client([
-                'nom' => $request->input('nom'),
-                'prenom' => $request->input('prenom'),
-                'telephone' => $request->input('telephone'),
-                'carte_identite' => $request->input('carte_identite'),
-                'date_naissance' => $request->input('date_naissance'),
-                'lieu_naissance' => $request->input('lieu_naissance'),
-                'profession' => $request->input('profession'),
-                'sexe' => $request->input('sexe'),
-                'societe_attache' => $request->input('societe_attache'),
-                'assurance' => $request->input('assurance'),
-                'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
-                'date_debut' => $request->input('date_debut'),
-                'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
-                'antecedents_familiaux' => $request->input('antecedents_familiaux'),
-                'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
-                'traitements_en_cours' => $request->input('traitements_en_cours'),
-                'allergies' => $request->input('allergies'),
-                'mentions_generales' => $request->input('mentions_generales'),
-                'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
-                'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
-                'autre_choses' => $request->input('autre_choses'),
-                'diagnostic' => $request->input('diagnostic'),
-                'prescription' => $request->input('prescription'),
-                'examen_particulier' => $request->input('examen_particulier'),
-                'rendez_vous' => $request->input('rendez_vous'),
-                'choix_service' => $request->input('choix_service'),
-                'entretien' => $request->input('entretien'),
-                'montant' => $request->input('montant'),
-            ]);
+        foreach ($datas as $roleMapping) {
 
-            // Enregistrement du client dans la base de données
-            $client->save();
-            $name_client = strtoupper($request->nom);
-            $notification = new Notification([
-                'message' => "consultation de Mrs $name_client (cliquez pour accéder)",
-                'status' => 0,
-                'visibility' => 0,
-                'user_id'=> 3,
-                'client_id' => $client->id,
-            ]);
-            $notification->save();
+            $roleId = $roleMapping['role_id_not'];
+            $serviceChoices = $roleMapping['choix_service'];
+            if ($request->choix_service == $serviceChoices) {
 
-            // Redirection vers une page appropriée avec un message de succès
-            return redirect()->route('clients.index')
-                ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
-                ->with('notifications', $notifications)
-                ->with('notifications_notread', $notifications_notread);
+
+                $client = new Client([
+                    'nom' => $request->input('nom'),
+                    'prenom' => $request->input('prenom'),
+                    'telephone' => $request->input('telephone'),
+                    'carte_identite' => $request->input('carte_identite'),
+                    'date_naissance' => $request->input('date_naissance'),
+                    'lieu_naissance' => $request->input('lieu_naissance'),
+                    'profession' => $request->input('profession'),
+                    'sexe' => $request->input('sexe'),
+                    'societe_attache' => $request->input('societe_attache'),
+                    'assurance' => $request->input('assurance'),
+                    'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
+                    'date_debut' => $request->input('date_debut'),
+                    'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
+                    'antecedents_familiaux' => $request->input('antecedents_familiaux'),
+                    'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
+                    'traitements_en_cours' => $request->input('traitements_en_cours'),
+                    'allergies' => $request->input('allergies'),
+                    'mentions_generales' => $request->input('mentions_generales'),
+                    'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
+                    'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
+                    'autre_choses' => $request->input('autre_choses'),
+                    'diagnostic' => $request->input('diagnostic'),
+                    'prescription' => $request->input('prescription'),
+                    'examen_particulier' => $request->input('examen_particulier'),
+                    'rendez_vous' => $request->input('rendez_vous'),
+                    'choix_service' => $request->input('choix_service'),
+                    'entretien' => $request->input('entretien'),
+                    'montant' => $request->input('montant'),
+                ]);
+
+                // Enregistrement du client dans la base de données
+                $client->save();
+                $name_client = strtoupper($request->nom);
+                $notification = new Notification([
+                    'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
+                    'status' => 0,
+                    'visibility' => 0,
+                    'role_id'=> $roleId,
+                    'client_id' => $client->id,
+                ]);
+                $notification->save();
+
+                // Redirection vers une page appropriée avec un message de succès
+                return redirect()->route('clients.index')
+                    ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
+                    ->with('notifications', $notifications)
+                    ->with('notifications_notread', $notifications_notread);
+            }
+
         }
+
+
+        //  elseif ($request->choix_service == "entretien_lunettes") {
+        //     $client = new Client([
+        //         'nom' => $request->input('nom'),
+        //         'prenom' => $request->input('prenom'),
+        //         'telephone' => $request->input('telephone'),
+        //         'carte_identite' => $request->input('carte_identite'),
+        //         'date_naissance' => $request->input('date_naissance'),
+        //         'lieu_naissance' => $request->input('lieu_naissance'),
+        //         'profession' => $request->input('profession'),
+        //         'sexe' => $request->input('sexe'),
+        //         'societe_attache' => $request->input('societe_attache'),
+        //         'assurance' => $request->input('assurance'),
+        //         'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
+        //         'date_debut' => $request->input('date_debut'),
+        //         'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
+        //         'antecedents_familiaux' => $request->input('antecedents_familiaux'),
+        //         'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
+        //         'traitements_en_cours' => $request->input('traitements_en_cours'),
+        //         'allergies' => $request->input('allergies'),
+        //         'mentions_generales' => $request->input('mentions_generales'),
+        //         'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
+        //         'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
+        //         'autre_choses' => $request->input('autre_choses'),
+        //         'diagnostic' => $request->input('diagnostic'),
+        //         'prescription' => $request->input('prescription'),
+        //         'examen_particulier' => $request->input('examen_particulier'),
+        //         'rendez_vous' => $request->input('rendez_vous'),
+        //         'choix_service' => $request->input('choix_service'),
+        //         'entretien' => $request->input('entretien'),
+        //         'montant' => $request->input('montant'),
+        //     ]);
+
+        //     // Enregistrement du client dans la base de données
+        //     // $userid = User::where("role_id",4)->get();
+        //     $userId = User::where("role_id",4)->first()->id;
+        //     // dd($userId);
+        //     $client->save();
+        //     $name_client = strtoupper($request->nom);
+        //     $notification = new Notification([
+        //         'message' => "gestion de Mrs $name_client (cliquez pour accéder)",
+        //         'status' => 0,
+        //         'visibility' => 0,
+        //         'role_id'=> 4,
+        //         'client_id' => $client->id,
+        //     ]);
+        //     $notification->save();
+
+        //     // Redirection vers une page appropriée avec un message de succès
+        //     return redirect()->route('clients.index')
+        //         ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
+        //         ->with('notifications', $notifications)
+        //         ->with('notifications_notread', $notifications_notread);
+        // }
     }
 
     public function show(Client $client)
@@ -184,7 +292,7 @@ class ClientController extends Controller
             'rendez_vous' => 'nullable|date',
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
-            'montant' => 'nullable|numeric',
+            'montant' => 'nullable|double',
         ]);
 
         // Mise à jour des informations du client

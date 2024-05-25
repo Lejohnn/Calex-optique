@@ -28,11 +28,11 @@ class NotificationService
 
     public function notification_template(){
         $notifications = Notification::where('visibility', 0)
-            ->where('user_id',  auth()->user()->role->id)
+            ->where('role_id',  auth()->user()->role->id)
             ->get();
 
         $notifications_notread= DB::table('notifications')->where([['status', 0]])
-            ->where('user_id',  auth()->user()->role->id)
+            ->where('role_id',  auth()->user()->role->id)
             ->count();
 
 

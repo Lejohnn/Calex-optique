@@ -230,19 +230,22 @@
 
                                             </fieldset>
                                             @endif
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <label for="entretien">Entretien:</label>
-                                                    <select id="entretien" name="entretien" class="form-control" required>
-                                                        <option value="non payant">Non payant</option>
-                                                        <option value="payant">Payant</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 " >
-                                                    <label for="montant">Montant:</label>
-                                                    <input class="form-control" type="number" id="montant" name="montant" step="0.01">
-                                                </div>
-                                            </div>
+                                                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 4)
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label for="entretien">Entretien:</label>
+                                                            <select id="entretien" name="entretien" class="form-control"  required>
+                                                                <option value="" selected disabled>Choisissez</option>
+                                                                <option value="non payant" {{ $client->entretien == "non payant" ? 'selected' : '' }}>Non payant</option>
+                                                                <option value="payant" {{ $client->entretien == "payant" ? 'selected' : '' }}>Payant</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 " >
+                                                            <label for="montant">Montant:</label>
+                                                            <input class="form-control" type="number" id="montant" name="montant" value="{{ $client->montant }}" step="1000">
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
@@ -252,7 +255,7 @@
                                                             <option value="consultation" {{ $client->choix_service == 'consultation' ? 'selected' : '' }}>Consultation</option>
                                                             <option value="entretien_lunettes" {{ $client->choix_service == 'entretien_lunettes' ? 'selected' : '' }}>Entretien de lunettes</option>
                                                             <option value="caisse" {{ $client->choix_service == 'caisse' ? 'selected' : '' }}>Caisse</option>
-                                                            <option value="service_vente" {{ $client->choix_service == 'service_vente' ? 'selected' : '' }}>Service vente</option>
+                                                            {{-- <option value="service_vente" {{ $client->choix_service == 'service_vente' ? 'selected' : '' }}>Service vente</option> --}}
                                                             <option value="visite_simple" {{ $client->choix_service == 'visite_simple' ? 'selected' : '' }}>Visite Simple</option>
                                                         </select>
                                                     </div>

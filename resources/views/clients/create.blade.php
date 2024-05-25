@@ -231,19 +231,21 @@
                                                         </div>
                                                 </fieldset>
                                             @endif
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="entretien">Entretien:</label>
-                                                        <select id="entretien" name="entretien" class="form-control" required>
-                                                            <option value="non payant">Non payant</option>
-                                                            <option value="payant">Payant</option>
-                                                        </select>
+                                                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 4)
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label for="entretien">Entretien:</label>
+                                                            <select id="entretien" name="entretien" class="form-control" required>
+                                                                <option value="non payant">Non payant</option>
+                                                                <option value="payant">Payant</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6 " >
+                                                            <label for="montant">Montant:</label>
+                                                            <input class="form-control" type="number" id="montant" name="montant" step="0.01">
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6 " >
-                                                        <label for="montant">Montant:</label>
-                                                        <input class="form-control" type="number" id="montant" name="montant" step="0.01">
-                                                    </div>
-                                                </div>
+                                                @endif
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
@@ -253,7 +255,7 @@
                                                                 <option value="consultation">Consultation</option>
                                                                 <option value="entretien_lunettes">Entretien de lunettes</option>
                                                                 <option value="caisse">Caisse</option>
-                                                                <option value="service_vente">Service vente</option>
+                                                                {{-- <option value="service_vente">Service vente</option> --}}
                                                                 <option value="visite_simple">Visite Simple</option>
                                                             </select>
                                                         </div>
