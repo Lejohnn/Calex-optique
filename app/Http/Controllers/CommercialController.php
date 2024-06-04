@@ -39,44 +39,7 @@ class CommercialController extends Controller
 
 
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'date' => 'required|date',
-            'commercial_name' => 'required|string|max:255',
-            'entreprise_nom' => 'nullable|string|max:255',
-            'entreprise_responsable' => 'nullable|string|max:255',
-            'entreprise_contact' => 'nullable|string|max:255',
-            'entreprise_heure' => 'nullable|string|max:255',
-            'rdv_nom_prenom' => 'nullable|string|max:255',
-            'rdv_contact' => 'nullable|string|max:255',
-            'rdv_societe' => 'nullable|string|max:255',
-            'rdv_heure' => 'nullable|string|max:255',
-            'nettoyage_nom_prenom' => 'nullable|string|max:255',
-            'nettoyage_contact' => 'nullable|string|max:255',
-            'nettoyage_societe' => 'nullable|string|max:255',
-            'nettoyage_heure' => 'nullable|string|max:255',
-            'date_rdv' => 'required|date',
-            'statut' => 'nullable|string|in:pas_encore,verifie,pas_bon,ok',
-        ]);
-
-        Prospect::create($request->all());
-
-        return redirect()->route('commercial.index')
-            ->with('success', 'Client prospecté  ajouté avec succès!')
-            ->with('notifications', $this->notificationService->notification_template()[0])
-            ->with('notifications_notread', $this->notificationService->notification_template()[1]);
-    }
-
-    public function edit($id)
-    {
-        $prospect = Prospect::findOrFail($id);
-        $notifications = $this->notificationService->notification_template()[0];
-        $notifications_notread = $this->notificationService->notification_template()[1];
-        return view('commercial.edit', compact('prospect', 'notifications', 'notifications_notread'));
-    }
-
-    public function update(Request $request, $id)
+public function store(Request $request)
 {
     $request->validate([
         'date' => 'required|date',
@@ -94,12 +57,56 @@ class CommercialController extends Controller
         'nettoyage_societe' => 'nullable|string|max:255',
         'nettoyage_heure' => 'nullable|string|max:255',
         'date_rdv' => 'required|date',
-        'statut' => 'required|string|in:pas_encore,verifie,pas_bon,ok',
+        'statut' => 'nullable|string|in:pas_encore,verifie,pas_bon,ok',
+    ], [
+        'required' => 'Le champ :attribute est requis.',
+        'unique' => 'Le :attribute existe déjà.',
+        'in' => 'La valeur du :attribute n\'est pas valide.',
     ]);
 
+    Prospect::create($request->all());
 
+    return redirect()->route('commercial.index')
+        ->with('success', 'Client prospecté ajouté avec succès!')
+        ->with('notifications', $this->notificationService->notification_template()[0])
+        ->with('notifications_notread', $this->notificationService->notification_template()[1]);
+}
+
+public function edit($id)
+{
     $prospect = Prospect::findOrFail($id);
-    $prospect->update($request->all());
+    $notifications = $this->notificationService->notification_template()[0];
+    $notifications_notread = $this->notificationService->notification_template()[1];
+    return view('commercial.edit', compact('prospect', 'notifications', 'notifications_notread'));
+}
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'commercial_name' => 'required|string|max:255',
+            'entreprise_nom' => 'nullable|string|max:255',
+            'entreprise_responsable' => 'nullable|string|max:255',
+            'entreprise_contact' => 'nullable|string|max:255',
+            'entreprise_heure' => 'nullable|string|max:255',
+            'rdv_nom_prenom' => 'nullable|string|max:255',
+            'rdv_contact' => 'nullable|string|max:255',
+            'rdv_societe' => 'nullable|string|max:255',
+            'rdv_heure' => 'nullable|string|max:255',
+            'nettoyage_nom_prenom' => 'nullable|string|max:255',
+            'nettoyage_contact' => 'nullable|string|max:255',
+            'nettoyage_societe' => 'nullable|string|max:255',
+            'nettoyage_heure' => 'nullable|string|max:255',
+            'date_rdv' => 'required|date',
+            'statut' => 'required|string|in:pas_encore,verifie,pas_bon,ok',
+        ], [
+            'required' => 'Le champ :attribute est requis.',
+            'unique' => 'Le :attribute existe déjà.',
+            'in' => 'La valeur du :attribute n\'est pas valide.',
+        ]);
+
+        $prospect = Prospect::findOrFail($id);
+        $prospect->update($request->all());
 
     return redirect()->route('commercial.index')
         ->with('success', 'Client prospecté mis à jour avec succès!')

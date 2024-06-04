@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Liste des Commerciaux</h4>
-                                <!-- @if (Session::has('success'))
+                                 @if (Session::has('success'))
                                     <div class="alert alert-success">
                                         {{Session::get('success')}}
                                     </div>
@@ -29,18 +29,12 @@
                                             @endforeach
                                         </ul>
                                     </div>
-                                @endif -->
+                                @endif
                                 <div class="heading-elements">
                                     <a href="" class="btn btn-primary  ">
                                         <i class="la la-plus font-small-2"></i> Autre
                                     </a>
                                 </div>
-                                @if(session('success'))
-                                <br>
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                                @endif
                             </div>
                             <div class="card-body collapse show">
                                 <div class="table-responsive">

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Http\Services\NotificationService;
 use App\Models\User;
 use App\Models\Role;
@@ -9,17 +11,17 @@ class UserController extends Controller
 {
     private $notificationService;
 
-
     public function __construct(NotificationService $notificationService)
     {
         $this->notificationService = $notificationService;
     }
+
     public function index()
     {
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
         $users = User::all();
-        return view('users.index', compact('users','notifications','notifications_notread'));
+        return view('users.index', compact('users', 'notifications', 'notifications_notread'));
     }
 
     public function create()
@@ -27,19 +29,26 @@ class UserController extends Controller
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
         $roles = Role::all();
-        return view('users.create', compact('roles', 'notifications','notifications_notread'));
+        return view('users.create', compact('roles', 'notifications', 'notifications_notread'));
     }
 
     public function store(Request $request)
     {
-        $notifications = $this->notificationService->notification_template()[0];
-        $notifications_notread = $this->notificationService->notification_template()[1];
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'role_id' => 'required|exists:roles,id',
+        ], [
+            'required' => 'Le champ :attribute est requis.',
+            'unique' => 'Le :attribute existe déjà.',
+            'email' => 'Le :attribute doit être une adresse email valide.',
+            'min' => 'Le :attribute doit comporter au moins :min caractères.',
+            'exists' => 'Le :attribute sélectionné n\'est pas valide.',
         ]);
+
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
 
         $user = new User();
         $user->name = $request->name;
@@ -58,28 +67,30 @@ class UserController extends Controller
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
 
-        return view('users.show', compact('user', 'notifications','notifications_notread'));
+        return view('users.show', compact('user', 'notifications', 'notifications_notread'));
     }
-
 
     public function edit(User $user)
     {
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
         $roles = Role::all();
-        return view('users.edit', compact('user', 'roles', 'notifications','notifications_notread'));
+        return view('users.edit', compact('user', 'roles', 'notifications', 'notifications_notread'));
     }
 
     public function update(Request $request, User $user)
     {
-        $notifications = $this->notificationService->notification_template()[0];
-        $notifications_notread = $this->notificationService->notification_template()[1];
         $request->validate([
             'name' => 'sometimes|string',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6',
             'role_id' => 'sometimes|exists:roles,id',
+        ], [
+            'email.unique' => 'Cet email est déjà utilisé par un autre utilisateur.',
         ]);
+
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
 
         $user->name = $request->input('name', $user->name);
         $user->email = $request->input('email', $user->email);
@@ -106,6 +117,4 @@ class UserController extends Controller
             ->with('notifications', $notifications)
             ->with('notifications_notread', $notifications_notread);
     }
-
-
 }

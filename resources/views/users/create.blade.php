@@ -16,10 +16,18 @@
                                 <div class="card-header">
                                     <h4 class="card-title">Ajouter un Utilisateur</h4>
                                 </div>
-                                @if(session('success'))
-                                    <br>
+                                @if (Session::has('success'))
                                     <div class="alert alert-success">
-                                        {{ session('success') }}
+                                        {{Session::get('success')}}
+                                    </div>
+                                @endif
+                                @if (count($errors)> 0)
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{$error}}</li>
+                                            @endforeach
+                                        </ul>
                                     </div>
                                 @endif
                                 <div class="card-content collapse show">

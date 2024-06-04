@@ -6,6 +6,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Services\NotificationService;
 use App\Models\Client;
 use App\Models\Notification;
+use App\Models\Prescription;
 use App\Models\User;
 use Illuminate\Http\Request;
 // use PDF;
@@ -22,7 +23,7 @@ class ClientController extends Controller
 
     public function index()
     {
-        
+
         $clients = Client::all();
         //dd($clients, auth()->user()->role_id);
         $data = [
@@ -73,36 +74,23 @@ class ClientController extends Controller
 
     public function store(Request $request)
     {
+        // Notifications
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
 
+        // Données pour le rôle et le service
         $datas = [
-
-
-
-                 [
-                    'role_id_not' => 3,
-                    'choix_service' => 'consultation',
-                ],
-                [
-                    'role_id_not' => 4,
-                    'choix_service' => 'entretien_lunettes',
-                ],
-                [
-                    'role_id_not' => 5,
-                    'choix_service' => 'caisse',
-                ],
-
-
+            ['role_id_not' => 3, 'choix_service' => 'consultation'],
+            ['role_id_not' => 4, 'choix_service' => 'entretien_lunettes'],
+            ['role_id_not' => 5, 'choix_service' => 'caisse'],
         ];
 
-
-        // Validation des données du formulaire
+        // Validation des données du formulaire avec messages personnalisés
         $request->validate([
             'nom' => 'required|string',
             'prenom' => 'required|string',
-            'telephone' => 'required|string',
-            'carte_identite' => 'nullable|string',
+            'telephone' => 'required|string|unique:clients,telephone',
+            'carte_identite' => 'nullable|string|unique:clients,carte_identite',
             'date_naissance' => 'nullable|date',
             'lieu_naissance' => 'nullable|string',
             'profession' => 'nullable|string',
@@ -126,123 +114,42 @@ class ClientController extends Controller
             'rendez_vous' => 'nullable|date',
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
-            'montant' => 'nullable|double',
+            'montant' => 'nullable|numeric',
+        ], [
+            'telephone.unique' => 'Le numéro de téléphone existe déjà.',
+            'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
         ]);
 
-        foreach ($datas as $roleMapping) {
+        try {
+            foreach ($datas as $roleMapping) {
+                $roleId = $roleMapping['role_id_not'];
+                $serviceChoices = $roleMapping['choix_service'];
+                if ($request->choix_service == $serviceChoices) {
+                    $client = new Client($request->all());
+                    $client->save();
 
-            $roleId = $roleMapping['role_id_not'];
-            $serviceChoices = $roleMapping['choix_service'];
-            if ($request->choix_service == $serviceChoices) {
+                    $name_client = strtoupper($request->nom);
+                    $notification = new Notification([
+                        'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
+                        'status' => 0,
+                        'visibility' => 0,
+                        'role_id'=> $roleId,
+                        'client_id' => $client->id,
+                    ]);
+                    $notification->save();
 
-
-                $client = new Client([
-                    'nom' => $request->input('nom'),
-                    'prenom' => $request->input('prenom'),
-                    'telephone' => $request->input('telephone'),
-                    'carte_identite' => $request->input('carte_identite'),
-                    'date_naissance' => $request->input('date_naissance'),
-                    'lieu_naissance' => $request->input('lieu_naissance'),
-                    'profession' => $request->input('profession'),
-                    'sexe' => $request->input('sexe'),
-                    'societe_attache' => $request->input('societe_attache'),
-                    'assurance' => $request->input('assurance'),
-                    'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
-                    'date_debut' => $request->input('date_debut'),
-                    'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
-                    'antecedents_familiaux' => $request->input('antecedents_familiaux'),
-                    'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
-                    'traitements_en_cours' => $request->input('traitements_en_cours'),
-                    'allergies' => $request->input('allergies'),
-                    'mentions_generales' => $request->input('mentions_generales'),
-                    'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
-                    'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
-                    'autre_choses' => $request->input('autre_choses'),
-                    'diagnostic' => $request->input('diagnostic'),
-                    'prescription' => $request->input('prescription'),
-                    'examen_particulier' => $request->input('examen_particulier'),
-                    'rendez_vous' => $request->input('rendez_vous'),
-                    'choix_service' => $request->input('choix_service'),
-                    'entretien' => $request->input('entretien'),
-                    'montant' => $request->input('montant'),
-                ]);
-
-                // Enregistrement du client dans la base de données
-                $client->save();
-                $name_client = strtoupper($request->nom);
-                $notification = new Notification([
-                    'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
-                    'status' => 0,
-                    'visibility' => 0,
-                    'role_id'=> $roleId,
-                    'client_id' => $client->id,
-                ]);
-                $notification->save();
-
-                // Redirection vers une page appropriée avec un message de succès
-                return redirect()->route('clients.index')
-                    ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
-                    ->with('notifications', $notifications)
-                    ->with('notifications_notread', $notifications_notread);
+                    return redirect()->route('clients.index')
+                        ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
+                        ->with('notifications', $notifications)
+                        ->with('notifications_notread', $notifications_notread);
+                }
             }
-
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement du client. Veuillez réessayer.']);
         }
-
-
-        //  elseif ($request->choix_service == "entretien_lunettes") {
-        //     $client = new Client([
-        //         'nom' => $request->input('nom'),
-        //         'prenom' => $request->input('prenom'),
-        //         'telephone' => $request->input('telephone'),
-        //         'carte_identite' => $request->input('carte_identite'),
-        //         'date_naissance' => $request->input('date_naissance'),
-        //         'lieu_naissance' => $request->input('lieu_naissance'),
-        //         'profession' => $request->input('profession'),
-        //         'sexe' => $request->input('sexe'),
-        //         'societe_attache' => $request->input('societe_attache'),
-        //         'assurance' => $request->input('assurance'),
-        //         'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
-        //         'date_debut' => $request->input('date_debut'),
-        //         'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
-        //         'antecedents_familiaux' => $request->input('antecedents_familiaux'),
-        //         'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
-        //         'traitements_en_cours' => $request->input('traitements_en_cours'),
-        //         'allergies' => $request->input('allergies'),
-        //         'mentions_generales' => $request->input('mentions_generales'),
-        //         'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
-        //         'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
-        //         'autre_choses' => $request->input('autre_choses'),
-        //         'diagnostic' => $request->input('diagnostic'),
-        //         'prescription' => $request->input('prescription'),
-        //         'examen_particulier' => $request->input('examen_particulier'),
-        //         'rendez_vous' => $request->input('rendez_vous'),
-        //         'choix_service' => $request->input('choix_service'),
-        //         'entretien' => $request->input('entretien'),
-        //         'montant' => $request->input('montant'),
-        //     ]);
-
-        //     // Enregistrement du client dans la base de données
-        //     // $userid = User::where("role_id",4)->get();
-        //     $userId = User::where("role_id",4)->first()->id;
-        //     // dd($userId);
-        //     $client->save();
-        //     $name_client = strtoupper($request->nom);
-        //     $notification = new Notification([
-        //         'message' => "gestion de Mrs $name_client (cliquez pour accéder)",
-        //         'status' => 0,
-        //         'visibility' => 0,
-        //         'role_id'=> 4,
-        //         'client_id' => $client->id,
-        //     ]);
-        //     $notification->save();
-
-        //     // Redirection vers une page appropriée avec un message de succès
-        //     return redirect()->route('clients.index')
-        //         ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
-        //         ->with('notifications', $notifications)
-        //         ->with('notifications_notread', $notifications_notread);
-        // }
     }
+
+
 
     public function show(Client $client)
     {
@@ -263,7 +170,7 @@ class ClientController extends Controller
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
 
-        // Validation des données du formulaire
+        // Validation des données du formulaire avec messages personnalisés
         $request->validate([
             'nom' => 'required|string',
             'prenom' => 'required|string',
@@ -292,51 +199,39 @@ class ClientController extends Controller
             'rendez_vous' => 'nullable|date',
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
-            'montant' => 'nullable|double',
+            'montant' => 'nullable|numeric',
+        ], [
+            'telephone.unique' => 'Le numéro de téléphone existe déjà.',
+            'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
         ]);
 
-        // Mise à jour des informations du client
-        $client->update([
-            'nom' => $request->input('nom'),
-            'prenom' => $request->input('prenom'),
-            'telephone' => $request->input('telephone'),
-            'carte_identite' => $request->input('carte_identite'),
-            'date_naissance' => $request->input('date_naissance'),
-            'lieu_naissance' => $request->input('lieu_naissance'),
-            'profession' => $request->input('profession'),
-            'sexe' => $request->input('sexe'),
-            'societe_attache' => $request->input('societe_attache'),
-            'assurance' => $request->input('assurance'),
-            'disciplines_pratiquees' => $request->input('disciplines_pratiquees'),
-            'date_debut' => $request->input('date_debut'),
-            'activite_interpelant_vision' => $request->input('activite_interpelant_vision'),
-            'antecedents_familiaux' => $request->input('antecedents_familiaux'),
-            'antecedents_chirurgicaux' => $request->input('antecedents_chirurgicaux'),
-            'traitements_en_cours' => $request->input('traitements_en_cours'),
-            'allergies' => $request->input('allergies'),
-            'mentions_generales' => $request->input('mentions_generales'),
-            'portez_vous_des_lunettes' => $request->input('portez_vous_des_lunettes', 0),
-            'besoin_changer_lunettes' => $request->input('besoin_changer_lunettes', 0),
-            'autre_choses' => $request->input('autre_choses'),
-            'diagnostic' => $request->input('diagnostic'),
-            'prescription' => $request->input('prescription'),
-            'examen_particulier' => $request->input('examen_particulier'),
-            'rendez_vous' => $request->input('rendez_vous'),
-            'choix_service' => $request->input('choix_service'),
-            'entretien' => $request->input('entretien'),
-            'montant' => $request->input('montant'),
-        ]);
+        try {
+            // Mise à jour des informations du client
+            $client->update($request->all());
 
-        Notification::where('client_id', $client->id)
-            ->where('visibility', 0)
-            ->update(['status' => 1]);
+            Notification::where('client_id', $client->id)
+                ->where('visibility', 0)
+                ->update(['status' => 1]);
 
-        // Redirection vers une page appropriée avec un message de succès
-        return redirect()->route('clients.index')
-            ->with('success', 'Client "'.$client->nom.'" modifié avec succès.')
-            ->with('notifications', $notifications)
-            ->with('notifications_notread', $notifications_notread);
+            // Redirection vers une page appropriée avec un message de succès
+            return redirect()->route('clients.index')
+                ->with('success', 'Client "'.$client->nom.' '.$client->prenom.'" modifié avec succès.')
+                ->with('notifications', $notifications)
+                ->with('notifications_notread', $notifications_notread);
+        } catch (\Illuminate\Database\QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if ($errorCode == 1062) { // Le code d'erreur 1062 correspond à une violation de contrainte unique
+                return redirect()->back()->withErrors(['error' => 'Le numéro de téléphone ou le numéro de carte d\'identité existe déjà.']);
+            } else {
+                return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de la mise à jour du client. Veuillez réessayer.']);
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de la mise à jour du client. Veuillez réessayer.']);
+        }
     }
+
+
+
 
 
         public function destroy(Client $client)
@@ -387,66 +282,94 @@ class ClientController extends Controller
 
 
 
-    public function generate(Request $request){
+    public function generate(Request $request)
+    {
+        // Valider les données du formulaire
+        $request->validate([
+            'nom_patient' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'date' => 'required|date',
+            'sph_od' => 'nullable|string|max:255',
+            'cyl_od' => 'nullable|string|max:255',
+            'axe_od' => 'nullable|string|max:255',
+            'add_od' => 'nullable|string|max:255',
+            'sph_og' => 'nullable|string|max:255',
+            'cyl_og' => 'nullable|string|max:255',
+            'axe_og' => 'nullable|string|max:255',
+            'add_og' => 'nullable|string|max:255',
+        ]);
+
+        // Enregistrer les données dans la base de données
+        $prescription = Prescription::create($request->all());
+
         // Collecter les données nécessaires pour l'ordonnance
-        $nom_patient = $request->input('nom_patient');
-        $medicaments = $request->input('medicaments');
-        $instructions = $request->input('instructions');
+        $nom_patient = $prescription->nom_patient;
+        $age = $prescription->age;
+        $date = $prescription->date->format('d-m-Y');
+        $sph_od = $prescription->sph_od;
+        $cyl_od = $prescription->cyl_od;
+        $axe_od = $prescription->axe_od;
+        $add_od = $prescription->add_od;
+        $sph_og = $prescription->sph_og;
+        $cyl_og = $prescription->cyl_og;
+        $axe_og = $prescription->axe_og;
+        $add_og = $prescription->add_og;
 
         // Informations de l'en-tête
         $header = '
-            <p style="font-size: 40px; color: #1E90FF; text-align: center;">CALEX\'<span style="color: red;">OP</span>TIC</p>
-            <p style="font-size: 15px;"><strong>Pierre Calvin NGATCHA KAMTCHOUM</strong> <span style="float: right; margin-right: 10%; ">Yaoundé, le</span><br>Opticien diplomé de l\'académie de Paris<br>Examen de vue et de prise de Mesure<br>Tél : 696 15 04 29 / 677 87 19 51<br>Situé en face de l\'Ecole de Police</p>
+            <p style="font-size: 40px; color: #1E90FF; text-align: center;">CALEX\'<span style="color: red;">OP</span>TIC SARL</p>
+            <p style="font-size: 15px;"><strong>Pierre Calvin NGATCHA KAMTCHOUM</strong> <span style="float: right; margin-right: 10%;">Yaoundé, le ' . $date . '</span><br>Opticien diplomé de l\'académie de Paris<br>Examen de vue et de prise de Mesure<br>Tél : 696 15 04 29 / 677 87 19 51<br>Situé en face de l\'Ecole de Police</p>
         ';
 
         // Générer le contenu HTML pour l'ordonnance
         $html = '
             <style>
                 body { font-family: Arial, sans-serif; }
-                h3 { text-align: center; } /* Bleu vif foncé */
+                h3 { text-align: center; }
                 p { margin-bottom: 10px; }
-                th, td { border: 1.5px solid black; padding: 8px; font-weight: bold; }
+                th, .gras { font-weight: bold; }
+                td, th { border: 1.5px solid black; padding: 8px; }
                 .footer { position: absolute; bottom: 0; width: 100%; text-align: center; }
             </style>
             ' . $header . '
             <br><br> <p><strong>Nom du Patient:</strong> ' . $nom_patient . '</p>
-            <p><strong>Age:29</strong></p>
+            <p><strong>Age:</strong> ' . $age . '</p>
             <h3 style="text-align: center;">PRESCRIPTION DE LUNETTES</h3><br><br>
             <div style="text-align: center;">
                 <table style="border-collapse: collapse; width: 80%; margin-left: 10%;">
                     <tr>
                         <td colspan="3" style="text-align: center;"></td>
-                        <td colspan="3" style="text-align: center;">SPH</td>
-                        <td colspan="3" style="text-align: center;">CYL</td>
-                        <td colspan="3" style="text-align: center;">AXE</td>
-                        <td colspan="3" style="text-align: center;">ADD</td>
+                        <td colspan="3" class="gras" style="text-align: center;">SPH</td>
+                        <td colspan="3" class="gras" style="text-align: center;">CYL</td>
+                        <td colspan="3" class="gras" style="text-align: center;">AXE</td>
+                        <td colspan="3" class="gras" style="text-align: center;">ADD</td>
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: center; font-weight: bold;">OD</td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
+                        <td colspan="3" style="text-align: center;">' . $sph_od . '</td>
+                        <td colspan="3" style="text-align: center;">' . $cyl_od . '</td>
+                        <td colspan="3" style="text-align: center;">' . $axe_od . '</td>
+                        <td colspan="3" style="text-align: center;">' . $add_od . '</td>
                     </tr>
                     <tr>
                         <td colspan="3" style="text-align: center; font-weight: bold;">OG</td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
-                        <td colspan="3" style="text-align: center; font-weight: bold;"></td>
+                        <td colspan="3" style="text-align: center;">' . $sph_og . '</td>
+                        <td colspan="3" style="text-align: center;">' . $cyl_og . '</td>
+                        <td colspan="3" style="text-align: center;">' . $axe_og . '</td>
+                        <td colspan="3" style="text-align: center;">' . $add_og . '</td>
                     </tr>
                 </table>
             </div>
-            <br> <br>
+            <br><br>
             <p style="text-align: left; display: inline-block; width: 32%; font-weight: bold;">C. VAL OD/OG</p>
             <p style="text-align: center; display: inline-block; width: 32%; font-weight: bold;">C.AVP ODG</p>
             <p style="text-align: right; display: inline-block; width: 32%; font-weight: bold;">DIP OD/OG</p>
 
-            <p><strong>Type de port</strong> : &nbsp;&nbsp;  Constant - Temporaire</p>
+            <p><strong>Type de port</strong>: &nbsp;&nbsp;  Constant - Temporaire</p>
             <p><strong>Type de verres</strong>: Progressif, Désignatif, Bifocaux, Unifocaux</p>
-            <p><strong>Matière</strong> : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minéraux, Organiques, Polycarbonate</p>
-            <p><strong>Traitement</strong> : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AR - UVA - ARB - Hydrophobe</p>
-            <p><strong>Teinte</strong> : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Blanc - AB - Photochromique - Transition</p>
+            <p><strong>Matière</strong>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Minéraux, Organiques, Polycarbonate, Blue Protect</p>
+            <p><strong>Traitement</strong>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AR - UVA - ARB - Hydrophobe</p>
+            <p><strong>Teinte</strong>: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Blanc - AB - Photochromique - Transition</p>
             <p><strong>Indice</strong></p>
 
             <div class="footer">
@@ -464,8 +387,48 @@ class ClientController extends Controller
 
 
 
+    public function indexOrdonnance()
+    {
+        // Récupérer les notifications
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
 
 
+        $prescriptions = Prescription::all();
+        return view('clients.listeOrdonnance', compact('prescriptions', 'notifications', 'notifications_notread'));
+    }
+
+    public function voirOrdonnance($id)
+    {
+        // Récupérer les notifications
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+
+        $prescription = Prescription::findOrFail($id);
+        return view('clients.voirOrdonnance', compact('prescription', 'notifications', 'notifications_notread'));
+    }
+
+    public function editOrdonnance($id)
+    {
+        $prescription = Prescription::findOrFail($id);
+        return view('prescriptions.edit', compact('prescription'));
+
+    }
+
+    public function updateOrdonnance(Request $request, $id)
+    {
+        $prescription = Prescription::findOrFail($id);
+        $prescription->update($request->all());
+        return redirect()->route('prescriptions.index')->with('success', 'Ordonnance mise à jour avec succès');
+    }
+
+    public function destroyOrdonnance($id)
+    {
+        $prescription = Prescription::findOrFail($id);
+        $prescription->delete();
+        return redirect()->route('prescriptions.index')->with('success', 'Ordonnance supprimée avec succès');
+    }
 
 
 

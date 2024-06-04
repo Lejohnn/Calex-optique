@@ -24,14 +24,46 @@
                                             <input type="text" id="nom_patient" name="nom_patient" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="medicaments">Médicaments</label>
-                                            <textarea id="medicaments" name="medicaments" class="form-control" rows="5" required></textarea>
+                                            <label for="age">Âge</label>
+                                            <input type="number" id="age" name="age" class="form-control" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="instructions">Instructions</label>
-                                            <textarea id="instructions" name="instructions" class="form-control" rows="5" required></textarea>
+                                            <label for="date">Date du jour</label>
+                                            <input type="date" id="date" name="date" class="form-control" required>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Générer l'Ordonnance</button>
+                                        <div class="form-group">
+                                            <label for="sph_od">SPH OD</label>
+                                            <input type="text" id="sph_od" name="sph_od" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cyl_od">CYL OD</label>
+                                            <input type="text" id="cyl_od" name="cyl_od" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="axe_od">AXE OD</label>
+                                            <input type="text" id="axe_od" name="axe_od" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="add_od">ADD OD</label>
+                                            <input type="text" id="add_od" name="add_od" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="sph_og">SPH OG</label>
+                                            <input type="text" id="sph_og" name="sph_og" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cyl_og">CYL OG</label>
+                                            <input type="text" id="cyl_og" name="cyl_og" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="axe_og">AXE OG</label>
+                                            <input type="text" id="axe_og" name="axe_og" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="add_og">ADD OG</label>
+                                            <input type="text" id="add_og" name="add_og" class="form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" id="submit-btn">Générer l'Ordonnance</button>
                                     </form>
                                 </div>
                             </div>
@@ -44,10 +76,11 @@
 </div>
 @endsection
 
-
-
-
-
+<script>
+    document.getElementById('ordonnance-form').addEventListener('submit', function() {
+        document.getElementById('submit-btn').disabled = true;
+    });
+</script>
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->

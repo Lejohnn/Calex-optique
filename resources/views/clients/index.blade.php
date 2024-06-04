@@ -45,32 +45,26 @@
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title">Liste des clients</h2>
-                        <!-- @if (Session::has('success'))
-                                    <div class="alert alert-success">
-                                        {{Session::get('success')}}
-                                    </div>
-                                @endif
-                                @if (count($errors)> 0)
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{$error}}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif -->
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                                 @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2)
                                     <div class="heading-elements">
                                         <a href="{{ route('clients.create') }}" class="btn btn-primary  ">
                                             <i class="la la-plus font-small-2"></i> Ajouter un client
                                         </a>
                                     </div>
-                                @endif
-                                @if(session('success'))
-                                        <br>
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
                                 @endif
 
                     </div>

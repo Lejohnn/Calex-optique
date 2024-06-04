@@ -18,6 +18,23 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
+                                         <!-- Display Success Message -->
+                                        @if (session('success'))
+                                            <div class="alert alert-success">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+
+                                        <!-- Display Errors -->
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         <form action="{{ route('clients.store') }}" method="POST" class="add-client-form">
 
                                             @csrf

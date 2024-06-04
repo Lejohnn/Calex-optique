@@ -18,6 +18,23 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
+                                         <!-- Display Success Message -->
+                                         @if (session('success'))
+                                            <div class="alert alert-success">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+
+                                        <!-- Display Errors -->
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
                                         <form action="{{ route('clients.update', $client) }}" method="POST" class="edit-client-form">
                                             @csrf
                                             @method('PUT')
@@ -39,7 +56,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="nom">Nom <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="nom" name="nom" type="text" value="{{ $client->nom }}" required />
+                                                            <input class="form-control" id="nom" name="nom" type="text" value="{{ $client->nom }}" required  />
                                                         </div>
                                                     </div>
                                                 </div>
