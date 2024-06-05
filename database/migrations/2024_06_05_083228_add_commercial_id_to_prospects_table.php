@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('prospects', function (Blueprint $table) {
-            $table->string('statut')->nullable(); // Nouveau champ pour le statut
+            $table->unsignedBigInteger('commercial_id')->nullable();
+
+            // Assuming 'commercials' is the name of the table where Commercials are stored
+            $table->foreign('commercial_id')->references('id')->on('commercials')->onDelete('set null');
         });
     }
 
@@ -26,7 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('prospects', function (Blueprint $table) {
-            $table->dropColumn('statut'); // Supprimer le champ en cas de rollback
+            $table->dropForeign(['commercial_id']);
+            $table->dropColumn('commercial_id');
         });
     }
 };

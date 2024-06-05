@@ -16,19 +16,23 @@ return new class extends Migration
         Schema::create('prospects', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->string('commercial_name');
+            $table->string('commercial_name')->nullable();
+            $table->date('date_rdv')->nullable(); // Nouveau champ date pour le rendez-vous
+            $table->string('rdv_heure')->nullable();
+            $table->string('entreprise_heure')->nullable();
+            $table->string('rubrique');
             $table->string('entreprise_nom')->nullable();
             $table->string('entreprise_responsable')->nullable();
             $table->string('entreprise_contact')->nullable();
-            $table->string('entreprise_heure')->nullable();
-            $table->string('rdv_nom_prenom')->nullable();
-            $table->string('rdv_contact')->nullable();
-            $table->string('rdv_societe')->nullable();
-            $table->string('rdv_heure')->nullable();
-            $table->string('nettoyage_nom_prenom')->nullable();
-            $table->string('nettoyage_contact')->nullable();
-            $table->string('nettoyage_societe')->nullable();
-            $table->string('nettoyage_heure')->nullable();
+            $table->string('statut')->nullable(); // Nouveau champ pour le statut
+
+            // $table->string('rdv_nom_prenom')->nullable();
+            // $table->string('rdv_contact')->nullable();
+            // $table->string('rdv_societe')->nullable();
+            // $table->string('nettoyage_nom_prenom')->nullable();
+            // $table->string('nettoyage_contact')->nullable();
+            // $table->string('nettoyage_societe')->nullable();
+            // $table->string('nettoyage_heure')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

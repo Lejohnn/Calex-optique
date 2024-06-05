@@ -31,19 +31,20 @@
                                                 <ul>
                                                     <li><strong>Nom du Commercial:</strong> {{ $prospect->commercial_name }}</li>
                                                     <li><strong>Date:</strong> {{ $prospect->date }}</li>
-                                                    <li><strong>Entreprise:</strong> {{ $prospect->entreprise_nom }}</li>
-                                                    <li><strong>Responsable:</strong> {{ $prospect->entreprise_responsable }}</li>
-                                                    <li><strong>Contact:</strong> {{ $prospect->entreprise_contact }}</li>
-                                                    <li><strong>Heure du Rendez-vous:</strong> {{ $prospect->entreprise_heure }}</li>
-                                                    <li><strong>Nom/Prenom du Rendez-vous:</strong> {{ $prospect->rdv_nom_prenom }}</li>
-                                                    <li><strong>Contact du Rendez-vous:</strong> {{ $prospect->rdv_contact }}</li>
-                                                    <li><strong>Société du Rendez-vous:</strong> {{ $prospect->rdv_societe }}</li>
+                                                    <li><strong>Entreprise/Société:</strong> {{ $prospect->entreprise_nom }}</li>
+                                                    <li><strong>Date du Rendez-vous:</strong> {{ $prospect->date_rdv }}</li>
                                                     <li><strong>Heure du Rendez-vous:</strong> {{ $prospect->rdv_heure }}</li>
-                                                    <li><strong>Nom/Prenom du Nettoyage:</strong> {{ $prospect->nettoyage_nom_prenom }}</li>
+                                                    <li><strong>Heure du Rendez-vous:</strong> {{ $prospect->rubrique }}</li>
+                                                    <li><strong>Nom/Responsable:</strong> {{ $prospect->entreprise_responsable }}</li>
+                                                    <li><strong>Contact:</strong> {{ $prospect->entreprise_contact }}</li>
+                                                    <li><strong>Heure denregistrement:</strong> {{ $prospect->entreprise_heure }}</li>
+                                                    {{-- <li><strong>Nom/Prenom du Rendez-vous:</strong> {{ $prospect->rdv_nom_prenom }}</li>
+                                                    <li><strong>Contact du Rendez-vous:</strong> {{ $prospect->rdv_contact }}</li>
+                                                    <li><strong>Société du Rendez-vous:</strong> {{ $prospect->rdv_societe }}</li> --}}
+                                                    {{-- <li><strong>Nom/Prenom du Nettoyage:</strong> {{ $prospect->nettoyage_nom_prenom }}</li>
                                                     <li><strong>Contact du Nettoyage:</strong> {{ $prospect->nettoyage_contact }}</li>
                                                     <li><strong>Société du Nettoyage:</strong> {{ $prospect->nettoyage_societe }}</li>
-                                                    <li><strong>Heure du Nettoyage:</strong> {{ $prospect->nettoyage_heure }}</li>
-                                                    <li><strong>Date du Rendez-vous:</strong> {{ $prospect->date_rdv }}</li>
+                                                    <li><strong>Heure du Nettoyage:</strong> {{ $prospect->nettoyage_heure }}</li> --}}
                                                     <li><strong>Statut:</strong> {{ $prospect->statut }}</li>
                                                 </ul>
                                             </div>

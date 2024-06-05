@@ -16,11 +16,11 @@
                                 <div class="card-header">
                                     <h4 class="card-title text-center"><u>Fiche journalière</u></h4>
                                     <!-- Boutons de navigation -->
-                                    <div class="text-center">
+                                    {{-- <div class="text-center">
                                         <button class="btn btn-primary btn-switch" data-target="entreprise">Entreprise</button>
                                         <button class="btn btn-primary btn-switch" data-target="rdv">Rendez-vous du jour</button>
                                         <button class="btn btn-primary btn-switch" data-target="nettoyage">Nettoyage</button>
-                                    </div>
+                                    </div> --}}
                                         @if ($errors->any())
                                             <div class="alert alert-danger">
                                                 <ul>
@@ -42,9 +42,19 @@
                                             <label for="date">Date<span class="text-danger">*</span></label>
                                             <input class="form-control" id="date" name="date" type="date" value="{{ $prospect->date }}" required>
                                         </div>
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label for="nom_commercial">Nom du commercial<span class="text-danger">*</span></label>
                                             <input class="form-control" id="commercial_name" name="commercial_name" type="text" value="{{ $prospect->commercial_name }}" required>
+                                        </div> --}}
+                                        <div class="form-group">
+                                            <label for="commercial_id">Nom du commercial</label>
+                                            <select name="commercial_id" id="commercial_id" class="form-control">
+                                                @foreach($commercials as $commercial)
+                                                    <option value="{{ $commercial->id }}" {{ $prospect->commercial_id == $commercial->id ? 'selected' : '' }}>
+                                                        {{ $commercial->full_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <label for="date_rdv">Date du rendez-vous<span class="text-danger">*</span></label>
@@ -54,7 +64,7 @@
                                         <div class="form-section" id="entreprise-section">
                                             <h5 class="text-center">Entreprises</h5>
                                             <div class="form-group">
-                                                <label for="entreprise_nom">Entreprise visitée</label>
+                                                <label for="entreprise_nom">Entreprise/Société visitée</label>
                                                 <input class="form-control" id="entreprise_nom" name="entreprise_nom" type="text" value="{{ $prospect->entreprise_nom }}">
                                             </div>
                                             <div class="form-group">
@@ -69,9 +79,22 @@
                                                 <label for="entreprise_heure">Heure du Rendez-vous</label>
                                                 <input class="form-control" id="entreprise_heure" name="entreprise_heure" type="text" value="{{ $prospect->entreprise_heure }}">
                                             </div>
+                                            <div class="form-group">
+                                                <label for="rdv_heure">Heure du Rendez-vous</label>
+                                                <input class="form-control" id="rdv_heure" name="rdv_heure" type="text" value="{{ $prospect->rdv_heure }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rubrique">Entretien:</label>
+                                                <select id="rubrique" name="rubrique" class="form-control"  required>
+                                                    <option value="" selected disabled>Choisissez</option>
+                                                    <option value="Entreprise" {{ $prospect->rubrique == "Entreprise" ? 'selected' : '' }}>Entreprise</option>
+                                                    <option value="Rendez-vous" {{ $prospect->rubrique == "Rendez-vous" ? 'selected' : '' }}>Rendez-vous</option>
+                                                    <option value="Nettoyage" {{ $prospect->rubrique == "Nettoyage" ? 'selected' : '' }}>Nettoyage</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <!-- Section Rendez-vous -->
-                                        <div class="form-section" id="rdv-section" style="display: none;">
+                                        {{-- <div class="form-section" id="rdv-section" style="display: none;">
                                             <h4 class="text-center"> <u>Prestations offertes ou obtenues</u></h4> <br>
                                             <h5 class="text-center">Rendez-vous du jour</h5>
                                             <div class="form-group">
@@ -86,13 +109,10 @@
                                                 <label for="rdv_societe">Société</label>
                                                 <input class="form-control" id="rdv_societe" name="rdv_societe" type="text" value="{{ $prospect->rdv_societe }}">
                                             </div>
-                                            <div class="form-group">
-                                                <label for="rdv_heure">Heure du Rendez-vous</label>
-                                                <input class="form-control" id="rdv_heure" name="rdv_heure" type="text" value="{{ $prospect->rdv_heure }}">
-                                            </div>
-                                        </div>
+
+                                        </div> --}}
                                         <!-- Section Nettoyage -->
-                                        <div class="form-section" id="nettoyage-section" style="display: none;">
+                                        {{-- <div class="form-section" id="nettoyage-section" style="display: none;">
                                             <h4 class="text-center"> <u>Prestations offertes ou obtenues</u></h4> <br>
                                             <h5 class="text-center"> Nettoyage</h5>
                                             <div class="form-group">
@@ -111,7 +131,7 @@
                                                 <label for="nettoyage_heure">Heure du Rendez-vous</label>
                                                 <input class="form-control" id="nettoyage_heure" name="nettoyage_heure" type="text" value="{{ $prospect->nettoyage_heure }}">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group">
                                             <label for="statut">Statut</label>
                                             <select class="form-control" id="statut" name="statut">

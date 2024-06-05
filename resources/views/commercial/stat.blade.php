@@ -3,117 +3,112 @@
 @section('title', 'Statistiques des commerciaux ')
 
 @section('contenu')
-<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
+<script src="{{ asset('backend/vendors/js/tables/datatable/datatables.min.js') }}"></script>
 
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
         <div class="content-body">
-            <!-- les stats -->
-            <h1>Stat des différents commerciaux</h1>
-            <div class="row">
-                <div class="col-xl-3 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-                                        <h2>State du jour</h2>
-                                        <h3 class="info">850(points du jours)/nbre clients enregistrés</h3>
-                                        <h5>Nom du commercial</h5>
-                                        <h6>BON ou Passable ou Mauvais </h6>
+            <!-- Statistiques des Commerciaux -->
+            <section id="commercial-stats">
+                <div class="row">
+                    @foreach($commercials as $commercial)
+                    <div class="col-xl-3 col-md-6 col-12">
+                        <a href="{{ route('commercial.prospects', $commercial->id) }}" class="card-link">
+                            <div class="card" data-commercial-id="{{ $commercial->id }}">
+                                <div class="card-header">
+                                    <h4 class="card-title">{{ $commercial->name }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="media d-flex align-items-center">
+                                        <div class="media-body">
+                                            <h5 class="text-bold-700 mb-0">{{ $commercial->prospects_today }}</h5>
+                                            <span>Prospects ajoutés aujourd'hui</span>
+                                        </div>
+                                        <div class="media-right ml-2">
+                                            <i class="icon-user font-large-2"></i>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <i class="icon-basket-loaded info font-large-2 float-right"></i>
+                                    <div class="media d-flex align-items-center mt-1">
+                                        <div class="media-body">
+                                            <h5 class="text-bold-700 mb-0">{{ $commercial->total_prospects }}</h5>
+                                            <span>Total des prospects</span>
+                                        </div>
+                                        <div class="media-right ml-2">
+                                            <i class="icon-users font-large-2"></i>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
+                        </a>
                     </div>
+                    @endforeach
                 </div>
-                {{-- <p>SI POSSIBLE, IL FAUT POUVOIR AVOIR LA MËME STATISTIQUE POUR LES COMMERCIAUX SUR UN MOIS, DONC TOUT CE QUI EST A STATE DU JOUR LA MAIS MESURANT CELA SUR LE MOI. LES TROIS AUTRES CASES EN DESSOUS SONT JUSTE LA POUR MONTRER QU'UNE CASE REPRESENTE UN COMMERCIAL  </p>
-                <div class="col-xl-3 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-                                        <h3 class="warning">$748</h3>
-                                        <h6>Net Profit</h6>
-                                    </div>
-                                    <div>
-                                        <i class="icon-pie-chart warning font-large-2 float-right"></i>
-                                    </div>
-                                </div>
-                                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                    <div class="progress-bar bg-gradient-x-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-                                        <h3 class="success">146/5000</h3>
-                                        <h6>Nouveaux Clients/Total</h6>
-                                    </div>
-                                    <div>
-                                        <i class="icon-user-follow success font-large-2 float-right"></i>
-                                    </div>
-                                </div>
-                                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                    <div class="progress-bar bg-gradient-x-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                </div>
-                <div class="col-xl-3 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-                                        <h3 class="danger">99.89 %</h3>
-                                        <h6>Customer Satisfaction</h6>
-                                    </div>
-                                    <div>
-                                        <i class="icon-heart danger font-large-2 float-right"></i>
-                                    </div>
-                                </div>
-                                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                    <div class="progress-bar bg-gradient-x-danger" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
         </div>
     </div>
 </div>
-
+<!-- Ajouter une div pour afficher la liste des prospects -->
+<div id="prospects-list"></div>
 @endsection
 
-<!-- BEGIN: Vendor JS-->
-<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-<!-- BEGIN Vendor JS-->
 
-<!-- BEGIN: Page Vendor JS-->
-<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-<!-- END: Page Vendor JS-->
+    <!-- Ajouter ce script à la fin de votre vue principale -->
+    {{-- <script>
+        $(document).ready(function() {
+            $('.card-link').on('click', function(e) {
+                e.preventDefault();
+                let commercialId = $(this).find('.card').data('commercial-id');
+                $.ajax({
+                    url: `/api/commercials/${commercialId}/prospects`,
+                    method: 'GET',
+                    success: function(data) {
+                        let prospectsList = '<ul>';
+                        data.forEach(prospect => {
+                            prospectsList += `<li>${prospect.entreprise_nom} - ${prospect.date_rdv}</li>`;
+                        });
+                        prospectsList += '</ul>';
+                        $('#prospects-list').html(prospectsList);
+                    }
+                });
+            });
+        });
+    </script> --}}
 
-<!-- BEGIN: Theme JS-->
-<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-<script src="{{asset('backend/js/core/app.js')}}"></script>
-<!-- END: Theme JS-->
+    <!-- CSS pour effet hover -->
+    <style>
+        .card-link {
+            text-decoration: none;
+        }
 
-<!-- BEGIN: Page JS-->
-<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-<!-- END: Page JS-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        .card-link .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-link .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
+    <!-- BEGIN Vendor JS-->
+
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="{{ asset('backend/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+    <!-- END: Page Vendor JS-->
+
+    <!-- BEGIN: Theme JS-->
+    <script src="{{ asset('backend/js/core/app-menu.js') }}"></script>
+    <script src="{{ asset('backend/js/core/app.js') }}"></script>
+    <!-- END: Theme JS-->
+
+    <!-- BEGIN: Page JS-->
+    <script src="{{ asset('backend/js/scripts/pages/hospital-patients-list.js') }}"></script>
+    <!-- END: Page JS-->
+
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+

@@ -43,21 +43,15 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Nom du Commercial</th>
-                                                <th>Entreprise</th>
+                                                <th>Date du Rendez-vous</th>
+                                                <th>Heure du Rendez-vous</th>
+                                                <th>Rubrique</th>
+                                                <th>Entreprise/Société</th>
                                                 <th>Responsable</th>
                                                 <th>Contact</th>
                                                 <th>Heure du Rendez-vous</th>
-                                                <th>Nom/Prenom du Rendez-vous</th>
-                                                <th>Contact du Rendez-vous</th>
-                                                <th>Société du Rendez-vous</th>
-                                                <th>Heure du Rendez-vous</th>
-                                                <th>Nom/Prenom du Nettoyage</th>
-                                                <th>Contact du Nettoyage</th>
-                                                <th>Société du Nettoyage</th>
-                                                <th>Heure du Nettoyage</th>
-                                                <th>Date du Rendez-vous</th>
-                                                {{-- <th>Statut</th>
-                                                <th>Actions</th> --}}
+                                                {{-- <th>Statut</th> --}}
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody >
@@ -83,19 +77,20 @@
                                             <tr class="{{ $backgroundClass }}">
                                                 <td>{{ $commercial->date }}</td>
                                                 <td>{{ $commercial->commercial_name }}</td>
+                                                <td>{{ $commercial->date_rdv }}</td>
+                                                <td>{{ $commercial->rdv_heure }}</td>
+                                                <td>{{ $commercial->rubrique }}</td>
                                                 <td>{{ $commercial->entreprise_nom }}</td>
                                                 <td>{{ $commercial->entreprise_responsable }}</td>
                                                 <td>{{ $commercial->entreprise_contact }}</td>
                                                 <td>{{ $commercial->entreprise_heure }}</td>
-                                                <td>{{ $commercial->rdv_nom_prenom }}</td>
+                                                {{-- <td>{{ $commercial->rdv_nom_prenom }}</td>
                                                 <td>{{ $commercial->rdv_contact }}</td>
                                                 <td>{{ $commercial->rdv_societe }}</td>
-                                                <td>{{ $commercial->rdv_heure }}</td>
                                                 <td>{{ $commercial->nettoyage_nom_prenom }}</td>
                                                 <td>{{ $commercial->nettoyage_contact }}</td>
                                                 <td>{{ $commercial->nettoyage_societe }}</td>
-                                                <td>{{ $commercial->nettoyage_heure }}</td>
-                                                <td>{{ $commercial->date_rdv }}</td>
+                                                <td>{{ $commercial->nettoyage_heure }}</td> --}}
                                                 {{-- <td>
                                                     <form action="{{ route('commercial.updateStatus', $commercial->id) }}" method="POST">
                                                         @csrf
@@ -108,7 +103,7 @@
                                                         </select>
                                                     </form>
                                                 </td> --}}
-                                                {{-- <td>
+                                                <td>
                                                     <a href="{{ route('commercial.show', $commercial->id) }}"><i class="ft-eye text-info"></i></a>
                                                     <a href="{{ route('commercial.edit', $commercial->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                                     <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $commercial->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
@@ -136,7 +131,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td> --}}
+                                                </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -164,6 +159,7 @@
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
+<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->

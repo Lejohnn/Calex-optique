@@ -12,25 +12,42 @@ class Prospect extends Model
     protected $fillable = [
         'date',
         'commercial_name',
+        'date_rdv',
+        'rubrique',
         'entreprise_nom',
         'entreprise_responsable',
         'entreprise_contact',
         'entreprise_heure',
-        'rdv_nom_prenom',
-        'rdv_contact',
-        'rdv_societe',
         'rdv_heure',
-        'nettoyage_nom_prenom',
-        'nettoyage_contact',
-        'nettoyage_societe',
-        'nettoyage_heure',
         'user_id',
-        'date_rdv',
         'statut',
+        'commercial_id', // Ajoutez cette ligne
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function commercial()
+    {
+        return $this->belongsTo(Commercial::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($prospect) {
+            $commercial = $prospect->commercial;
+            if ($commercial) {
+                $prospect->commercial_name = $commercial->full_name;
+            }
+        });
+
+        static::updating(function ($prospect) {
+            $commercial = $prospect->commercial;
+            if ($commercial) {
+                $prospect->commercial_name = $commercial->full_name;
+            }
+        });
     }
 }

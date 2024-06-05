@@ -4,6 +4,7 @@ use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommercialController;
+use App\Http\Controllers\CommerciauxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
@@ -54,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Gestion des Commerciaux
     Route::middleware(['role:1,6'])->group(function () {
+        // Routes pour CommercialController
         Route::get('/commercial/create', [CommercialController::class, 'create'])->name('commercial.create');
         Route::post('/commercial/store', [CommercialController::class, 'store'])->name('commercial.store')
             ->middleware('setUserIdForProspect');
@@ -64,7 +66,26 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/commercial/{id}/delete', [CommercialController::class, 'destroy'])->name('commercial.destroy');
         Route::get('/commercial/prospects', [CommercialController::class, 'prospectsByCommercial'])->name('commercial.prospects');
         Route::put('/commercial/{id}/update-status', [CommercialController::class, 'updateStatus'])->name('commercial.updateStatus');
-        Route::get('/commercialstat', [CommercialController::class, 'statistique'])->name('commercial.stat');
+        Route::get('/commercialstat', [CommerciauxController::class, 'stats'])->name('commercial.stats');
+        Route::get('commercials/{id}/prospects', [CommerciauxController::class, 'showProspects'])->name('commercial.prospects');
+
+
+        // Routes pour CommerciauxController
+    Route::prefix('agent')->group(function () {
+        Route::get('/create', [CommerciauxController::class, 'create'])->name('agent.create');
+        Route::post('/store', [CommerciauxController::class, 'store'])->name('agent.store')
+            ->middleware('setUserIdForProspect');
+        Route::get('/', [CommerciauxController::class, 'index'])->name('agent.index');
+        Route::get('/{id}', [CommerciauxController::class, 'show'])->name('agent.show');
+        Route::get('/{id}/edit', [CommerciauxController::class, 'edit'])->name('agent.edit');
+        Route::put('/{id}/update', [CommerciauxController::class, 'update'])->name('agent.update');
+        Route::delete('/{id}/delete', [CommerciauxController::class, 'destroy'])->name('agent.destroy');
+        // Route::get('/prospects/{commercialId}', [CommerciauxController::class, 'getProspectsByCommercial']);
+        // Route::get('/prospects', [CommerciauxController::class, 'getProspectsByCommercial']);
+        Route::get('/prospects/{commercialId}', [CommerciauxController::class, 'getProspectsByCommercial']);
+
+
+    });
     });
 
     // Service Call

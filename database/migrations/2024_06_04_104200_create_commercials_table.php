@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('prospects', function (Blueprint $table) {
-            $table->date('date_rdv')->nullable(); // Nouveau champ date pour le rendez-vous
+        Schema::create('commercials', function (Blueprint $table) {
+            $table->id();
+            $table->string('full_name'); // Nom complet du commercial
+            $table->date('start_date');  // Date de début
+            $table->integer('points');   // Nombre de points
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('prospects', function (Blueprint $table) {
-            $table->dropColumn('date_rdv'); // Supprimer le champ en cas de rollback
-        });
+        Schema::dropIfExists('commercials');
     }
 };
