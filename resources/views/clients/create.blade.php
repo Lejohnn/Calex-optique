@@ -264,7 +264,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="row">
-                                                    <div class="col-md-12">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="choix_service">Choix du Service <span class="text-danger">*</span></label>
                                                             <select class="form-control" id="choix_service" name="choix_service" required>
@@ -275,6 +275,12 @@
                                                                 {{-- <option value="service_vente">Service vente</option> --}}
                                                                 <option value="visite_simple">Visite Simple</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="canal">Canal</label>
+                                                            <input class="form-control" id="canal" name="canal" type="text" />
                                                         </div>
                                                     </div>
                                                 </div>

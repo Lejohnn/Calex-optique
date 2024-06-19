@@ -49,20 +49,15 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Nom du Commercial</th>
-                                                <th>Entreprise</th>
+                                                <th>Date du Rendez-vous</th>
+                                                <th>Heure du Rendez-vous</th>
+                                                <th>Rubrique</th>
+                                                <th>Entreprise/Société</th>
                                                 <th>Responsable</th>
                                                 <th>Contact</th>
                                                 <th>Heure du Rendez-vous</th>
-                                                <th>Nom/Prenom du Rendez-vous</th>
-                                                <th>Contact du Rendez-vous</th>
-                                                <th>Société du Rendez-vous</th>
-                                                <th>Heure du Rendez-vous</th>
-                                                <th>Nom/Prenom du Nettoyage</th>
-                                                <th>Contact du Nettoyage</th>
-                                                <th>Société du Nettoyage</th>
-                                                <th>Heure du Nettoyage</th>
-                                                <th>Date du Rendez-vous</th>
-                                                <th>Statut</th>
+                                                <th>Changer le Statut</th>
+                                                {{-- <th>Statut</th> --}}
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -71,38 +66,45 @@
                                                 @php
                                                 $backgroundClass = '';
 
-                                                switch ($commercial->statut) {
-                                                    case 'pas_encore':
-                                                        $backgroundClass = 'table-warning'; // Utiliser la classe de couleur d'avertissement de Bootstrap pour l'orange
+                                                switch ($commercial->validation_status) {
+                                                    case 'pending':
+                                                        $backgroundClass = 'table-warning'; // Jaune pour pending
                                                         break;
-                                                    case 'verifie':
-                                                        $backgroundClass = 'table-success'; // Utiliser la classe de couleur de succès de Bootstrap pour le vert
+                                                    case 'confirmed':
+                                                        $backgroundClass = 'table-success'; // Vert pour confirmed
                                                         break;
-                                                    case 'pas_bon':
-                                                        $backgroundClass = 'table-danger'; // Utiliser la classe de couleur de danger de Bootstrap pour le rouge
+                                                    case 'denied':
+                                                        $backgroundClass = 'table-danger'; // Rouge pour denied
+                                                        break;
+                                                    case 'peace':
+                                                        $backgroundClass = ''; // Pas de couleur pour peace
                                                         break;
                                                     default:
                                                         $backgroundClass = '';
                                                         break;
                                                 }
                                                 @endphp
-                                            <tr class="{{ $backgroundClass }}">
-                                                <td>{{ $commercial->date }}</td>
-                                                <td>{{ $commercial->commercial_name }}</td>
-                                                <td>{{ $commercial->entreprise_nom }}</td>
-                                                <td>{{ $commercial->entreprise_responsable }}</td>
-                                                <td>{{ $commercial->entreprise_contact }}</td>
-                                                <td>{{ $commercial->entreprise_heure }}</td>
-                                                <td>{{ $commercial->rdv_nom_prenom }}</td>
-                                                <td>{{ $commercial->rdv_contact }}</td>
-                                                <td>{{ $commercial->rdv_societe }}</td>
-                                                <td>{{ $commercial->rdv_heure }}</td>
-                                                <td>{{ $commercial->nettoyage_nom_prenom }}</td>
-                                                <td>{{ $commercial->nettoyage_contact }}</td>
-                                                <td>{{ $commercial->nettoyage_societe }}</td>
-                                                <td>{{ $commercial->nettoyage_heure }}</td>
-                                                <td>{{ $commercial->date_rdv }}</td>
-                                                <td>
+                                           <tr class="{{ $backgroundClass }}">
+                                            <td>{{ $commercial->date }}</td>
+                                            <td>{{ $commercial->commercial_name }}</td>
+                                            <td>{{ $commercial->date_rdv }}</td>
+                                            <td>{{ $commercial->rdv_heure }}</td>
+                                            <td>{{ $commercial->rubrique }}</td>
+                                            <td>{{ $commercial->entreprise_nom }}</td>
+                                            <td>{{ $commercial->entreprise_responsable }}</td>
+                                            <td>{{ $commercial->entreprise_contact }}</td>
+                                            <td>{{ $commercial->entreprise_heure }}</td>
+                                            <td>
+                                                <form action="{{ route('prospects.updateStatus', $commercial->id) }}" method="POST">
+                                                    @csrf
+                                                    <select class="form-control" name="validation_status" onchange="this.form.submit()">
+                                                        <option value="pending" {{ $commercial->validation_status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                        <option value="confirmed" {{ $commercial->validation_status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                                        <option value="denied" {{ $commercial->validation_status == 'denied' ? 'selected' : '' }}>Denied</option>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                                {{-- <td>
                                                     <form action="{{ route('commercial.updateStatus', $commercial->id) }}" method="POST">
                                                         @csrf
                                                         @method('PUT')
@@ -113,11 +115,12 @@
                                                             <option value="ok" {{ $commercial->statut === 'ok' ? 'selected' : '' }}>Ok</option>
                                                         </select>
                                                     </form>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <a href="{{ route('commercial.show', $commercial->id) }}"><i class="ft-eye text-info"></i></a>
                                                     <a href="{{ route('commercial.edit', $commercial->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                                     <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $commercial->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                                                    {{-- <a href="{{ route('commercials.monthlyPerformance', $commercial->id) }}" class="ml-1"><i class="ft-bar-chart text-primary"></i></a> --}}
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="deleteConfirmationModal{{ $commercial->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $commercial->id }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">

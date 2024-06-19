@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('prospects', function (Blueprint $table) {
-            $table->enum('validation_status', ['pending', 'confirmed', 'denied', 'no_response'])->default('pending');
+            $table->enum('validation_status', ['pending', 'confirmed', 'denied','peace', 'no_response'])->default('pending');
             $table->date('validation_date')->nullable();
         });
     }

@@ -297,7 +297,7 @@ class CaisseController extends Controller
                     font-size: 12px;
                 }
             </style>
-            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br>
             <div class="centered">
                 <h2>Reçu de caisse</h2>
                 <p>Date de reçu: <span class="bold">' . $dateDuJour . '</span></p>

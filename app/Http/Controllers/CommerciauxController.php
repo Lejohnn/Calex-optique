@@ -57,7 +57,7 @@ class CommerciauxController extends Controller
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
 
-        return redirect()->route('agent.create')->with('success', 'Commercial créé avec succès!')
+        return redirect()->route('agent.index')->with('success', 'Commercial créé avec succès!')
             ->with('notifications', $notifications)
             ->with('notifications_notread', $notifications_notread);
     }
@@ -192,7 +192,7 @@ class CommerciauxController extends Controller
     public function updateProspectStatus(Request $request, $id)
     {
         $request->validate([
-            'validation_status' => 'required|string|in:confirmed,denied,pending',
+            'validation_status' => 'required|string|in:confirmed,denied,pending,peace',
         ]);
 
         $prospect = Prospect::findOrFail($id);

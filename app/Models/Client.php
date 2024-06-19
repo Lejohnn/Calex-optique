@@ -38,6 +38,7 @@ class Client extends Model
         'choix_service',
         'entretien',
         'montant',
+        'canal',
     ];
 
     public function notifications()

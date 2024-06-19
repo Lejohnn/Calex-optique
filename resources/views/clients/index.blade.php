@@ -87,7 +87,7 @@
                                             <th>Montant</th>
                                         @endif
                                         <th>Actions</th>
-                                        <th>Service Call</th>
+                                        {{-- <th>Service Call</th> --}}
                                         <th>Type de dernière interaction</th> <!-- Nouvelle colonne pour le type de l'interaction -->
                                     </tr>
                                 </thead>
@@ -139,9 +139,9 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <a href="{{ route('call.entreprise.index', $client->id) }}" class="btn btn-secondary btn-sm">Interactions</a>
-                                        </td>
+                                        </td> --}}
                                         <td>
                                             @if($client->serviceCallInteractions->isNotEmpty())
                                             <button class="btn btn-warning btn-sm">{{ $client->serviceCallInteractions->last()->type }}</button>

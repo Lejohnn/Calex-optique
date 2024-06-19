@@ -49,6 +49,7 @@
                                                     <li><strong>Sexe:</strong> {{ $client->sexe }}</li>
                                                     <li><strong>Société d’attache:</strong> {{ $client->societe_attache }}</li>
                                                     <li><strong>Assurance:</strong> {{ $client->assurance }}</li>
+                                                    <li><strong>Canal:</strong> {{ $client->canal }}</li>
                                                 </ul>
                                             </div>
                                         </fieldset>

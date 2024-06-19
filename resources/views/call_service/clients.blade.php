@@ -81,7 +81,12 @@
                                         <th>Sexe</th>
                                         <th>Choix_service</th>
                                         <th>Rendez-vous</th>
+                                        <th>Choix_service</th>
+                                        <th>Type d'entretien</th>
+                                        {{-- <th>Montant</th> --}}
                                         {{-- <th>Actions</th> --}}
+                                        <th>Service Call</th>
+                                        <th>Type de dernière interaction</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,6 +97,9 @@
                                         <td>{{ $client->sexe }}</td>
                                         <td>{{ $client->choix_service }}</td>
                                         <td>{{ $client->rendez_vous }}</td>
+                                        <td>{{ $client->choix_service }}</td>
+                                        <td>{{ $client->entretien }}</td>
+                                        {{-- <td>{{ $client->montant }}</td> --}}
                                         {{-- <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
 
@@ -124,6 +132,17 @@
                                                 </div>
                                             </div>
                                         </td> --}}
+                                        <td>
+                                            <a href="{{ route('call.entreprise.index', $client->id) }}" class="btn btn-secondary btn-sm">Interactions</a>
+                                        </td>
+                                        <td>
+                                            @if($client->serviceCallInteractions->isNotEmpty())
+                                            <button class="btn btn-warning btn-sm">{{ $client->serviceCallInteractions->last()->type }}</button>
+                                            @else
+                                                <button class="btn btn-dark btn-sm">N/A</button>
+                                            @endif
+                                        </td>
+
 
 
 

@@ -15,10 +15,9 @@
                             <div class="card-header">
                                 <h3 class="card-title">Détails du Commercial <strong>{{ $commercial->full_name }}</strong></h3>
                                 <div class="heading-elements">
-                                    <!-- Assurez-vous que l'ID est passé ici -->
-                                    {{-- <a href="{{ route('agent.edit', ['id' => $commercial->id]) }}" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('agent.edit', $commercial->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-edit"></i> Modifier
-                                    </a> --}}
+                                    </a>
                                     <a href="{{ route('agent.index') }}" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des commerciaux
                                     </a>

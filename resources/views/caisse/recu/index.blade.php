@@ -58,11 +58,15 @@
                                                         </td>
                                                         <td>
                                                             <a href="{{ route('recus.show', $receipt->id) }}"><i class="ft-eye text-info"></i></a>
-                                                            <a href="{{ route('recus.edit', $receipt->id) }}"><i class="ft-edit text-success ml-1"></i></a>
-                                                            <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $receipt->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
-                                                            <a href="{{ route('generate.receipt.pdf', $receipt->id) }}" class="btn btn-primary">
-                                                                <i class="feather icon-name text-color"></i>Reçu
-                                                            </a>
+                                                            @if(auth()->user()->role_id == 1)
+                                                                <a href="{{ route('recus.edit', $receipt->id) }}"><i class="ft-edit text-success ml-1"></i></a>
+                                                                <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $receipt->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                                                            @endif
+                                                            @if(auth()->user()->role_id == 5 or auth()->user()->role_id == 1)
+                                                                <a href="{{ route('generate.receipt.pdf', $receipt->id) }}" class="btn btn-primary">
+                                                                    <i class="feather icon-name text-color"></i>Reçu
+                                                                </a>
+                                                            @endif
                                                             <!-- Modal -->
                                                             <div class="modal fade" id="deleteConfirmationModal{{ $receipt->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $receipt->id }}" aria-hidden="true">
                                                                 <div class="modal-dialog" role="document">
@@ -102,33 +106,6 @@
             </div>
         </div>
     </div>
-    {{-- <script>
-        $(document).ready(function() {
-            // Gestion du clic sur le bouton "Générer le Reçu PDF"
-            $('.generate-pdf-btn').on('click', function(e) {
-                e.preventDefault();
-                var receiptId = $(this).data('receipt-id');
-                generatePDF(receiptId);
-            });
-
-            // Fonction pour générer le PDF
-            function generatePDF(receiptId) {
-                // Envoi d'une requête Ajax pour générer le PDF
-                $.ajax({
-                    url: '/generate-pdf/' + receiptId,
-                    type: 'GET',
-                    success: function(response) {
-                        // Ouvrir le PDF dans une nouvelle fenêtre ou proposer de le télécharger
-                        window.open('/storage/' + response.path, '_blank');
-                    },
-                    error: function(xhr) {
-                        console.error('Erreur lors de la génération du PDF : ' + xhr.statusText);
-                        alert('Erreur lors de la génération du PDF. Veuillez réessayer plus tard.');
-                    }
-                });
-            }
-        });
-    </script> --}}
 @endsection
 
 

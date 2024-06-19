@@ -57,25 +57,28 @@
                                         </thead>
                                         <tbody >
                                             @foreach($prospects as $commercial)
-                                                @php
+                                            @php
                                                 $backgroundClass = '';
 
-                                                switch ($commercial->statut) {
-                                                    case 'pas_encore':
-                                                        $backgroundClass = 'table-warning'; // Utiliser la classe de couleur d'avertissement de Bootstrap pour l'orange
+                                                switch ($commercial->validation_status) {
+                                                    case 'pending':
+                                                        $backgroundClass = 'table-warning'; // Jaune pour pending
                                                         break;
-                                                    case 'verifie':
-                                                        $backgroundClass = 'table-success'; // Utiliser la classe de couleur de succès de Bootstrap pour le vert
+                                                    case 'confirmed':
+                                                        $backgroundClass = 'table-success'; // Vert pour confirmed
                                                         break;
-                                                    case 'pas_bon':
-                                                        $backgroundClass = 'table-danger'; // Utiliser la classe de couleur de danger de Bootstrap pour le rouge
+                                                    case 'denied':
+                                                        $backgroundClass = 'table-danger'; // Rouge pour denied
+                                                        break;
+                                                    case 'peace':
+                                                        $backgroundClass = ''; // Pas de couleur pour peace
                                                         break;
                                                     default:
                                                         $backgroundClass = '';
                                                         break;
                                                 }
-                                                @endphp
-                                            <tr class="{{ $backgroundClass }}">
+                                            @endphp
+                                            <tr class="{{ $backgroundClass }}" id="commercial-{{ $commercial->id }}">
                                                 <td>{{ $commercial->date }}</td>
                                                 <td>{{ $commercial->commercial_name }}</td>
                                                 <td>{{ $commercial->date_rdv }}</td>
@@ -88,10 +91,11 @@
                                                 <td>
                                                     <form action="{{ route('prospects.updateStatus', $commercial->id) }}" method="POST">
                                                         @csrf
-                                                        <select class="form-control" name="validation_status" onchange="this.form.submit()">
+                                                        <select class="form-control validation-status" name="validation_status" data-commercial-id="{{ $commercial->id }}" onchange="this.form.submit()">
                                                             <option value="pending" {{ $commercial->validation_status == 'pending' ? 'selected' : '' }}>Pending</option>
                                                             <option value="confirmed" {{ $commercial->validation_status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
                                                             <option value="denied" {{ $commercial->validation_status == 'denied' ? 'selected' : '' }}>Denied</option>
+                                                            <option value="peace" {{ $commercial->validation_status == 'peace' ? 'selected' : '' }}>Peace</option>
                                                         </select>
                                                     </form>
                                                 </td>

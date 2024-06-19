@@ -47,7 +47,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="start_date">Date de Début <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="start_date" name="start_date" type="date" value="{{ $commercial->start_date }}" required />
+                                                            <input class="form-control" id="start_date" name="start_date" type="date" value="{{ $commercial->start_date }}" required readonly />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -55,7 +55,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="points">Points <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="points" name="points" type="number" value="{{ $commercial->points }}" required />
+                                                            <input class="form-control" id="points" name="points" type="number" value="{{ $commercial->points }}" required readonly />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -74,7 +74,6 @@
     </div>
 </div>
 @endsection
-
 
 
 <!-- BEGIN: Vendor JS-->

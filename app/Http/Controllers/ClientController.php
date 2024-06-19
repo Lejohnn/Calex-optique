@@ -9,6 +9,9 @@ use App\Models\Notification;
 use App\Models\Prescription;
 use App\Models\User;
 use App\Models\ServiceCallInteraction;
+use App\Models\Facture;
+use App\Models\Receipt;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 // use PDF;
@@ -117,6 +120,7 @@ class ClientController extends Controller
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
             'montant' => 'nullable|numeric',
+            'canal' => 'nullable|string',
         ], [
             'telephone.unique' => 'Le numéro de téléphone existe déjà.',
             'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
@@ -202,6 +206,8 @@ class ClientController extends Controller
             'choix_service' => 'required|string',
             'entretien' => 'nullable|string',
             'montant' => 'nullable|numeric',
+            'canal' => 'nullable|string',
+
         ], [
             'telephone.unique' => 'Le numéro de téléphone existe déjà.',
             'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
@@ -377,7 +383,7 @@ class ClientController extends Controller
         // public function open() {
         //     return view ('clients.facture');
         // }
- 
+
         public function generatePDF()
     {
         // Récupérer les données de tous les clients
@@ -510,6 +516,35 @@ class ClientController extends Controller
         return $pdf->download('ordonnance.pdf');
     }
 
+
+    public function voirFactures()
+    {
+        // Récupérer les notifications
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        // Récupérer toutes les factures enregistrées en base de données
+        $receipts = Facture::orderBy('date_facture', 'desc')->get();
+
+        // Retourner la vue avec les factures et les notifications
+        return view('clients.recu', compact('receipts', 'notifications', 'notifications_notread'));
+    }
+
+    public function detailFacture($id)
+    {
+        // Récupérer la facture correspondant à l'ID
+        $facture = Facture::findOrFail($id);
+
+        // Décoder les données JSON des produits
+        $produits = json_decode($facture->produits, true);
+
+        // Récupérer les notifications
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        // Retourner la vue avec les détails de la facture et les notifications
+        return view('clients.detail_recu', compact('facture', 'produits', 'notifications', 'notifications_notread'));
+    }
 
 
     public function indexOrdonnance()

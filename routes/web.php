@@ -12,7 +12,6 @@ use App\Http\Controllers\CallServiceController;
 use App\Http\Controllers\CaisseController;
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', [AuthController::class, 'loginView']);
     Route::get('/login', [AuthController::class, 'loginView'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 });
@@ -22,6 +21,19 @@ Route::get('/performance', [CommerciauxController::class, 'showMonthlyPerformanc
 Route::get('/stata', function () {
     return view('commercial.monthly_performance');
 });
+
+Route::get('/', function () {
+    return view('index');
+})->name('home');
+
+Route::get('/consultation', function () {
+    return view('consultation');
+})->name('consultation');
+
+Route::get('/lunettes', function () {
+    return view('lunettes');
+})->name('lunettes');
+
 Route::middleware(['auth'])->group(function () {
 
     // Gestion des utilisateurs (Admin only)
@@ -39,8 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:1,2,3,4,5'])->group(function () {
         Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
 
-
-                // Routes pour les interactions de service Call
+        // Routes pour les interactions de service Call
         Route::get('clients/{client}/call-interactions', [ClientController::class, 'showServiceCallInteractions'])->name('call.entreprise.index');
         Route::get('clients/{client}/call-interactions/create', [ClientController::class, 'createServiceCallInteraction'])->name('call.entreprise.create');
         Route::post('clients/{client}/call-interactions', [ClientController::class, 'addServiceCallInteraction'])->name('call.entreprise.store');
@@ -49,13 +60,14 @@ Route::middleware(['auth'])->group(function () {
         Route::put('clients/{client}/call-interactions/{interaction}', [ClientController::class, 'updateServiceCallInteraction'])->name('call.entreprise.update');
         Route::delete('clients/{client}/call-interactions/{interaction}', [ClientController::class, 'deleteServiceCallInteraction'])->name('call.entreprise.destroy');
 
-
         Route::middleware(['role:1,2,3,4'])->group(function () {
             Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
             Route::post('/clients', [ClientController::class, 'store'])->name('clients.store');
             Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('clients.edit');
             Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
             Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
+            Route::get('/clients/factures', [ClientController::class, 'voirFactures'])->name('client.voirFactures');
+            Route::get('/clients/factures/{id}', [ClientController::class, 'detailFacture'])->name('client.detailFacture');
         });
 
         Route::get('/clients/{client}', [ClientController::class, 'show'])->name('clients.show');
@@ -81,32 +93,23 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/commercial/{id}/delete', [CommercialController::class, 'destroy'])->name('commercial.destroy');
         Route::get('/commercial/prospects', [CommercialController::class, 'prospectsByCommercial'])->name('commercial.prospects');
         Route::put('/commercial/{id}/update-status', [CommercialController::class, 'updateStatus'])->name('commercial.updateStatus');
-        // Route::get('/commercials/{id}/monthly-performance', [CommercialController::class, 'showMonthlyPerformance'])->name('commercials.monthlyPerformance');
+        Route::get('/commercials/{id}/monthly-performance', [CommercialController::class, 'showMonthlyPerformance'])->name('commercials.monthlyPerformance');
         Route::get('/commercialstat', [CommerciauxController::class, 'stats'])->name('commercial.stats');
         Route::get('commercials/{id}/prospects', [CommerciauxController::class, 'showProspects'])->name('commercial.prospects');
         Route::post('/prospects/{id}/update-status', [CommerciauxController::class, 'updateProspectStatus'])->name('prospects.updateStatus');
 
-
-
         // Routes pour CommerciauxController
-    Route::prefix('agent')->group(function () {
-        Route::get('/create', [CommerciauxController::class, 'create'])->name('agent.create');
-        Route::post('/store', [CommerciauxController::class, 'store'])->name('agent.store')
-            ->middleware('setUserIdForProspect');
-        Route::get('/', [CommerciauxController::class, 'index'])->name('agent.index');
-        Route::get('/{id}', [CommerciauxController::class, 'show'])->name('agent.show');
-        Route::get('/{id}/edit', [CommerciauxController::class, 'edit'])->name('agent.edit');
-        Route::put('/{id}/update', [CommerciauxController::class, 'update'])->name('agent.update');
-        Route::delete('/{id}/delete', [CommerciauxController::class, 'destroy'])->name('agent.destroy');
-        // Route::get('/prospects/{commercialId}', [CommerciauxController::class, 'getProspectsByCommercial']);
-        // Route::get('/prospects', [CommerciauxController::class, 'getProspectsByCommercial']);
-        Route::get('/prospects/{commercialId}', [CommerciauxController::class, 'getProspectsByCommercial']);
-
-        // Route::get('/performance', [CommerciauxController::class, 'showMonthlyPerformance'])->name('monthly.performance');
-
-
-
-    });
+        Route::prefix('agent')->group(function () {
+            Route::get('/create', [CommerciauxController::class, 'create'])->name('agent.create');
+            Route::post('/store', [CommerciauxController::class, 'store'])->name('agent.store')
+                ->middleware('setUserIdForProspect');
+            Route::get('/', [CommerciauxController::class, 'index'])->name('agent.index');
+            Route::get('/{commercial}', [CommerciauxController::class, 'show'])->name('agent.show');
+            Route::get('/{commercial}/edit', [CommerciauxController::class, 'edit'])->name('agent.edit');
+            Route::put('/{commercial}/update', [CommerciauxController::class, 'update'])->name('agent.update');
+            Route::delete('/{commercial}/delete', [CommerciauxController::class, 'destroy'])->name('agent.destroy');
+            Route::get('/prospects/{commercialId}', [CommerciauxController::class, 'getProspectsByCommercial']);
+        });
     });
 
     // Service Call
@@ -121,17 +124,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/generer-facture', [CaisseController::class, 'generateInvoice'])->name('generate.invoice');
         Route::get('/factures', [CaisseController::class, 'voirFactures'])->name('caisse.views');
         Route::get('/factures/{id}', [CaisseController::class, 'detailFacture'])->name('factures.details');
-        Route::get('/caisse/recu', [CaisseController::class, 'index'])->name('caisse.recu.index');
-        Route::get('/recus/{id}', [CaisseController::class, 'show'])->name('recus.show');
         Route::get('/recus/{id}/edit', [CaisseController::class, 'edit'])->name('recus.edit');
         Route::put('/recus/{id}', [CaisseController::class, 'update'])->name('recus.update');
         Route::delete('/recus/{id}', [CaisseController::class, 'destroy'])->name('recus.destroy');
-        // Route::get('/generate-receipt-pdf/{id}', 'ReceiptController@generateReceiptPdf')->name('generate.receipt.pdf');
         Route::get('/generate-receipt-pdf/{id}', [CaisseController::class, 'generateReceiptPdf'])->name('generate.receipt.pdf');
+    });
 
-
-
-
+    Route::middleware(['role:1,5,4'])->group(function () {
+        Route::get('/caisse/recu', [CaisseController::class, 'index'])->name('caisse.recu.index');
+        Route::get('/recus/{id}', [CaisseController::class, 'show'])->name('recus.show');
     });
 
     // Paramètres et Notifications
@@ -145,3 +146,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/generate-pdf', [ClientController::class, 'generatePDF'])->name('generate.pdf');
+
+?>
+
