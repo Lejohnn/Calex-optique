@@ -8,6 +8,8 @@ use App\Models\Client;
 use App\Models\Notification;
 use App\Models\Prescription;
 use App\Models\User;
+use App\Models\ServiceCallInteraction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 // use PDF;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -232,8 +234,6 @@ class ClientController extends Controller
 
 
 
-
-
         public function destroy(Client $client)
         {
             $notifications = $this->notificationService->notification_template()[0];
@@ -249,10 +249,135 @@ class ClientController extends Controller
         }
 
 
+    // ****************************************************************************************************************
+
+    //                                                 Début Du SERVICE CALL
+
+    // ****************************************************************************************************************
+
+
+
+    public function showServiceCallInteractions($clientId)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $client = Client::findOrFail($clientId);
+        $interactions = $client->serviceCallInteractions;
+
+        foreach ($interactions as $interaction) {
+            try {
+                // Convertir la date au format Y-m-d si ce n'est pas déjà fait
+                $parsedDate = Carbon::parse($interaction->interaction_date);
+                $interaction->formatted_date = $parsedDate->format('d/m/Y');
+            } catch (\Exception $e) {
+                \Log::error('Erreur de parsing de la date: ' . $interaction->interaction_date . ' - ' . $e->getMessage());
+                $interaction->formatted_date = ''; // Mettre une valeur par défaut si la conversion échoue
+            }
+        }
+
+        return view('call.entreprise.index', compact('client', 'interactions', 'notifications', 'notifications_notread'));
+    }
+
+
+    public function createServiceCallInteraction($clientId)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $client = Client::findOrFail($clientId);
+        return view('call.entreprise.create', compact('client', 'notifications', 'notifications_notread'));
+    }
+
+    public function addServiceCallInteraction(Request $request, $clientId)
+    {
+        $request->validate([
+            'type' => 'required|string|in:relance_confirmation_rdv,annonce_confirmation_rdv,relance_satisfaction,relance_proposition_reduction,relance_info_lunettes_disponibles,renseignements_retrait',
+            'details' => 'nullable|string',
+            'interaction_date' => 'required|date',
+        ]);
+
+        $client = Client::findOrFail($clientId);
+        $interaction = new ServiceCallInteraction($request->all());
+        $client->serviceCallInteractions()->save($interaction);
+
+        return redirect()->route('call.entreprise.index', $clientId)
+            ->with('success', 'Interaction de service call ajoutée avec succès.');
+    }
+
+
+    public function editServiceCallInteraction($clientId, $interactionId)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $client = Client::findOrFail($clientId);
+        $interaction = ServiceCallInteraction::findOrFail($interactionId);
+
+        return view('call.entreprise.edit', compact('client', 'interaction', 'notifications', 'notifications_notread'));
+    }
+
+    public function updateServiceCallInteraction(Request $request, $clientId, $interactionId)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $request->validate([
+            'type' => 'required|string|in:relance_confirmation_rdv,annonce_confirmation_rdv,relance_satisfaction,relance_proposition_reduction,relance_info_lunettes_disponibles,renseignements_retrait',
+            'details' => 'nullable|string',
+            'interaction_date' => 'required|date',
+        ]);
+
+        $interaction = ServiceCallInteraction::findOrFail($interactionId);
+        $interaction->update($request->all());
+
+        return redirect()->route('call.entreprise.index', $clientId)
+            ->with('success', 'Interaction de service call mise à jour avec succès.')
+            ->with('notifications', $notifications)
+            ->with('notifications_notread', $notifications_notread);
+    }
+
+    public function showInteraction($client, $interaction)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $client = Client::findOrFail($client);
+        $interaction = ServiceCallInteraction::findOrFail($interaction);
+        $interaction->interaction_date = date('d/m/Y', strtotime($interaction->interaction_date));
+
+        return view('call.entreprise.show', compact('client', 'interaction', 'notifications', 'notifications_notread'));
+    }
+
+
+    public function deleteServiceCallInteraction($clientId, $interactionId)
+    {
+        $notifications = $this->notificationService->notification_template()[0];
+        $notifications_notread = $this->notificationService->notification_template()[1];
+
+        $interaction = ServiceCallInteraction::findOrFail($interactionId);
+        $interaction->delete();
+
+        return redirect()->route('call.entreprise.index', $clientId)
+            ->with('success', 'Interaction de service call supprimée avec succès.')
+            ->with('notifications', $notifications)
+            ->with('notifications_notread', $notifications_notread);
+    }
+
+    // ****************************************************************************************************************
+
+    //                                                 Fin Du SERVICE CALL
+
+    // ****************************************************************************************************************
+
+
+
+
+
         // public function open() {
         //     return view ('clients.facture');
         // }
-
+ 
         public function generatePDF()
     {
         // Récupérer les données de tous les clients

@@ -19,4 +19,10 @@ class Commercial extends Model
     {
         return $this->hasMany(Prospect::class);
     }
+
+    // Relation avec les performances mensuelles
+    public function monthlyPerformances()
+    {
+        return $this->hasMany(MonthlyPerformance::class);
+    }
 }

@@ -4,22 +4,12 @@
 
 @section('contenu')
 
+
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
         <div class="content-body">
             <!-- Facture Form -->
-                {{-- <style>
-                            @font-face {
-                                font-family: 'LEMONMILK-Medium';
-                                src: url('../fonts/LEMONMILK-Medium.otf') format('truetype');
-                                /* Autres formats de police */
-                            }
-
-                            body {
-                                font-family: 'LEMONMILK-Medium', sans-serif;
-                            }
-                </style> --}}
             <section id="facture">
                 <div class="icon-tabs">
                     <div class="row">
@@ -37,19 +27,11 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="nom_client">Nom du Client <span class="text-danger">*</span></label>
-                                                        <label for="nom_client">Nom du Client <span class="text-danger">*</span></label>
-{{--                                                        {!! Form::select('nom_client', $clientCaisse->pluck('nom'), null, ['class' => 'form-control', 'name' => 'nom_client', 'required']) !!}--}}
-{{--                                                        <input class="form-control" id="nom_client" name="nom_client" type="text" required />--}}
-
-                                                            <select name="nom_client" class="form-control">
-                                                                @foreach($clientCaisses as $clientCaisse)
-                                                                <option value={{$clientCaisse->id}}>
-                                                                    {{$clientCaisse->nom}}
-                                                                </option>
-                                                                @endforeach
-                                                            </select>
-
-
+                                                        <select name="nom_client" class="form-control" required>
+                                                            @foreach($clientCaisses as $clientCaisse)
+                                                                <option value="{{ $clientCaisse->id }}">{{ $clientCaisse->nom }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -59,6 +41,82 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- Informations Société, Téléphone et Médecin -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="societe">Société</label>
+                                                        <input class="form-control" id="societe" name="societe" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="telephone">Téléphone</label>
+                                                        <input class="form-control" id="telephone" name="telephone" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="medecin">Médecin</label>
+                                                        <input class="form-control" id="medecin" name="medecin" type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champs OD et OG -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="sphere_od">Sphere OD</label>
+                                                        <input class="form-control" id="sphere_od" name="sphere_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="sphere_og">Sphere OG</label>
+                                                        <input class="form-control" id="sphere_og" name="sphere_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="cylindre_od">Cylindre OD</label>
+                                                        <input class="form-control" id="cylindre_od" name="cylindre_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="cylindre_og">Cylindre OG</label>
+                                                        <input class="form-control" id="cylindre_og" name="cylindre_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="axe_od">Axe OD</label>
+                                                        <input class="form-control" id="axe_od" name="axe_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="axe_og">Axe OG</label>
+                                                        <input class="form-control" id="axe_og" name="axe_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="add_od">Add OD</label>
+                                                        <input class="form-control" id="add_od" name="add_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="add_og">Add OG</label>
+                                                        <input class="form-control" id="add_og" name="add_og" type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Tableau des Produits -->
                                             <table class="table" id="products-table">
                                                 <thead>
                                                     <tr>
@@ -71,7 +129,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <!-- La première ligne de produit -->
+                                                    <!-- Ligne de produit template -->
                                                     <tr class="product-template">
                                                         <td><input class="form-control" type="text" name="produit[]" required /></td>
                                                         <td><input class="form-control" type="number" min="1" name="quantite[]" required /></td>
@@ -80,9 +138,9 @@
                                                         <td><input class="form-control" type="text" readonly style="width: 100px;" /></td>
                                                         <td><button type="button" class="btn btn-danger btn-remove-row">Supprimer</button></td>
                                                     </tr>
-
                                                 </tbody>
                                             </table>
+
                                             <!-- Total -->
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -91,28 +149,17 @@
                                                         <input class="form-control" id="montant_total_ht" name="montant_total_ht" type="text" readonly />
                                                     </div>
                                                 </div>
-                                                {{-- <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="remise">Remise</label>
-                                                        <input class="form-control" id="remise" name="remise" type="text" />
-                                                    </div>
-                                                </div> --}}
                                             </div>
-                                            <div class="row">
-                                                {{-- <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="taxe">Taxe (TVA 20%)</label>
-                                                        <input class="form-control" id="taxe" name="taxe" type="text" readonly />
-                                                    </div>
-                                                </div> --}}
-                                                {{-- <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="montant_net">Montant Net</label>
-                                                        <input class="form-control" id="montant_net" name="montant_net" type="text" readonly />
-                                                    </div>
-                                                </div> --}}
+                                            <div class="form-group">
+                                                <label for="avance">Avance</label>
+                                                <input type="number" class="form-control" id="avance" name="avance" step="0.01" required>
                                             </div>
-                                            <!-- Bouton de soumission -->
+                                            <div class="form-group">
+                                                <label for="reste">Reste</label>
+                                                <input type="number" class="form-control" id="reste" name="reste" step="0.01" readonly>
+                                            </div>
+
+                                            <!-- Boutons -->
                                             <button type="button" class="btn btn-primary" id="add-product-row">Ajouter Produit</button>
                                             <button type="submit" class="btn btn-primary">Générer Facture</button>
                                         </form>
@@ -150,6 +197,8 @@
 <!-- END: Page JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+
+
 <script>
     // Fonction pour calculer le total d'une ligne de produit
     function calculateTotal(row) {
@@ -179,12 +228,23 @@
         });
 
         // Calculer la taxe (TVA 20%)
-        taxe = totalHT * 0.2;
+        var taxe = totalHT * 0.2;
 
         // Mettre à jour les champs
         $('#montant_total_ht').val(totalHT.toFixed(2) + " FCFA");
         $('#taxe').val(taxe.toFixed(2) + " FCFA");
         $('#montant_net').val((totalHT + taxe - remise).toFixed(2) + " FCFA");
+
+        // Mettre à jour le champ "reste"
+        updateReste();
+    }
+
+    // Fonction pour mettre à jour le champ "reste" en fonction de l'avance et du montant total HT
+    function updateReste() {
+        var avance = parseFloat($('#avance').val()) || 0;
+        var montantTotal = parseFloat($('#montant_total_ht').val()) || 0;
+        var reste = montantTotal - avance;
+        $('#reste').val(reste.toFixed(2));
     }
 
     $(document).ready(function() {
@@ -211,6 +271,12 @@
 
         // Mettre à jour les totaux initiaux lors du chargement de la page
         updateInvoiceTotals();
+
+        // Mettre à jour le reste lorsque l'avance change
+        $('#avance').on('input', function() {
+            updateReste();
+        });
     });
 </script>
+
 

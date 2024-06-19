@@ -31,8 +31,8 @@
                                     </div>
                                 @endif
                                 <div class="heading-elements">
-                                    <a href="" class="btn btn-primary  ">
-                                        <i class="la la-plus font-small-2"></i> Autre
+                                    <a href="{{ route('commercial.create') }}" class="btn btn-primary  ">
+                                        <i class="la la-plus font-small-2"></i> Ajouter
                                     </a>
                                 </div>
                             </div>
@@ -50,6 +50,7 @@
                                                 <th>Responsable</th>
                                                 <th>Contact</th>
                                                 <th>Heure du Rendez-vous</th>
+                                                <th>Changer le Statut</th>
                                                 {{-- <th>Statut</th> --}}
                                                 <th>Actions</th>
                                             </tr>
@@ -84,13 +85,16 @@
                                                 <td>{{ $commercial->entreprise_responsable }}</td>
                                                 <td>{{ $commercial->entreprise_contact }}</td>
                                                 <td>{{ $commercial->entreprise_heure }}</td>
-                                                {{-- <td>{{ $commercial->rdv_nom_prenom }}</td>
-                                                <td>{{ $commercial->rdv_contact }}</td>
-                                                <td>{{ $commercial->rdv_societe }}</td>
-                                                <td>{{ $commercial->nettoyage_nom_prenom }}</td>
-                                                <td>{{ $commercial->nettoyage_contact }}</td>
-                                                <td>{{ $commercial->nettoyage_societe }}</td>
-                                                <td>{{ $commercial->nettoyage_heure }}</td> --}}
+                                                <td>
+                                                    <form action="{{ route('prospects.updateStatus', $commercial->id) }}" method="POST">
+                                                        @csrf
+                                                        <select class="form-control" name="validation_status" onchange="this.form.submit()">
+                                                            <option value="pending" {{ $commercial->validation_status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                                            <option value="confirmed" {{ $commercial->validation_status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
+                                                            <option value="denied" {{ $commercial->validation_status == 'denied' ? 'selected' : '' }}>Denied</option>
+                                                        </select>
+                                                    </form>
+                                                </td>
                                                 {{-- <td>
                                                     <form action="{{ route('commercial.updateStatus', $commercial->id) }}" method="POST">
                                                         @csrf
@@ -99,6 +103,8 @@
                                                             <option value="pas_encore" {{ $commercial->statut === 'pas_encore' ? 'selected' : '' }}>Pas encore</option>
                                                             <option value="verifie" {{ $commercial->statut === 'verifie' ? 'selected' : '' }}>Vérifié</option>
                                                             <option value="pas_bon" {{ $commercial->statut === 'pas_bon' ? 'selected' : '' }}>Pas bon</option>
+                                                            <option value="honore" {{ $commercial->statut === 'honore' ? 'selected' : '' }}>Honoré</option>
+                                                            <option value="pas_honore" {{ $commercial->statut === 'pas_honore' ? 'selected' : '' }}>Pas Honoré</option>
                                                             <option value="ok" {{ $commercial->statut === 'ok' ? 'selected' : '' }}>Ok</option>
                                                         </select>
                                                     </form>
@@ -107,6 +113,7 @@
                                                     <a href="{{ route('commercial.show', $commercial->id) }}"><i class="ft-eye text-info"></i></a>
                                                     <a href="{{ route('commercial.edit', $commercial->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                                     <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $commercial->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
+                                                    {{-- <a href="{{ route('commercials.monthlyPerformance', $commercial->id) }}" class="ml-1"><i class="ft-bar-chart text-primary"></i></a> --}}
                                                     <!-- Modal -->
                                                     <div class="modal fade" id="deleteConfirmationModal{{ $commercial->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $commercial->id }}" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">

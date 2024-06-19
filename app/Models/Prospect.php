@@ -22,6 +22,8 @@ class Prospect extends Model
         'user_id',
         'statut',
         'commercial_id', // Ajoutez cette ligne
+        'validation_status',
+        'validation_date',
     ];
 
     public function user()

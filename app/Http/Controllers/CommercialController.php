@@ -53,7 +53,12 @@ class CommercialController extends Controller
             'in' => 'La valeur du :attribute n\'est pas valide.',
         ]);
 
-        Prospect::create($request->all());
+        $prospect = Prospect::create($request->all());
+
+        // Ajouter +1 point au commercial
+        $commercial = Commercial::find($request->input('commercial_id'));
+        $commercial->points += 1;
+        $commercial->save();
 
         return redirect()->route('commercial.index')
             ->with('success', 'Client prospecté ajouté avec succès!')
@@ -120,10 +125,35 @@ class CommercialController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $prospect = Prospect::findOrFail($id);
-        $prospect->update(['statut' => $request->statut]);
+        $commercial = Commercial::find($prospect->commercial_id);
+
+        $status = $request->input('statut');
+        $prospect->update(['validation_status' => $status, 'validation_date' => now()]);
+
+        // Adjust points based on status
+        if ($status == 'confirmed') {
+            $commercial->points += 1;
+        } elseif ($status == 'denied') {
+            $commercial->points -= 3;
+        }
+
+        $commercial->save();
 
         return redirect()->back()->with('success', 'Statut mis à jour avec succès!');
     }
+
+    // public function showMonthlyPerformance($id)
+    // {
+
+    //     $notifications = $this->notificationService->notification_template()[0];
+    //     $notifications_notread = $this->notificationService->notification_template()[1];
+
+    //     $commercial = Commercial::findOrFail($id);
+    //     $monthlyPerformances = $commercial->monthlyPerformances()->orderBy('month', 'desc')->get();
+
+    //     return view('commercial.monthly_performance', compact('commercial', 'monthlyPerformances','notifications', 'notifications_notread'));
+    // }
+
 
     public function statistique()
     {

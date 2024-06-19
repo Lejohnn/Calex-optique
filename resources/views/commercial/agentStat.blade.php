@@ -30,8 +30,8 @@
                                                 <p><strong>Heure du rendez-vous :</strong> {{ $prospect->rdv_heure }}</p>
                                                 <p><strong>Date du rendez-vous :</strong> {{ $prospect->date_rdv }}</p>
                                                 <p><strong>Statut :</strong>
-                                                    <span class="badge badge-{{ $prospect->statut == 'ok' ? 'success' : ($prospect->statut == 'verifie' ? 'info' : ($prospect->statut == 'pas_bon' ? 'danger' : 'warning')) }}">
-                                                        {{ ucfirst($prospect->statut) }}
+                                                    <span class="badge badge-{{ $prospect->validation_status == 'confirmed' ? 'success' : ($prospect->validation_status == 'denied' ? 'danger' : 'warning') }}">
+                                                        {{ ucfirst($prospect->validation_status) }}
                                                     </span>
                                                 </p>
                                             </div>

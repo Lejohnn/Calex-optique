@@ -14,6 +14,20 @@ class Facture extends Model
         'date_facture',
         'produits',
         'montant_total_ht',
+        'autre_nom',
+        'societe',
+        'telephone',
+        'medecin',
+        'sphere_od',
+        'sphere_og',
+        'cylindre_od',
+        'cylindre_og',
+        'axe_od',
+        'axe_og',
+        'add_od',
+        'add_og',
+        'avance',
+        'reste',
     ];
 
     protected $casts = [

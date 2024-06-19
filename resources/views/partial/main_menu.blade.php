@@ -88,6 +88,7 @@
                         <li class="{{ Request::is('commercial/create') ? 'active' : '' }}"><a class="menu-item" href="{{ route('commercial.create') }}"><i></i><span data-i18n="Invoice Summary">Enregistrer Un Client</span></a></li>
                         <li class="{{ Request::is('commercial') ? 'active' : '' }}"><a class="menu-item" href="{{ route('commercial.index') }}"><i></i><span data-i18n="Invoice Summary">Lister les Client</span></a></li>
                         <li class="{{ Request::is('commercialstat') ? 'active' : '' }}"><a class="menu-item" href="{{ route('commercial.stats') }}"><i></i><span data-i18n="Invoice Summary">Statistiques</span></a></li>
+                        {{-- <li class="{{ Request::is('commercialstat') ? 'active' : '' }}"><a class="menu-item" href="{{ route('commercials.monthlyPerformance') }}"><i></i><span data-i18n="Invoice Summary">Performance du Mois</span></a></li> --}}
                     </ul>
                     </li>
                         @endif

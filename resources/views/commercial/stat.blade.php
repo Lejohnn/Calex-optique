@@ -38,6 +38,26 @@
                                             <i class="icon-users font-large-2"></i>
                                         </div>
                                     </div>
+                                    <div class="media d-flex align-items-center mt-1">
+                                        <div class="media-body">
+                                            <h5 class="text-bold-700 mb-0" style="color: {{ $commercial->daily_note['color'] }}">
+                                                {{ $commercial->daily_note['note'] }}
+                                            </h5>
+                                            <span>Note quotidienne</span>
+                                        </div>
+                                        <div class="media-right ml-2">
+                                            <i class="icon-star font-large-2" style="color: {{ $commercial->daily_note['color'] }}"></i>
+                                        </div>
+                                    </div>
+                                    <div class="media d-flex align-items-center mt-1">
+                                        <div class="media-body">
+                                            <h5 class="text-bold-700 mb-0">{{ $commercial->points }}</h5>
+                                            <span>Points</span>
+                                        </div>
+                                        <div class="media-right ml-2">
+                                            <i class="icon-trophy font-large-2"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -45,11 +65,20 @@
                     @endforeach
                 </div>
             </section>
+
         </div>
     </div>
 </div>
+
+
+
 <!-- Ajouter une div pour afficher la liste des prospects -->
 <div id="prospects-list"></div>
+
+<!-- Bouton pour accéder aux performances mensuelles -->
+<a href="{{ route('performance') }}" class="btn btn-primary monthly-performance-btn">
+    Performances Mensuelles
+</a>
 @endsection
 
 
@@ -89,6 +118,13 @@
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
+        .monthly-performance-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
     </style>
 
 

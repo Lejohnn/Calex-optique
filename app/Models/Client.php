@@ -54,4 +54,9 @@ class Client extends Model
     {
         return $this->hasMany(Facture::class); // Replace Facture with your actual model name
     }
+
+    public function serviceCallInteractions()
+    {
+        return $this->hasMany(ServiceCallInteraction::class);
+    }
 }

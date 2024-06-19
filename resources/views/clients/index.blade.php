@@ -78,15 +78,17 @@
                                         <th>Nom</th>
                                         <th>Prénom</th>
                                         <th>Sexe</th>
-                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 2 or auth()->user()->role_id == 3 or auth()->user()->role_id == 10 )
+                                        @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2 or auth()->user()->role_id == 3 or auth()->user()->role_id == 10)
                                             <th>Rendez-vous</th>
                                         @endif
                                         <th>Choix_service</th>
-                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 4 )
+                                        @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 4)
                                             <th>Type d'entretien</th>
                                             <th>Montant</th>
                                         @endif
                                         <th>Actions</th>
+                                        <th>Service Call</th>
+                                        <th>Type de dernière interaction</th> <!-- Nouvelle colonne pour le type de l'interaction -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -95,27 +97,24 @@
                                         <td>{{ $client->nom }}</td>
                                         <td>{{ $client->prenom }}</td>
                                         <td>{{ $client->sexe }}</td>
-                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 2 or auth()->user()->role_id == 10 or auth()->user()->role_id == 3 )
+                                        @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2 or auth()->user()->role_id == 10 or auth()->user()->role_id == 3)
                                             <td>{{ $client->rendez_vous }}</td>
                                         @endif
                                         <td>{{ $client->choix_service }}</td>
-                                        @if(auth()->user()->role_id == 1  or auth()->user()->role_id == 4 )
+                                        @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 4)
                                             <td>{{ $client->entretien }}</td>
                                             <td>{{ $client->montant }}</td>
                                         @endif
                                         <td>
                                             <a href="{{ route('clients.show', $client->id) }}"><i class="ft-eye text-info"></i></a>
-
-                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 or auth()->user()->role_id == 5 )
-
-                                                    <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
+                                            @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 4 or auth()->user()->role_id == 5)
+                                                <a href="{{ route('clients.edit', $client->id) }}"><i class="ft-edit text-success ml-1"></i></a>
                                             @endif
-                                            @if (auth()->user()->role_id == 1 or auth()->user()->role_id == 3 )
+                                            @if (auth()->user()->role_id == 1 or auth()->user()->role_id == 3)
                                                 <a href="#" class="delete-btn" data-toggle="modal" data-target="#deleteConfirmationModal{{ $client->id }}"><i class="ft-trash-2 ml-1 text-warning"></i></a>
                                             @endif
 
                                             <!-- Modal -->
-
                                             <div class="modal fade" id="deleteConfirmationModal{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel{{ $client->id }}" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
@@ -140,13 +139,21 @@
                                                 </div>
                                             </div>
                                         </td>
-
-
-
+                                        <td>
+                                            <a href="{{ route('call.entreprise.index', $client->id) }}" class="btn btn-secondary btn-sm">Interactions</a>
+                                        </td>
+                                        <td>
+                                            @if($client->serviceCallInteractions->isNotEmpty())
+                                            <button class="btn btn-warning btn-sm">{{ $client->serviceCallInteractions->last()->type }}</button>
+                                            @else
+                                                N/A
+                                            @endif
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>

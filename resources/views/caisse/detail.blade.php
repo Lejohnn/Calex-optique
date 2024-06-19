@@ -16,7 +16,7 @@
                                 <h3 class="card-title">Détails de la Facture <strong>{{ $facture->id }}</strong></h3>
                                 <div class="heading-elements">
                                     <a href="{{ route('caisse.facture')}}" class="btn btn-dark btn-sm">
-                                        <i class="fas fa-edit"></i> generer une facture
+                                        <i class="fas fa-edit"></i> Générer une facture
                                     </a>
                                     <a href="{{ route('caisse.views') }}" class="btn btn-outline-secondary btn-sm">
                                         <i class="fas fa-arrow-left"></i> Retour à la liste des factures
@@ -32,6 +32,9 @@
                                                 <ul>
                                                     <li><strong>Nom du Client:</strong> {{ $facture->client->nom }}</li>
                                                     <li><strong>Date de la Facture:</strong> {{ $facture->date_facture }}</li>
+                                                    <li><strong>Société:</strong> {{ $facture->societe }}</li>
+                                                    <li><strong>Téléphone:</strong> {{ $facture->telephone }}</li>
+                                                    <li><strong>Médecin:</strong> {{ $facture->medecin }}</li>
                                                     <li><strong>Montant Total HT:</strong> {{ $facture->montant_total_ht }}</li>
                                                 </ul>
                                             </div>
@@ -57,12 +60,34 @@
                                                             <td>{{ $nom_produit }}</td>
                                                             <td>{{ $produits['quantites'][$key] }}</td>
                                                             <td>{{ $produits['prix_unitaires'][$key] }}</td>
-                                                            <td>{{ $produits['reductions'][$key] === null ? 0 : $produits['reductions'][$key]}}</td>
+                                                            <td>{{ $produits['reductions'][$key] === null ? 0 : $produits['reductions'][$key] }}</td>
                                                             <td>{{ (($produits['quantites'][$key] * $produits['prix_unitaires'][$key]) - ($produits['quantites'][$key] * $produits['prix_unitaires'][$key] * ($produits['reductions'][$key] / 100))) }}</td>
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
                                                 </table>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="row">
+                                        <fieldset class="col-md-12">
+                                            <div class="facture-detail">
+                                                <h4 class="mb-3">Détails de l'ordonnance:</h4>
+                                                <ul>
+                                                    <li><strong>Avance :</strong>{{ $facture->avance }} FCFA</li>
+                                                    <li><strong>Reste :</strong> {{ $facture->reste }} FCFA</li>
+
+                                                </ul>
+                                                <ul>
+                                                    <li><strong>Sphère OD:</strong> {{ $facture->sphere_od }}</li>
+                                                    <li><strong>Sphère OG:</strong> {{ $facture->sphere_og }}</li>
+                                                    <li><strong>Cylindre OD:</strong> {{ $facture->cylindre_od }}</li>
+                                                    <li><strong>Cylindre OG:</strong> {{ $facture->cylindre_og }}</li>
+                                                    <li><strong>Axe OD:</strong> {{ $facture->axe_od }}</li>
+                                                    <li><strong>Axe OG:</strong> {{ $facture->axe_og }}</li>
+                                                    <li><strong>Add OD:</strong> {{ $facture->add_od }}</li>
+                                                    <li><strong>Add OG:</strong> {{ $facture->add_og }}</li>
+                                                </ul>
                                             </div>
                                         </fieldset>
                                     </div>
