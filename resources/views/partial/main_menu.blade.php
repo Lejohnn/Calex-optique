@@ -5,7 +5,7 @@
             @if(auth()->user()->role_id == 1)
             <li class="nav-item" id="admin">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-user"></i>
                     <span class="menu-title" data-i18n="Invoice">Gestion des utilisateurs</span>
                 </a>
                 <ul class="menu-content">
@@ -17,7 +17,7 @@
                     </li>
                     <li class="{{ Request::is('users') ? 'active' : '' }}">
                         <a class="menu-item" href="{{ route('users.index') }}">
-                            <i></i>
+                            <i ></i>
                             <span data-i18n="Invoice Template">Lister les utilisateurs</span>
                         </a>
                     </li>
@@ -27,7 +27,7 @@
             @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 3 or auth()->user()->role_id == 2 or auth()->user()->role_id == 4)
             <li class="nav-item" id="client">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-heart"></i>
                     <span class="menu-title" data-i18n="Invoice">Gestion des
                         @if(auth()->user()->role_id == 3 or auth()->user()->role_id == 4)
                         Patients
@@ -96,13 +96,13 @@
             @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 6)
             <li class="nav-item" id="admin">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-users"></i>
                     <span class="menu-title" data-i18n="Invoice">Gestion des Commerciaux</span>
                 </a>
                 <ul class="menu-content">
                     <li class="{{ Request::is('agent/create') ? 'active' : '' }}">
                         <a class="menu-item" href="{{ route('agent.create') }}">
-                            <i></i>
+                            <i class="la la-user-tie"></i>
                             <span data-i18n="Invoice Summary">Ajouter Un Commercial</span>
                         </a>
                     </li>
@@ -136,7 +136,7 @@
             @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 10)
             <li class="nav-item" id="admin">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-phone"></i>
                     <span class="menu-title" data-i18n="Invoice">Service Call</span>
                 </a>
                 <ul class="menu-content">
@@ -158,7 +158,7 @@
             @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 5)
             <li class="nav-item" id="admin">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-money"></i>
                     <span class="menu-title" data-i18n="Invoice">Gestion Caisse</span>
                 </a>
                 <ul class="menu-content">
@@ -185,7 +185,7 @@
             @endif
             <li class="nav-item" id="admin">
                 <a href="#">
-                    <i class="la la-clipboard"></i>
+                    <i class="la la-gear"></i>
                     <span class="menu-title" data-i18n="Invoice">Paramètres</span>
                 </a>
                 <ul class="menu-content">
