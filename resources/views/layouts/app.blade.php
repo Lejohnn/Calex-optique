@@ -56,16 +56,21 @@
     <div class="drag-target"></div>
 
     @include('.partial.footer')
-
     <script src="{{asset('backend/js/core/app.js')}}"></script>
+    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
+
+    <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+    <script src="{{asset('backend/vendors/js/charts/chart.min.js')}}"></script>
+
+
+
+
 
     @section('script')
     <!-- BEGIN: Vendor JS-->
-    <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
     <!-- BEGIN Vendor JS-->
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="{{asset('backend/vendors/js/charts/chart.min.js')}}"></script>
     <script src="{{asset('backend/vendors/js/charts/raphael-min.js')}}"></script>
     <script src="{{asset('backend/vendors/js/charts/morris.min.js')}}"></script>
     <script src="{{asset('backend/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js')}}"></script>
@@ -76,7 +81,6 @@
     <!-- END: Page Vendor JS-->
 
     <!-- BEGIN: Theme JS-->
-    <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
