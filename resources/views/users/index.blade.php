@@ -20,6 +20,20 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h2 class="card-title">Liste des utilisateurs</h2>
+                                    @if (Session::has('success'))
+                                        <div class="alert alert-success">
+                                            {{Session::get('success')}}
+                                        </div>
+                                    @endif
+                                    @if (count($errors)> 0)
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{$error}}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <div class="heading-elements">
                                         <a href="{{ route('users.create') }}" class="btn btn-primary">
                                             <i class="la la-plus font-small-2"></i> Ajouter un utilisateur
@@ -87,10 +101,12 @@
     </div>
 @endsection
 
+<script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
+<script src="{{ asset('backend/js/core/app-menu.js') }}"></script>
+<script src="{{ asset('backend/js/core/app.js') }}"></script>
 
 
-
-<!-- BEGIN: Vendor JS-->
+ {{-- <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
 
@@ -111,4 +127,4 @@
     $(document).ready(function() {
         $('.datatable').DataTable();
     });
-</script>
+</script> --}}

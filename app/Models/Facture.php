@@ -28,6 +28,12 @@ class Facture extends Model
         'add_og',
         'avance',
         'reste',
+        'marque_select',
+        'code_select',
+        'od_select',
+        'od_select2',
+        'og_select',
+        'og_select2',
     ];
 
     protected $casts = [

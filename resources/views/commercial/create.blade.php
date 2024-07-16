@@ -60,7 +60,7 @@
                                             <input class="form-control" id="date_rdv" name="date_rdv" type="date" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="entreprise_heure">Heure du Rendez-vous</label>
+                                            <label for="entreprise_heure">Heure d'enregistrement </label>
                                             <input class="form-control" id="entreprise_heure" name="entreprise_heure" type="text">
                                         </div>
                                                                  <!-- Section Entreprise -->
@@ -79,7 +79,7 @@
                                                 <input class="form-control" id="entreprise_contact" name="entreprise_contact" type="text">
                                             </div>
                                             <div class="form-group">
-                                                <label for="rdv_heure">Heure d'enregistrement</label>
+                                                <label for="rdv_heure">Heure du Rendez-vous</label>
                                                 <input class="form-control" id="rdv_heure" name="rdv_heure" type="text">
                                             </div>
                                             <div class="form-group">

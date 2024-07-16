@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Prospect;
 use App\Models\Commercial;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 
 class CommercialController extends Controller
 {
@@ -16,6 +17,28 @@ class CommercialController extends Controller
     {
         $this->notificationService = $notificationService;
     }
+
+
+    public function testHeure(Request $request)
+    {
+        $request->validate([
+            'commercial_id' => 'required|integer',
+            'date_rdv' => 'required|date',
+            'rdv_heure' => 'required|date_format:H:i',
+        ]);
+
+        try {
+            $commercial = Prospect::findOrFail($request->commercial_id);
+            $commercial->date_rdv = $request->date_rdv;
+            $commercial->rdv_heure = $request->rdv_heure;
+            $commercial->save();
+
+            return response()->json(['success' => true, 'message' => 'L\'heure et la date du rendez-vous ont été mises à jour avec succès.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Une erreur s\'est produite lors de la mise à jour.']);
+        }
+    }
+
 
     public function create()
     {
@@ -153,6 +176,9 @@ class CommercialController extends Controller
 
     //     return view('commercial.monthly_performance', compact('commercial', 'monthlyPerformances','notifications', 'notifications_notread'));
     // }
+
+
+
 
 
     public function statistique()

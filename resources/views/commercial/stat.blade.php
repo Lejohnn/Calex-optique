@@ -4,7 +4,28 @@
 
 @section('contenu')
 <script src="{{ asset('backend/vendors/js/tables/datatable/datatables.min.js') }}"></script>
+    <!-- CSS pour effet hover -->
+    <style>
+        .card-link {
+            text-decoration: none;
+        }
 
+        .card-link .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-link .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .monthly-performance-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        }
+    </style>
 <div class="app-content content">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
@@ -75,10 +96,12 @@
 <!-- Ajouter une div pour afficher la liste des prospects -->
 <div id="prospects-list"></div>
 
-<!-- Bouton pour accéder aux performances mensuelles -->
-<a href="{{ route('performance') }}" class="btn btn-primary monthly-performance-btn">
-    Performances Mensuelles
-</a>
+@if(auth()->user()->role_id == 1 )
+    <!-- Bouton pour accéder aux performances mensuelles -->
+    <a href="{{ route('performance') }}" class="btn btn-primary monthly-performance-btn">
+        Performances Mensuelles
+    </a>
+@endif
 @endsection
 
 
@@ -104,28 +127,7 @@
         });
     </script> --}}
 
-    <!-- CSS pour effet hover -->
-    <style>
-        .card-link {
-            text-decoration: none;
-        }
 
-        .card-link .card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .card-link .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .monthly-performance-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-    </style>
 
 
     <!-- BEGIN: Vendor JS-->

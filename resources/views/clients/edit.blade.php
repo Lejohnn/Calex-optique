@@ -44,210 +44,243 @@
                                                 <i class="step-icon la la-user"></i>
                                                 Informations du client (Accueil)
                                             </h6>
-
-                                            <fieldset>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="prenom">Prénom <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="prenom" name="prenom" type="text" value="{{ $client->prenom }}" required />
+                                            @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2 || auth()->user()->role_id == 3 || auth()->user()->role_id == 4 )
+                                                <fieldset>
+                                                    @if(auth()->user()->role_id !== 1 && auth()->user()->role_id !== 2)
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="prenom">Prénom <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="prenom" name="prenom" type="text" value="{{ $client->prenom }}" required readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="nom">Nom <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="nom" name="nom" type="text" value="{{ $client->nom }}" required readonly  />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="telephone">N° de Téléphone <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="telephone" name="telephone" type="text" value="{{ $client->telephone }}" required readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="carte_identite">N° de carte Nationale d’identité</label>
+                                                                    <input class="form-control" id="carte_identite" name="carte_identite" type="text" value="{{ $client->carte_identite }}" readonly />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="prenom">Prénom <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="prenom" name="prenom" type="text" value="{{ $client->prenom }}" required />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="nom">Nom <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="nom" name="nom" type="text" value="{{ $client->nom }}" required  />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="telephone">N° de Téléphone <span class="text-danger">*</span></label>
+                                                                    <input class="form-control" id="telephone" name="telephone" type="text" value="{{ $client->telephone }}" required />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="carte_identite">N° de carte Nationale d’identité</label>
+                                                                    <input class="form-control" id="carte_identite" name="carte_identite" type="text" value="{{ $client->carte_identite }}" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="date_naissance">Date de naissance</label>
+                                                                <input class="form-control" id="date_naissance" name="date_naissance" type="date" value="{{ $client->date_naissance }}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="lieu_naissance">Lieu de naissance</label>
+                                                                <input class="form-control" id="lieu_naissance" name="lieu_naissance" type="text" value="{{ $client->lieu_naissance }}" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="nom">Nom <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="nom" name="nom" type="text" value="{{ $client->nom }}" required  />
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="profession">Profession</label>
+                                                                <input class="form-control" id="profession" name="profession" type="text" value="{{ $client->profession }}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="sexe">Sexe :<span class="text-danger">*</span></label>
+                                                                <select class="form-control" id="sexe" name="sexe" required>
+                                                                    <option value="M" @if($client->sexe == 'M') selected @endif>Masculin</option>
+                                                                    <option value="F" @if($client->sexe == 'F') selected @endif>Féminin</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="telephone">N° de Téléphone <span class="text-danger">*</span></label>
-                                                            <input class="form-control" id="telephone" name="telephone" type="text" value="{{ $client->telephone }}" required />
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="assurance">Assurance</label>
+                                                                <input class="form-control" id="assurance" name="assurance" type="text" value="{{ $client->assurance }}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="societe_attache">Société d’attache</label>
+                                                                <input class="form-control" id="societe_attache" name="societe_attache" type="text" value="{{ $client->societe_attache }}" />
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="carte_identite">N° de carte Nationale d’identité</label>
-                                                            <input class="form-control" id="carte_identite" name="carte_identite" type="text" value="{{ $client->carte_identite }}" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="date_naissance">Date de naissance</label>
-                                                            <input class="form-control" id="date_naissance" name="date_naissance" type="date" value="{{ $client->date_naissance }}" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="lieu_naissance">Lieu de naissance</label>
-                                                            <input class="form-control" id="lieu_naissance" name="lieu_naissance" type="text" value="{{ $client->lieu_naissance }}" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="profession">Profession</label>
-                                                            <input class="form-control" id="profession" name="profession" type="text" value="{{ $client->profession }}" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="sexe">Sexe :<span class="text-danger">*</span></label>
-                                                            <select class="form-control" id="sexe" name="sexe" required>
-                                                                <option value="M" @if($client->sexe == 'M') selected @endif>Masculin</option>
-                                                                <option value="F" @if($client->sexe == 'F') selected @endif>Féminin</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="assurance">Assurance</label>
-                                                            <input class="form-control" id="assurance" name="assurance" type="text" value="{{ $client->assurance }}" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="societe_attache">Société d’attache</label>
-                                                            <input class="form-control" id="societe_attache" name="societe_attache" type="text" value="{{ $client->societe_attache }}" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                            <!-- Informations supplémentaires (Médecin/Administrateur) -->
-                                            @if(auth()->user()->role_id == 3)
-                                            <fieldset>
-                                                <h6>
-                                                    <i class="step-icon la la-plus"></i>
-                                                    Informations supplémentaires (Médecin/Administrateur)
-                                                </h6>
-                                                <!-- Ajoutez ici les champs pré-remplis avec les valeurs existantes du client -->
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="disciplines_pratiquees">Discipline(s) pratiquée(s)</label>
-                                                            <input class="form-control" id="disciplines_pratiquees" name="disciplines_pratiquees" type="text" value="{{ $client->disciplines_pratiquees }}" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="date_debut">Date de début</label>
-                                                            <input class="form-control" id="date_debut" name="date_debut" type="date" value="{{ $client->date_debut }}" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="activite_interpelant_vision">Activité interpelant la vision</label>
-                                                            <input class="form-control" id="activite_interpelant_vision" name="activite_interpelant_vision" type="text" value="{{ $client->activite_interpelant_vision }}" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="antecedents_familiaux">Antécédents familiaux</label>
-                                                            <textarea class="form-control" id="antecedents_familiaux" name="antecedents_familiaux">{{ $client->antecedents_familiaux }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="antecedents_chirurgicaux">Antécédents chirurgicaux (avec date) y compris ORL, ophtalmo</label>
-                                                            <textarea class="form-control" id="antecedents_chirurgicaux" name="antecedents_chirurgicaux">{{ $client->antecedents_chirurgicaux }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="traitements_en_cours">Traitements en cours</label>
-                                                            <textarea class="form-control" id="traitements_en_cours" name="traitements_en_cours">{{ $client->traitements_en_cours }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="allergies">Allergies</label>
-                                                            <textarea class="form-control" id="allergies" name="allergies">{{ $client->allergies }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="mentions_generales">Mentions générales</label>
-                                                            <textarea class="form-control" id="mentions_generales" name="mentions_generales">{{ $client->mentions_generales }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="portez_vous_des_lunettes">Portez-vous des lunettes ?</label>
-                                                            <select class="form-control" id="portez_vous_des_lunettes" name="portez_vous_des_lunettes">
-                                                                <option value="" disabled selected>Sélectionnez</option>
-                                                                <option value="1" @if($client->portez_vous_des_lunettes == 1) selected @endif>Oui</option>
-                                                                <option value="0" @if($client->portez_vous_des_lunettes == 0) selected @endif>Non</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="besoin_changer_lunettes">Avez-vous besoin de changer de lunettes ?</label>
-                                                            <select class="form-control" id="besoin_changer_lunettes" name="besoin_changer_lunettes">
-                                                                <option value="" disabled selected>Sélectionnez</option>
-                                                                <option value="1" @if($client->besoin_changer_lunettes == 1) selected @endif>Oui</option>
-                                                                <option value="0" @if($client->besoin_changer_lunettes == 0) selected @endif>Non</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="autre_choses">Autre chose à mentionner au besoin</label>
-                                                            <textarea class="form-control" id="autre_choses" name="autre_choses">{{ $client->autre_choses }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="diagnostic">Diagnostic</label>
-                                                            <textarea class="form-control" id="diagnostic" name="diagnostic">{{ $client->diagnostic }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="prescription">Prescription</label>
-                                                            <textarea class="form-control" id="prescription" name="prescription">{{ $client->prescription }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="examen_particulier">Examen particulier</label>
-                                                            <textarea class="form-control" id="examen_particulier" name="examen_particulier">{{ $client->examen_particulier }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="rendez_vous">Rendez-vous</label>
-                                                            <input class="form-control" id="rendez_vous" name="rendez_vous" type="date" value="{{ $client->rendez_vous }}" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </fieldset>
+                                                </fieldset>
                                             @endif
-                                                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 4)
+
+                                            <!-- Informations supplémentaires (Médecin/Administrateur) -->
+                                            @if(auth()->user()->role_id == 3 || auth()->user()->role_id == 1)
+                                                <fieldset>
+                                                    <h6>
+                                                        <i class="step-icon la la-plus"></i>
+                                                        Informations supplémentaires (Médecin/Administrateur)
+                                                    </h6>
+                                                    <!-- Ajoutez ici les champs pré-remplis avec les valeurs existantes du client -->
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="disciplines_pratiquees">Discipline(s) pratiquée(s)</label>
+                                                                <input class="form-control" id="disciplines_pratiquees" name="disciplines_pratiquees" type="text" value="{{ $client->disciplines_pratiquees }}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="date_debut">Date de début</label>
+                                                                <input class="form-control" id="date_debut" name="date_debut" type="date" value="{{ $client->date_debut }}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="activite_interpelant_vision">Activité interpelant la vision</label>
+                                                                <input class="form-control" id="activite_interpelant_vision" name="activite_interpelant_vision" type="text" value="{{ $client->activite_interpelant_vision }}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="antecedents_familiaux">Antécédents familiaux</label>
+                                                                <textarea class="form-control" id="antecedents_familiaux" name="antecedents_familiaux">{{ $client->antecedents_familiaux }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="antecedents_chirurgicaux">Antécédents chirurgicaux (avec date) y compris ORL, ophtalmo</label>
+                                                                <textarea class="form-control" id="antecedents_chirurgicaux" name="antecedents_chirurgicaux">{{ $client->antecedents_chirurgicaux }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="traitements_en_cours">Traitements en cours</label>
+                                                                <textarea class="form-control" id="traitements_en_cours" name="traitements_en_cours">{{ $client->traitements_en_cours }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="allergies">Allergies</label>
+                                                                <textarea class="form-control" id="allergies" name="allergies">{{ $client->allergies }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="mentions_generales">Mentions générales</label>
+                                                                <textarea class="form-control" id="mentions_generales" name="mentions_generales">{{ $client->mentions_generales }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="portez_vous_des_lunettes">Portez-vous des lunettes ?</label>
+                                                                <select class="form-control" id="portez_vous_des_lunettes" name="portez_vous_des_lunettes">
+                                                                    <option value="" disabled selected>Sélectionnez</option>
+                                                                    <option value="1" @if($client->portez_vous_des_lunettes == 1) selected @endif>Oui</option>
+                                                                    <option value="0" @if($client->portez_vous_des_lunettes == 0) selected @endif>Non</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="besoin_changer_lunettes">Avez-vous besoin de changer de lunettes ?</label>
+                                                                <select class="form-control" id="besoin_changer_lunettes" name="besoin_changer_lunettes">
+                                                                    <option value="" disabled selected>Sélectionnez</option>
+                                                                    <option value="1" @if($client->besoin_changer_lunettes == 1) selected @endif>Oui</option>
+                                                                    <option value="0" @if($client->besoin_changer_lunettes == 0) selected @endif>Non</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="autre_choses">Autre chose à mentionner au besoin</label>
+                                                                <textarea class="form-control" id="autre_choses" name="autre_choses">{{ $client->autre_choses }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="diagnostic">Diagnostic</label>
+                                                                <textarea class="form-control" id="diagnostic" name="diagnostic">{{ $client->diagnostic }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="prescription">Prescription</label>
+                                                                <textarea class="form-control" id="prescription" name="prescription">{{ $client->prescription }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="examen_particulier">Examen particulier</label>
+                                                                <textarea class="form-control" id="examen_particulier" name="examen_particulier">{{ $client->examen_particulier }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label for="rendez_vous">Rendez-vous</label>
+                                                                <input class="form-control" id="rendez_vous" name="rendez_vous" type="date" value="{{ $client->rendez_vous }}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                </fieldset>
+                                            @endif
+                                                @if(auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <label for="entretien">Entretien:</label>
@@ -277,12 +310,56 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="canal">Canal</label>
-                                                        <input class="form-control" id="canal" name="canal" type="text" value="{{ $client->canal }}" />
+                                                @if(auth()->user()->role_id == 1 or auth()->user()->role_id == 2)
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="canal">Canal</label>
+                                                            <select class="form-control" id="canal_select" name="canal_select" style="display: none;">
+                                                                <option value="">Sélectionnez un commercial</option>
+                                                                @foreach($commercials as $commercial)
+                                                                    <option value="{{ $commercial->full_name }}" {{ $client->canal == $commercial->full_name ? 'selected' : '' }}>{{ $commercial->full_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <input class="form-control" id="canal_input" name="canal_input" type="text" value="{{ $client->canal }}" />
+                                                            <i class="fas fa-edit mt-2" id="toggle_canal_input" style="cursor: pointer;" title="Sélectionner un commercial"></i>
+                                                        </div>
+                                                        <input type="hidden" name="canal" id="canal_hidden" value="{{ $client->canal }}">
                                                     </div>
-                                                </div>
+                                                @endif
+                                                <script>
+                                                    document.getElementById('toggle_canal_input').addEventListener('click', function() {
+                                                        var canalSelect = document.getElementById('canal_select');
+                                                        var canalInput = document.getElementById('canal_input');
+
+                                                        if (canalSelect.style.display === 'none') {
+                                                            canalSelect.style.display = 'block';
+                                                            canalInput.style.display = 'none';
+                                                            canalSelect.required = true;
+                                                            canalInput.required = false;
+                                                            this.setAttribute('title', 'Saisir manuellement');
+                                                        } else {
+                                                            canalSelect.style.display = 'none';
+                                                            canalInput.style.display = 'block';
+                                                            canalSelect.required = false;
+                                                            canalInput.required = true;
+                                                            this.setAttribute('title', 'Sélectionner un commercial');
+                                                        }
+                                                    });
+
+                                                    document.querySelector('form').addEventListener('submit', function(e) {
+                                                        var canalSelect = document.getElementById('canal_select');
+                                                        var canalInput = document.getElementById('canal_input');
+                                                        var canalHidden = document.getElementById('canal_hidden');
+
+                                                        if (canalSelect.style.display !== 'none') {
+                                                            var selectedOption = canalSelect.options[canalSelect.selectedIndex].text;
+                                                            canalHidden.value = selectedOption;
+                                                        } else {
+                                                            canalHidden.value = canalInput.value;
+                                                        }
+                                                    });
+                                                </script>
+
                                             </div>
                                             <!-- Bouton de soumission -->
                                             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>

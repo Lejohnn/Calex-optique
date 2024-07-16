@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Appointment extends Model
+class Brand extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'description',
-        'client_id',
+        'name',
     ];
 
-    public function client()
+    // Ajoutez cette méthode pour définir la relation hasMany
+    public function frames()
     {
-        return $this->belongsTo(Client::class, 'client_id');
+        return $this->hasMany(Frame::class);
     }
-
-}
+}   

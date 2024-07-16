@@ -95,7 +95,9 @@
 </div>
 @endsection
 
-
+<script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
+<script src="{{ asset('backend/js/core/app-menu.js') }}"></script>
+<script src="{{ asset('backend/js/core/app.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Fonction pour afficher la description du rôle sélectionné
@@ -126,20 +128,3 @@
 </script>
 
 
-<!-- BEGIN: Vendor JS-->
-<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
-<!-- BEGIN Vendor JS-->
-
-<!-- BEGIN: Page Vendor JS-->
-<script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
-<!-- END: Page Vendor JS-->
-
-<!-- BEGIN: Theme JS-->
-<script src="{{asset('backend/js/core/app-menu.js')}}"></script>
-<script src="{{asset('backend/js/core/app.js')}}"></script>
-<!-- END: Theme JS-->
-
-<!-- BEGIN: Page JS-->
-<script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-<!-- END: Page JS-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

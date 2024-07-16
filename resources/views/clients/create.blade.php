@@ -71,7 +71,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label for="carte_identite">N° de carte Nationale d’identité</label>
-                                                                <input class="form-control" id="carte_identite" name="carte_identite" type="text" required />
+                                                                <input class="form-control" id="carte_identite" name="carte_identite" type="text"  />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -280,9 +280,55 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label for="canal">Canal</label>
-                                                            <input class="form-control" id="canal" name="canal" type="text" />
+                                                            <select class="form-control" id="canal_select" name="canal_select">
+                                                                <option value="">Sélectionnez un commercial</option>
+                                                                @foreach($commercials as $commercial)
+                                                                    <option value="{{ $commercial->id }}">{{ $commercial->full_name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            <input class="form-control d-none" id="canal_input" name="canal_input" type="text" />
+                                                            <i class="fas fa-edit mt-2" id="toggle_canal_input" style="cursor: pointer;" title="Saisir manuellement"></i>
                                                         </div>
+                                                        <input type="hidden" name="canal" id="canal_hidden" value="">
                                                     </div>
+
+                                                    <script>
+                                                        document.getElementById('toggle_canal_input').addEventListener('click', function() {
+                                                            var canalSelect = document.getElementById('canal_select');
+                                                            var canalInput = document.getElementById('canal_input');
+
+                                                            if (canalSelect.classList.contains('d-none')) {
+                                                                canalSelect.classList.remove('d-none');
+                                                                canalInput.classList.add('d-none');
+                                                                canalSelect.required = true;
+                                                                canalInput.required = false;
+                                                                this.setAttribute('title', 'Saisir manuellement');
+                                                            } else {
+                                                                canalSelect.classList.add('d-none');
+                                                                canalInput.classList.remove('d-none');
+                                                                canalSelect.required = false;
+                                                                canalInput.required = true;
+                                                                this.setAttribute('title', 'Sélectionner un commercial');
+                                                            }
+                                                        });
+
+                                                        document.querySelector('form').addEventListener('submit', function(e) {
+                                                            var canalSelect = document.getElementById('canal_select');
+                                                            var canalInput = document.getElementById('canal_input');
+                                                            var canalHidden = document.getElementById('canal_hidden');
+
+                                                            if (!canalSelect.classList.contains('d-none')) {
+                                                                var selectedOption = canalSelect.options[canalSelect.selectedIndex].text;
+                                                                canalHidden.value = selectedOption;
+                                                            } else {
+                                                                canalHidden.value = canalInput.value;
+                                                            }
+                                                        });
+                                                    </script>
+
+
+
+
                                                 </div>
 
 

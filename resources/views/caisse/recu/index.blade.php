@@ -108,13 +108,16 @@
     </div>
 @endsection
 
+<script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
+<script src="{{ asset('backend/js/core/app-menu.js') }}"></script>
+<script src="{{ asset('backend/js/core/app.js') }}"></script>
 
 
 
 <!-- Scripts -->
-<script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
+{{-- <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <script src="{{asset('backend/vendors/js/tables/datatable/datatables.min.js')}}"></script>
 <script src="{{asset('backend/js/core/app-menu.js')}}"></script>
 <script src="{{asset('backend/js/core/app.js')}}"></script>
 <script src="{{asset('backend/js/scripts/pages/hospital-patients-list.js')}}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}

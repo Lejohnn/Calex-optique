@@ -79,7 +79,7 @@
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </li> 
                             @endforeach
                             <li class="dropdown-menu-footer">
                                 <a class="dropdown-item text-muted text-center" href="{{ route('notifications.index') }}">Lire toutes les notifications</a>
@@ -115,6 +115,6 @@
 
 
 
-{{-- <script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
+<script src="{{ asset('backend/vendors/js/vendors.min.js') }}"></script>
 <script src="{{ asset('backend/js/core/app-menu.js') }}"></script>
-<script src="{{ asset('backend/js/core/app.js') }}"></script> --}}
+<script src="{{ asset('backend/js/core/app.js') }}"></script>

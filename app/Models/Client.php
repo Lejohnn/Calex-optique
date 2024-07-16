@@ -39,6 +39,7 @@ class Client extends Model
         'entretien',
         'montant',
         'canal',
+        'rendez_vous_time',
     ];
 
     public function notifications()
@@ -60,4 +61,6 @@ class Client extends Model
     {
         return $this->hasMany(ServiceCallInteraction::class);
     }
+
+
 }

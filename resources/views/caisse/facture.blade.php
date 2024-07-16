@@ -34,6 +34,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="date_facture">Date de la Facture <span class="text-danger">*</span></label>
@@ -114,32 +115,100 @@
                                                         <input class="form-control" id="add_og" name="add_og" type="text" />
                                                     </div>
                                                 </div>
+                                                {{-- <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="marque_select">Marque</label>
+                                                        <input class="form-control" id="marque_select" name="marque_select" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="code_select">Code</label>
+                                                        <input class="form-control" id="code_select" name="code_select" type="text" />
+                                                    </div>
+                                                </div> --}}
+
                                             </div>
 
                                             <!-- Tableau des Produits -->
-                                            <table class="table" id="products-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Produit</th>
-                                                        <th>Quantité</th>
-                                                        <th>Prix unitaire</th>
-                                                        <th>Réduction (%)</th>
-                                                        <th>Total</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <!-- Ligne de produit template -->
-                                                    <tr class="product-template">
-                                                        <td><input class="form-control" type="text" name="produit[]" required /></td>
-                                                        <td><input class="form-control" type="number" min="1" name="quantite[]" required /></td>
-                                                        <td><input class="form-control" type="text" name="prix_unitaire[]" required /></td>
-                                                        <td><input class="form-control" type="number" min="0" max="100" name="reduction[]" /></td>
-                                                        <td><input class="form-control" type="text" readonly style="width: 100px;" /></td>
-                                                        <td><button type="button" class="btn btn-danger btn-remove-row">Supprimer</button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table class="table" id="products-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Produit</th>
+                                                            <th>Quantité</th>
+                                                            <th>Prix unitaire</th>
+                                                            <th>Réduction (%)</th>
+                                                            <th>Total</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Ligne de produit template -->
+                                                        <tr class="product-template">
+                                                            <td>
+                                                                <select class="form-control produit-select" name="produit[]" required>
+                                                                    <option value="MONTURE">MONTURE</option>
+                                                                    <option value="VERRES">VERRES</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input class="form-control" type="number" min="1" name="quantite[]" required /></td>
+                                                            <td><input class="form-control" type="text" name="prix_unitaire[]" required /></td>
+                                                            <td><input class="form-control" type="number" min="0" max="100" name="reduction[]" /></td>
+                                                            <td><input class="form-control" type="text" readonly style="width: 100px;" /></td>
+                                                            <td><button type="button" class="btn btn-danger btn-remove-row">Supprimer</button></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <button type="button" class="btn btn-success" id="add-product-row">Ajouter Un Produit</button><br><br><br>
+                                            <div id="verres-details" class="form-group" style="display: none;">
+                                                <label for="od-select">OD:</label>
+                                                <select class="form-control" id="od-select" name="od_select">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="SIMPLE FOYER PHOTO">SIMPLE FOYER PHOTO</option>
+                                                    <option value="SIMPLE FOYER BLUE">SIMPLE FOYER BLUE</option>
+                                                    <option value="SIMPLE FOYER">SIMPLE FOYER</option>
+                                                    <option value="PROGRESSIF BLUE">PROGRESSIF BLUE</option>
+                                                </select>
+                                                <select class="form-control" id="od-select2" name="od_select2">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="ORGANIQUE +AR GRIS">ORGANIQUE +AR GRIS</option>
+                                                    <option value="ORGANIQUE">ORGANIQUE</option>
+                                                    <option value="ORGANIQUE +AR">ORGANIQUE +AR</option>
+                                                </select>
+
+                                                <label for="og-select">OG:</label>
+                                                <select class="form-control" id="og-select" name="og_select">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="SIMPLE FOYER PHOTO">SIMPLE FOYER PHOTO</option>
+                                                    <option value="SIMPLE FOYER BLUE">SIMPLE FOYER BLUE</option>
+                                                    <option value="SIMPLE FOYER">SIMPLE FOYER</option>
+                                                    <option value="PROGRESSIF BLUE">PROGRESSIF BLUE</option>
+                                                </select>
+                                                <select class="form-control" id="og-select2" name="og_select2">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="ORGANIQUE +AR GRIS">ORGANIQUE +AR GRIS</option>
+                                                    <option value="ORGANIQUE">ORGANIQUE</option>
+                                                    <option value="ORGANIQUE +AR">ORGANIQUE +AR</option>
+                                                </select>
+                                            </div>
+
+                                           <!-- Champs Marque et Code -->
+                                        <div id="monture-details" class="form-group" style="display: none;">
+                                            <label for="marque-select">MARQUE:</label>
+                                            <select class="form-control" id="marque-select" name="marque_select">
+                                                <option value="" disabled selected>Veuillez sélectionner</option>
+                                            </select>
+                                            <input type="hidden" id="marque-name" name="marque_name">
+
+                                            <label for="code-select">CODE:</label>
+                                            <select class="form-control" id="code-select" name="code_select">
+                                                <option value="" disabled selected>Veuillez sélectionner</option>
+                                            </select>
+                                            <input type="hidden" id="code-name" name="code_name">
+                                        </div>
+
 
                                             <!-- Total -->
                                             <div class="row">
@@ -153,14 +222,11 @@
                                             <div class="form-group">
                                                 <label for="avance">Avance</label>
                                                 <input type="number" class="form-control" id="avance" name="avance" step="0.01" required>
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="reste">Reste</label>
                                                 <input type="number" class="form-control" id="reste" name="reste" step="0.01" readonly>
                                             </div>
 
                                             <!-- Boutons -->
-                                            <button type="button" class="btn btn-primary" id="add-product-row">Ajouter Produit</button>
                                             <button type="submit" class="btn btn-primary">Générer Facture</button>
                                         </form>
                                     </div>
@@ -200,7 +266,6 @@
 
 
 <script>
-    // Fonction pour calculer le total d'une ligne de produit
     function calculateTotal(row) {
         var quantity = row.find('input[name="quantite[]"]').val();
         var price = row.find('input[name="prix_unitaire[]"]').val();
@@ -208,17 +273,14 @@
         var total = (quantity * price) - (quantity * price * (discount / 100));
         row.find('input[type="text"]:last').val(total.toFixed(2) + " FCFA");
 
-        // Mettre à jour les totaux de la facture
         updateInvoiceTotals();
     }
 
-    // Fonction pour recalculer les totaux HT, remise, taxe et montant net
     function updateInvoiceTotals() {
         var totalHT = 0;
         var remise = parseFloat($('#remise').val()) || 0;
         var taxe = 0;
 
-        // Calculer le total HT
         $('#products-table tbody tr').each(function() {
             var quantity = parseInt($(this).find('input[name="quantite[]"]').val()) || 0;
             var price = parseFloat($(this).find('input[name="prix_unitaire[]"]').val()) || 0;
@@ -227,22 +289,18 @@
             totalHT += total;
         });
 
-        // Calculer la taxe (TVA 20%)
-        var taxe = totalHT * 0.2;
+        taxe = totalHT * 0.2;
 
-        // Mettre à jour les champs
         $('#montant_total_ht').val(totalHT.toFixed(2) + " FCFA");
         $('#taxe').val(taxe.toFixed(2) + " FCFA");
         $('#montant_net').val((totalHT + taxe - remise).toFixed(2) + " FCFA");
 
-        // Mettre à jour le champ "reste"
         updateReste();
     }
 
-    // Fonction pour mettre à jour le champ "reste" en fonction de l'avance et du montant total HT
     function updateReste() {
         var avance = parseFloat($('#avance').val()) || 0;
-        var montantTotal = parseFloat($('#montant_total_ht').val()) || 0;
+        var montantTotal = parseFloat($('#montant_total_ht').val().replace(' FCFA', '')) || 0;
         var reste = montantTotal - avance;
         $('#reste').val(reste.toFixed(2));
     }
@@ -276,7 +334,70 @@
         $('#avance').on('input', function() {
             updateReste();
         });
+
+        // Afficher les champs spécifiques selon le produit sélectionné
+        $(document).on('change', '.produit-select', function() {
+            var selectedValue = $(this).val();
+
+            if (selectedValue === 'VERRES') {
+                $('#verres-details').show();
+                // $('#monture-details').hide();
+            } else if (selectedValue === 'MONTURE') {
+                // $('#verres-details').hide();
+                $('#monture-details').show();
+
+                $.ajax({
+                    url: '{{ route("get.brands") }}',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var marqueSelect = $('#marque-select');
+                        marqueSelect.empty();
+                        marqueSelect.append('<option value="" disabled selected>Veuillez sélectionner</option>');
+                        $.each(data, function(index, brand) {
+                            marqueSelect.append('<option value="'+ brand.id +'" data-name="'+ brand.name +'">'+ brand.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#verres-details').hide();
+                $('#monture-details').hide();
+            }
+        });
+
+        // Récupérer les codes en fonction de la marque sélectionnée
+        $(document).on('change', '#marque-select', function() {
+            var brandId = $(this).val();
+            var brandName = $(this).find(':selected').data('name');
+            $('#marque-name').val(brandName); // Mettre à jour le champ caché avec le nom de la marque
+
+            $.ajax({
+                url: '{{ url("get-codes") }}/' + brandId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var codeSelect = $('#code-select');
+                    codeSelect.empty();
+                    codeSelect.append('<option value="" disabled selected>Veuillez sélectionner</option>');
+                    $.each(data, function(index, code) {
+                        codeSelect.append('<option value="'+ code.id +'" data-code="'+ code.code +'">'+ code.code +'</option>');
+                    });
+                }
+            });
+        });
+
+        // Mettre à jour le champ caché avec le code sélectionné
+        $(document).on('change', '#code-select', function() {
+            var codeName = $(this).find(':selected').data('code');
+            $('#code-name').val(codeName); // Mettre à jour le champ caché avec le code
+        });
+
+        // Afficher les détails de verres si nécessaire
+        $('.produit-select').trigger('change');
     });
 </script>
+
+
+
 
 

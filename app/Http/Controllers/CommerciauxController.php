@@ -190,22 +190,24 @@ class CommerciauxController extends Controller
     }
 
     public function updateProspectStatus(Request $request, $id)
-    {
-        $request->validate([
-            'validation_status' => 'required|string|in:confirmed,denied,pending,peace',
-        ]);
+{
+    $request->validate([
+        'validation_status' => 'required|string|in:confirmed,denied,pending,peace',
+    ]);
 
-        $prospect = Prospect::findOrFail($id);
-        $prospect->validation_status = $request->validation_status;
-        $prospect->save();
+    $prospect = Prospect::findOrFail($id);
+    $prospect->validation_status = $request->validation_status;
+    $prospect->save();
 
-        // Recalculez les points du commercial
-        $commercial = Commercial::findOrFail($prospect->commercial_id);
-        $commercial->points = $this->calculatePoints($commercial->id);
-        $commercial->save();
+    // Recalculez les points du commercial
+    $commercial = Commercial::findOrFail($prospect->commercial_id);
+    $commercial->points = $this->calculatePoints($commercial->id);
+    $commercial->save();
 
-        return redirect()->back()->with('success', 'Statut du prospect mis à jour et points recalculés.');
-    }
+    return response()->json(['success' => true, 'message' => 'Statut du prospect mis à jour et points recalculés.', 'prospect' => $prospect]);
+}
+
+
 
     private function getDailyNoteAttribute($prospectsToday)
     {

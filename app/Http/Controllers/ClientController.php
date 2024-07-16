@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Models\ServiceCallInteraction;
 use App\Models\Facture;
 use App\Models\Receipt;
+use App\Models\Commercial;
+
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -27,46 +29,90 @@ class ClientController extends Controller
     }
 
     public function index()
-    {
+{
+    $clients = Client::all();
+    $data = [
+        [
+            'role_id' => 3,
+            'choix_service' => 'consultation',
+        ],
+        [
+            'role_id' => 4,
+            'choix_service' => 'entretien_lunettes',
+        ],
+        [
+            'role_id' => 5,
+            'choix_service' => 'caisse',
+        ],
+    ];
 
-        $clients = Client::all();
-        //dd($clients, auth()->user()->role_id);
-        $data = [
-            [
-                'role_id' => 3,
-                'choix_service' => 'consultation',
-            ],
-            [
-                'role_id' => 4,
-                'choix_service' => 'entretien_lunettes',
-            ],
-            [
-                'role_id' => 5,
-                'choix_service' => 'caisse',
-            ],
-        ];
-        foreach ($data as $roleMapping) {
+    foreach ($data as $roleMapping) {
+        $roleId = $roleMapping['role_id'];
+        $serviceChoices = $roleMapping['choix_service'];
 
-            $roleId = $roleMapping['role_id'];
-            $serviceChoices = $roleMapping['choix_service'];
+        if (auth()->user()->role_id == $roleId) {
+            $clients = Client::where('choix_service', $serviceChoices)->get();
+        }
+    }
 
-            if (auth()->user()->role_id == $roleId){
-                    $clients = Client::where('choix_service', $serviceChoices)->get();
-                }
+    $now = Carbon::now();
+    $toastrNotifications = [];
 
+    $clients = $clients->map(function($client) use ($now, &$toastrNotifications) {
+        if (!empty($client->rendez_vous)) {
+            $rendezVous = Carbon::parse($client->rendez_vous);
+            $differenceInDays = $now->diffInDays($rendezVous, false);
+
+            // Déterminer la couleur du rendez-vous
+            if ($differenceInDays == 2) {
+                $client->rendez_vous_color = 'btn-warning'; // Jaune
+                $toastrNotifications[] = "Le rendez-vous avec {$client->nom} est dans 2 jours.";
+            } elseif ($differenceInDays == 1) {
+                $client->rendez_vous_color = 'btn-orange'; // Orange
+                $toastrNotifications[] = "Le rendez-vous avec {$client->nom} est demain.";
+            } elseif ($differenceInDays == 0) {
+                $client->rendez_vous_color = 'btn-danger'; // Rouge
+                $toastrNotifications[] = "Le rendez-vous avec {$client->nom} est aujourd'hui.";
+            } else {
+                $client->rendez_vous_color = 'btn-outline-info'; // Par défaut
+            }
+
+            // Format de la date pour les rendez-vous dans les 7 jours
+            if ($differenceInDays < 7 && $differenceInDays >= 0) {
+                $client->formatted_rendez_vous = $rendezVous->locale('fr')->isoFormat('dddd HH:mm:ss');
+            } else {
+                $client->formatted_rendez_vous = $rendezVous->format('Y-m-d H:i:s');
+            }
+        } else {
+            $client->formatted_rendez_vous = null;
+            $client->rendez_vous_color = null;
         }
 
+        return $client;
+    });
 
-        $notifications = $this->notificationService->notification_template()[0];
-        $notifications_notread = $this->notificationService->notification_template()[1];
-        return view('clients.index', compact('clients', 'notifications', 'notifications_notread'));
-    }
+    $notifications = $this->notificationService->notification_template()[0];
+    $notifications_notread = $this->notificationService->notification_template()[1];
+    return view('clients.index', compact('clients', 'notifications', 'notifications_notread', 'toastrNotifications'));
+}
+
+
+
+
+
+// ******************************************DEBUT DE CE QUI EST EN RAPPORT AVEC LES RENDEZ VOUS ************************
+
+
+// ******************************************FIN DE CE QUI EST EN RAPPORT AVEC LES RENDEZ VOUS ************************
+
+
 
     public function create()
     {
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
-        return view('clients.create', compact('notifications', 'notifications_notread'));
+        $commercials = Commercial::all();
+        return view('clients.create', compact('notifications', 'notifications_notread','commercials'));
     }
 
     public function register()
@@ -95,7 +141,7 @@ class ClientController extends Controller
             'nom' => 'required|string',
             'prenom' => 'required|string',
             'telephone' => 'required|string|unique:clients,telephone',
-            'carte_identite' => 'nullable|string|unique:clients,carte_identite',
+            'carte_identite' => 'nullable|string',
             'date_naissance' => 'nullable|date',
             'lieu_naissance' => 'nullable|string',
             'profession' => 'nullable|string',
@@ -121,6 +167,8 @@ class ClientController extends Controller
             'entretien' => 'nullable|string',
             'montant' => 'nullable|numeric',
             'canal' => 'nullable|string',
+            'rendez_vous_time' => 'nullable|string',
+
         ], [
             'telephone.unique' => 'Le numéro de téléphone existe déjà.',
             'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
@@ -168,7 +216,9 @@ class ClientController extends Controller
     {
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
-        return view('clients.edit', compact('client', 'notifications', 'notifications_notread'));
+        $commercials = Commercial::all();
+
+        return view('clients.edit', compact('client', 'notifications', 'notifications_notread','commercials'));
     }
 
     public function update(Request $request, Client $client)
@@ -207,6 +257,7 @@ class ClientController extends Controller
             'entretien' => 'nullable|string',
             'montant' => 'nullable|numeric',
             'canal' => 'nullable|string',
+            'rendez_vous_time' => 'nullable|string',
 
         ], [
             'telephone.unique' => 'Le numéro de téléphone existe déjà.',
@@ -253,6 +304,48 @@ class ClientController extends Controller
                 ->with('notifications', $notifications)
                 ->with('notifications_notread', $notifications_notread);
         }
+
+
+        // public function setAppointment(Request $request)
+        // {
+        //     $request->validate([
+        //         'client_id' => 'required|exists:clients,id',
+        //         'rendez_vous' => 'required|date',
+        //     ]);
+
+        //     $client = Client::find($request->client_id);
+        //     $client->rendez_vous = $request->rendez_vous;
+        //     $client->save();
+
+        //     return response()->json(['success' => 'Rendez-vous mis à jour avec succès.']);
+        // }
+        public function setAppointment(Request $request)
+        {
+            $validated = $request->validate([
+                'client_id' => 'required|integer',
+                'rendez_vous' => 'required|date',  // Validation pour la date
+                'rendez_vous_time' => 'required|date_format:H:i',  // Validation pour l'heure
+            ]);
+
+            $client = Client::find($validated['client_id']);
+
+            if ($client) {
+                // Combine date and time
+                $client->rendez_vous = $validated['rendez_vous'] . ' ' . $validated['rendez_vous_time'];
+                $client->rendez_vous_time = $validated['rendez_vous_time'];
+                $client->save();
+
+                return response()->json(['success' => 'Rendez-vous défini avec succès.']);
+            }
+
+            return response()->json(['error' => 'Client non trouvé.'], 404);
+        }
+
+
+
+
+
+
 
 
     // ****************************************************************************************************************

@@ -76,9 +76,6 @@
     </div>
 @endsection
 
-
-
-
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('backend/vendors/js/vendors.min.js')}}"></script>
 <!-- BEGIN Vendor JS-->
@@ -97,9 +94,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.datatable').DataTable({
-            "order": [[ 2, "desc" ]] // Indice de la colonne Date Facture (2) et ordre décroissant (desc)
-        });
+        // Vérifiez si DataTable est déjà initialisé
+        if (!$.fn.DataTable.isDataTable('.datatable')) {
+            $('.datatable').DataTable({
+                "order": [[ 2, "desc" ]] // Indice de la colonne Date Facture (2) et ordre décroissant (desc)
+            });
+        }
     });
 </script>
-
