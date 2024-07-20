@@ -16,7 +16,7 @@
             <section>
                 <h4>Contact</h4>
                 <ul class="alt">
-                    <li><a href="tel:+123456789">Téléphone: 696 15 04 29 / 677 87 19 51</a></li>
+                    <li><a href="tel:+123456789">Téléphone: 696 15 04 29</a></li>
                     <li><a href="mailto:contact@calexoptic.com">Email: contact@calexoptic.com</a></li>
                     <li><span>Face Ecole de Police, près de la banque UBA, Yaoundé, Cameroun</span></li>
                 </ul>

@@ -12,6 +12,7 @@ use App\Models\ServiceCallInteraction;
 use App\Models\Facture;
 use App\Models\Receipt;
 use App\Models\Commercial;
+use Illuminate\Support\Facades\Log;
 
 
 use Carbon\Carbon;
@@ -124,85 +125,88 @@ class ClientController extends Controller
 
 
     public function store(Request $request)
-    {
-        // Notifications
-        $notifications = $this->notificationService->notification_template()[0];
-        $notifications_notread = $this->notificationService->notification_template()[1];
+{
+    // Notifications
+    $notifications = $this->notificationService->notification_template()[0];
+    $notifications_notread = $this->notificationService->notification_template()[1];
 
-        // Données pour le rôle et le service
-        $datas = [
-            ['role_id_not' => 3, 'choix_service' => 'consultation'],
-            ['role_id_not' => 4, 'choix_service' => 'entretien_lunettes'],
-            ['role_id_not' => 5, 'choix_service' => 'caisse'],
-        ];
+    // Données pour le rôle et le service
+    $datas = [
+        ['role_id_not' => 3, 'choix_service' => 'consultation'],
+        ['role_id_not' => 4, 'choix_service' => 'entretien_lunettes'],
+        ['role_id_not' => 5, 'choix_service' => 'caisse'],
+    ];
 
-        // Validation des données du formulaire avec messages personnalisés
-        $request->validate([
-            'nom' => 'required|string',
-            'prenom' => 'required|string',
-            'telephone' => 'required|string|unique:clients,telephone',
-            'carte_identite' => 'nullable|string',
-            'date_naissance' => 'nullable|date',
-            'lieu_naissance' => 'nullable|string',
-            'profession' => 'nullable|string',
-            'sexe' => 'required',
-            'societe_attache' => 'nullable|string',
-            'assurance' => 'nullable|string',
-            'disciplines_pratiquees' => 'nullable|string',
-            'date_debut' => 'nullable|date',
-            'activite_interpelant_vision' => 'nullable|string',
-            'antecedents_familiaux' => 'nullable|string',
-            'antecedents_chirurgicaux' => 'nullable|string',
-            'traitements_en_cours' => 'nullable|string',
-            'allergies' => 'nullable|string',
-            'mentions_generales' => 'nullable|string',
-            'portez_vous_des_lunettes' => 'nullable|boolean',
-            'besoin_changer_lunettes' => 'nullable|boolean',
-            'autre_choses' => 'nullable|string',
-            'diagnostic' => 'nullable|string',
-            'prescription' => 'nullable|string',
-            'examen_particulier' => 'nullable|string',
-            'rendez_vous' => 'nullable|date',
-            'choix_service' => 'required|string',
-            'entretien' => 'nullable|string',
-            'montant' => 'nullable|numeric',
-            'canal' => 'nullable|string',
-            'rendez_vous_time' => 'nullable|string',
+    // Validation des données du formulaire avec messages personnalisés
+    $request->validate([
+        'nom' => 'required|string',
+        'prenom' => 'required|string',
+        'telephone' => 'required|string|unique:clients,telephone',
+        'carte_identite' => 'nullable|string',
+        'date_naissance' => 'nullable|date',
+        'lieu_naissance' => 'nullable|string',
+        'profession' => 'nullable|string',
+        'sexe' => 'required',
+        'societe_attache' => 'nullable|string',
+        'assurance' => 'nullable|string',
+        'disciplines_pratiquees' => 'nullable|string',
+        'date_debut' => 'nullable|date',
+        'activite_interpelant_vision' => 'nullable|string',
+        'antecedents_familiaux' => 'nullable|string',
+        'antecedents_chirurgicaux' => 'nullable|string',
+        'traitements_en_cours' => 'nullable|string',
+        'allergies' => 'nullable|string',
+        'mentions_generales' => 'nullable|string',
+        'portez_vous_des_lunettes' => 'nullable|boolean',
+        'besoin_changer_lunettes' => 'nullable|boolean',
+        'autre_choses' => 'nullable|string',
+        'diagnostic' => 'nullable|string',
+        'prescription' => 'nullable|string',
+        'examen_particulier' => 'nullable|string',
+        'rendez_vous' => 'nullable|date',
+        'choix_service' => 'required|string',
+        'entretien' => 'nullable|string',
+        'montant' => 'nullable|numeric',
+        'canal' => 'nullable|string',
+        'rendez_vous_time' => 'nullable|string',
 
-        ], [
-            'telephone.unique' => 'Le numéro de téléphone existe déjà.',
-            'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
-        ]);
+    ], [
+        'telephone.unique' => 'Le numéro de téléphone existe déjà.',
+        'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
+    ]);
 
-        try {
-            foreach ($datas as $roleMapping) {
-                $roleId = $roleMapping['role_id_not'];
-                $serviceChoices = $roleMapping['choix_service'];
-                if ($request->choix_service == $serviceChoices) {
-                    $client = new Client($request->all());
-                    $client->save();
+    try {
+        foreach ($datas as $roleMapping) {
+            $roleId = $roleMapping['role_id_not'];
+            $serviceChoices = $roleMapping['choix_service'];
+            if ($request->choix_service == $serviceChoices) {
+                Log::info('Service choice matched: ' . $serviceChoices);
+                $client = new Client($request->all());
+                $client->save();
+                Log::info('Client saved: ' . $client->id);
 
-                    $name_client = strtoupper($request->nom);
-                    $notification = new Notification([
-                        'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
-                        'status' => 0,
-                        'visibility' => 0,
-                        'role_id'=> $roleId,
-                        'client_id' => $client->id,
-                    ]);
-                    $notification->save();
+                $name_client = strtoupper($request->nom);
+                $notification = new Notification([
+                    'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
+                    'status' => 0,
+                    'visibility' => 0,
+                    'role_id' => $roleId,
+                    'client_id' => $client->id,
+                ]);
+                $notification->save();
+                Log::info('Notification saved: ' . $notification->id);
 
-                    return redirect()->route('clients.index')
-                        ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
-                        ->with('notifications', $notifications)
-                        ->with('notifications_notread', $notifications_notread);
-                }
+                return redirect()->route('clients.index')
+                    ->with('success', 'Client "'.$client->nom.'" ajouté avec succès. Une notification a été envoyée au responsable')
+                    ->with('notifications', $notifications)
+                    ->with('notifications_notread', $notifications_notread);
             }
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement du client. Veuillez réessayer.']);
         }
+    } catch (\Exception $e) {
+        Log::error('Error saving client or notification: ' . $e->getMessage());
+        return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement du client. Veuillez réessayer.']);
     }
-
+}
 
 
     public function show(Client $client)
