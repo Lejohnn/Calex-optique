@@ -73,6 +73,8 @@
                                     <tr>
                                         <th>message</th>
                                         <th>status</th>
+                                        <th>Date de creation</th>
+                                        <th>Dernière mise à jour</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -101,11 +103,19 @@
 
                                         <td>
                                             @if($notification->status == 1)
-                                                <span class="badge badge-success">Lu </span>
+                                                <span class="badge badge-success">Traité </span>
                                             @endif
                                          @if($notification->status == 0)
                                                      <span class="badge badge-danger">En Attente</span>
-                                        @endif
+                                            @endif
+                                       </td>
+                                       <td class="font-weight-bold">
+                                          {{$notification->created_at}}
+                                       </td>
+
+                                       <td class="font-weight-bold">
+                                       {{$notification->created_at}}
+                                       </td>
 
                                         <td>
 

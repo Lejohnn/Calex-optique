@@ -29,7 +29,10 @@ class NotificationService
     public function notification_template(){
         $notifications = Notification::where('visibility', 0)
             ->where('role_id',  auth()->user()->role->id)
+            ->orderBy('created_at', 'desc')
             ->get();
+
+            //dd($notifications);
 
         $notifications_notread= DB::table('notifications')->where([['status', 0]])
             ->where('role_id',  auth()->user()->role->id)

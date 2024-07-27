@@ -135,6 +135,7 @@ class ClientController extends Controller
         ['role_id_not' => 3, 'choix_service' => 'consultation'],
         ['role_id_not' => 4, 'choix_service' => 'entretien_lunettes'],
         ['role_id_not' => 5, 'choix_service' => 'caisse'],
+        ['role_id_not' => 2, 'choix_service' => 'visite_simple']
     ];
 
     // Validation des données du formulaire avec messages personnalisés
@@ -193,7 +194,7 @@ class ClientController extends Controller
                     'role_id' => $roleId,
                     'client_id' => $client->id,
                 ]);
-                $notification->save();
+               $serviceChoices!="visite_simple" ? $notification->save() : null;
                 Log::info('Notification saved: ' . $notification->id);
 
                 return redirect()->route('clients.index')
@@ -227,6 +228,8 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
+
+        $oldChoixService= $client->choix_service;
         $notifications = $this->notificationService->notification_template()[0];
         $notifications_notread = $this->notificationService->notification_template()[1];
 
@@ -268,13 +271,103 @@ class ClientController extends Controller
             'carte_identite.unique' => 'Le numéro de carte d\'identité existe déjà.',
         ]);
 
-        try {
-            // Mise à jour des informations du client
-            $client->update($request->all());
 
-            Notification::where('client_id', $client->id)
-                ->where('visibility', 0)
-                ->update(['status' => 1]);
+
+
+        try {
+
+        $datas = [
+                        ['role_id_not' => 3, 'choix_service' => 'consultation'],
+                        ['role_id_not' => 4, 'choix_service' => 'entretien_lunettes'],
+                        ['role_id_not' => 5, 'choix_service' => 'caisse'],
+                        ['role_id_not' => 2, 'choix_service' => 'visite_simple']
+                    ];
+
+//
+//                     $notification = new Notification([
+//                                         'message' => "$serviceChoices de Mrs $name_client (cliquez pour accéder)",
+//                                         'status' => 0,
+//                                         'visibility' => 0,
+//                                         'role_id' => $roleId,
+//                                         'client_id' => $client->id,
+//                                     ]);
+            // Mise à jour des informations du client
+            //dd($oldChoixService, $request->choix_service);
+
+            if(auth()->user()->role_id ==  1){
+                if($oldChoixService != $request->choix_service){
+
+                     foreach ($datas as $roleMapping) {
+
+
+                                $roleId = $roleMapping['role_id_not'];
+                                $serviceChoices = $roleMapping['choix_service'];
+
+                                if($serviceChoices == $client->choix_service){
+                                    Notification::where('client_id', $client->id)
+                                    ->where('role_id', $roleId )
+                                    ->where('visibility', 0)
+                                    ->update(['status' => 1]);
+
+                                }
+
+                                if ($serviceChoices == $request->choix_service){
+
+                                    $notification = new Notification([
+                                                    'message' => "$serviceChoices de Mrs $request->nom (cliquez pour accéder)",
+                                                    'status' => 0,
+                                                    'visibility' => 0,
+                                                    'role_id' => $roleId,
+                                                    'client_id' => $client->id,
+                                                ]);
+
+                                    $serviceChoices!="visite_simple" ? $notification->save() : null;
+
+                                }
+
+                     }
+                    }
+                }else if(auth()->user()->role_id !=  1){
+
+                    if($oldChoixService != $request->choix_service){
+                        //dd(auth()->user()->role_id);
+                        Notification::where('client_id', $client->id)
+                                                        ->where('role_id', auth()->user()->role_id )
+                                                        ->where('visibility', 0)
+                                                        ->update(['status' => 1]);
+                         foreach ($datas as $roleMapping) {
+
+                                    $roleId = $roleMapping['role_id_not'];
+                                    $serviceChoices = $roleMapping['choix_service'];
+                                    if ($serviceChoices == $request->choix_service){
+                                        $notification = new Notification([
+                                                        'message' => "$serviceChoices de Mrs $request->nom (cliquez pour accéder)",
+                                                        'status' => 0,
+                                                        'visibility' => 0,
+                                                        'role_id' => $roleId,
+                                                        'client_id' => $client->id,
+                                                    ]);
+
+                                        $serviceChoices!="visite_simple" ? $notification->save() : null;
+
+
+                                    }
+
+                         }
+
+                        }else{
+                        Notification::where('client_id', $client->id)
+                                                                    ->where('role_id', auth()->user()->role_id )
+                                                                    ->where('visibility', 0)
+                                                                    ->update(['status' => 0]);
+                        }
+                }
+
+
+
+            $notifications = $this->notificationService->notification_template()[0];
+            $notifications_notread = $this->notificationService->notification_template()[1];
+            $client->update($request->all());
 
             // Redirection vers une page appropriée avec un message de succès
             return redirect()->route('clients.index')
