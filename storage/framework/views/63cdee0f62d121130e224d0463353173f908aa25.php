@@ -1,0 +1,1 @@
+<?php /**PATH D:\line\Calex_op\Calex-optique\resources\views/caisse/receipt_pdf.blade.php ENDPATH**/ ?>

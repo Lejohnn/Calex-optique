@@ -1,0 +1,134 @@
+<?php $__env->startSection('title', 'Ajouter un Client'); ?>
+
+<?php $__env->startSection('contenu'); ?>
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+            <!-- Add Client Form -->
+            <section id="add-client">
+                <div class="icon-tabs">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title text-center"><u>Fiche journalière</u></h4>
+                                    <!-- Boutons de navigation -->
+                                    
+                                        <?php if($errors->any()): ?>
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <li><?php echo e($error); ?></li>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </ul>
+                                            </div>
+                                        <?php endif; ?>
+                                        <?php if(session('success')): ?>
+                                            <div class="alert alert-success">
+                                                <?php echo e(session('success')); ?>
+
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <form action="<?php echo e(route('commercial.store')); ?>" method="POST">
+                                        <?php echo csrf_field(); ?> <!-- Ajout du jeton CSRF -->
+                                        <div class="form-group">
+                                            <label for="date">Date<span class="text-danger">*</span></label>
+                                            <input class="form-control" id="date" name="date" type="date" required>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="commercial_id">Nom du commercial</label>
+                                            <select class="form-control" id="commercial_id" name="commercial_id" required>
+                                                <option value="">Sélectionnez un commercial</option>
+                                                <?php $__currentLoopData = $commercials; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $commercial): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                    <option value="<?php echo e($commercial->id); ?>"><?php echo e($commercial->full_name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="date_rdv">Date du rendez-vous<span class="text-danger">*</span></label>
+                                            <input class="form-control" id="date_rdv" name="date_rdv" type="date" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="entreprise_heure">Heure d'enregistrement </label>
+                                            <input class="form-control" id="entreprise_heure" name="entreprise_heure" type="text">
+                                        </div>
+                                                                 <!-- Section Entreprise -->
+                                        <div class="form-section" id="entreprise-section">
+                                            <h5 class="text-center">Entreprises</h5>
+                                            <div class="form-group">
+                                                <label for="entreprise_nom">Entreprise/Société</label>
+                                                <input class="form-control" id="entreprise_nom" name="entreprise_nom" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entreprise_responsable">Nom/Titre du responsable contacté</label>
+                                                <input class="form-control" id="entreprise_responsable" name="entreprise_responsable" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entreprise_contact">Contact</label>
+                                                <input class="form-control" id="entreprise_contact" name="entreprise_contact" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rdv_heure">Heure du Rendez-vous</label>
+                                                <input class="form-control" id="rdv_heure" name="rdv_heure" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rubrique">Entretien:</label>
+                                                <select id="rubrique" name="rubrique" class="form-control" required>
+                                                    <option value="" selected disabled>Choisissez la rubrique</option>
+                                                    <option value="Entreprise">Entreprise</option>
+                                                    <option value="Rendez-vous">Rendez-vous</option>
+                                                    <option value="Nettoyage">Nettoyage</option>
+                                                </select>
+                                            </div>
+                                        </div> <br>
+                                                                        
+                                        <!-- Bouton de soumission -->
+                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+
+
+<!-- BEGIN: Vendor JS-->
+<script src="<?php echo e(asset('backend/vendors/js/vendors.min.js')); ?>"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="<?php echo e(asset('backend/vendors/js/tables/datatable/datatables.min.js')); ?>"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="<?php echo e(asset('backend/js/core/app-menu.js')); ?>"></script>
+<script src="<?php echo e(asset('backend/js/core/app.js')); ?>"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="<?php echo e(asset('backend/js/scripts/pages/hospital-patients-list.js')); ?>"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        // Fonction pour basculer la visibilité des sections
+        $(".btn-switch").click(function() {
+            var target = $(this).data("target");
+            $(".form-section").hide();
+            $("#" + target + "-section").show();
+        });
+    });
+</script>
+<?php echo $__env->yieldContent('script'); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\line\Calex_op\Calex-optique\resources\views/commercial/create.blade.php ENDPATH**/ ?>

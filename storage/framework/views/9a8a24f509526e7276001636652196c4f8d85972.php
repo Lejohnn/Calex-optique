@@ -1,0 +1,392 @@
+<?php $__env->startSection('title', 'Générer une Facture'); ?>
+
+<?php $__env->startSection('contenu'); ?>
+
+
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+        <div class="content-body">
+            <!-- Facture Form -->
+            <section id="facture">
+                <div class="icon-tabs">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Générer une Facture</h4>
+                                </div>
+                                <div class="card-content collapse show">
+                                    <div class="card-body">
+                                        <form action="<?php echo e(route('generate.invoice')); ?>" method="POST" class="facture-form">
+                                            <!-- Informations de la Facture -->
+                                            <?php echo csrf_field(); ?>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="nom_client">Nom du Client <span class="text-danger">*</span></label>
+                                                        <select name="nom_client" class="form-control" required>
+                                                            <?php $__currentLoopData = $clientCaisses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $clientCaisse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($clientCaisse->id); ?>"><?php echo e($clientCaisse->nom); ?></option>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="date_facture">Date de la Facture <span class="text-danger">*</span></label>
+                                                        <input class="form-control" id="date_facture" name="date_facture" type="date" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Informations Société, Téléphone et Médecin -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="societe">Société</label>
+                                                        <input class="form-control" id="societe" name="societe" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="telephone">Téléphone</label>
+                                                        <input class="form-control" id="telephone" name="telephone" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="medecin">Médecin</label>
+                                                        <input class="form-control" id="medecin" name="medecin" type="text" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Champs OD et OG -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="sphere_od">Sphere OD</label>
+                                                        <input class="form-control" id="sphere_od" name="sphere_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="sphere_og">Sphere OG</label>
+                                                        <input class="form-control" id="sphere_og" name="sphere_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="cylindre_od">Cylindre OD</label>
+                                                        <input class="form-control" id="cylindre_od" name="cylindre_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="cylindre_og">Cylindre OG</label>
+                                                        <input class="form-control" id="cylindre_og" name="cylindre_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="axe_od">Axe OD</label>
+                                                        <input class="form-control" id="axe_od" name="axe_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="axe_og">Axe OG</label>
+                                                        <input class="form-control" id="axe_og" name="axe_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="add_od">Add OD</label>
+                                                        <input class="form-control" id="add_od" name="add_od" type="text" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="add_og">Add OG</label>
+                                                        <input class="form-control" id="add_og" name="add_og" type="text" />
+                                                    </div>
+                                                </div>
+                                                
+
+                                            </div>
+
+                                            <!-- Tableau des Produits -->
+                                            <div class="table-responsive">
+                                                <table class="table" id="products-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Produit</th>
+                                                            <th>Quantité</th>
+                                                            <th>Prix unitaire</th>
+                                                            <th>Réduction (%)</th>
+                                                            <th>Total</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <!-- Ligne de produit template -->
+                                                        <tr class="product-template">
+                                                            <td>
+                                                                <select class="form-control produit-select" name="produit[]" required>
+                                                                    <option value="MONTURE">MONTURE</option>
+                                                                    <option value="VERRES">VERRES</option>
+                                                                </select>
+                                                            </td>
+                                                            <td><input class="form-control" type="number" min="1" name="quantite[]" required /></td>
+                                                            <td><input class="form-control" type="text" name="prix_unitaire[]" required /></td>
+                                                            <td><input class="form-control" type="number" min="0" max="100" name="reduction[]" /></td>
+                                                            <td><input class="form-control" type="text" readonly style="width: 100px;" /></td>
+                                                            <td><button type="button" class="btn btn-danger btn-remove-row">Supprimer</button></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <button type="button" class="btn btn-success" id="add-product-row">Ajouter Un Produit</button><br><br><br>
+                                            <div id="verres-details" class="form-group" style="display: none;">
+                                                <label for="od-select">OD:</label>
+                                                <select class="form-control" id="od-select" name="od_select">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="SIMPLE FOYER PHOTO">SIMPLE FOYER PHOTO</option>
+                                                    <option value="SIMPLE FOYER BLUE">SIMPLE FOYER BLUE</option>
+                                                    <option value="SIMPLE FOYER">SIMPLE FOYER</option>
+                                                    <option value="PROGRESSIF BLUE">PROGRESSIF BLUE</option>
+                                                </select>
+                                                <select class="form-control" id="od-select2" name="od_select2">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="ORGANIQUE +AR GRIS">ORGANIQUE +AR GRIS</option>
+                                                    <option value="ORGANIQUE">ORGANIQUE</option>
+                                                    <option value="ORGANIQUE +AR">ORGANIQUE +AR</option>
+                                                </select>
+
+                                                <label for="og-select">OG:</label>
+                                                <select class="form-control" id="og-select" name="og_select">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="SIMPLE FOYER PHOTO">SIMPLE FOYER PHOTO</option>
+                                                    <option value="SIMPLE FOYER BLUE">SIMPLE FOYER BLUE</option>
+                                                    <option value="SIMPLE FOYER">SIMPLE FOYER</option>
+                                                    <option value="PROGRESSIF BLUE">PROGRESSIF BLUE</option>
+                                                </select>
+                                                <select class="form-control" id="og-select2" name="og_select2">
+                                                    <option value="" disabled selected>Veuillez sélectionner</option>
+                                                    <option value="ORGANIQUE +AR GRIS">ORGANIQUE +AR GRIS</option>
+                                                    <option value="ORGANIQUE">ORGANIQUE</option>
+                                                    <option value="ORGANIQUE +AR">ORGANIQUE +AR</option>
+                                                </select>
+                                            </div>
+
+                                           <!-- Champs Marque et Code -->
+                                        <div id="monture-details" class="form-group" style="display: none;">
+                                            <label for="marque-select">MARQUE:</label>
+                                            <select class="form-control" id="marque-select" name="marque_select">
+                                                <option value="" disabled selected>Veuillez sélectionner</option>
+                                            </select>
+                                            <input type="hidden" id="marque-name" name="marque_name">
+
+                                            <label for="code-select">CODE:</label>
+                                            <select class="form-control" id="code-select" name="code_select">
+                                                <option value="" disabled selected>Veuillez sélectionner</option>
+                                            </select>
+                                            <input type="hidden" id="code-name" name="code_name">
+                                        </div>
+
+
+                                            <!-- Total -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="montant_total_ht">Montant Total HT</label>
+                                                        <input class="form-control" id="montant_total_ht" name="montant_total_ht" type="text" readonly />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="avance">Avance</label>
+                                                <input type="number" class="form-control" id="avance" name="avance" step="0.01" required>
+                                                <label for="reste">Reste</label>
+                                                <input type="number" class="form-control" id="reste" name="reste" step="0.01" readonly>
+                                            </div>
+
+                                            <!-- Boutons -->
+                                            <button type="submit" class="btn btn-primary">Générer Facture</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+
+
+
+
+
+<!-- BEGIN: Vendor JS-->
+<script src="<?php echo e(asset('backend/vendors/js/vendors.min.js')); ?>"></script>
+<!-- BEGIN Vendor JS-->
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="<?php echo e(asset('backend/vendors/js/tables/datatable/datatables.min.js')); ?>"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="<?php echo e(asset('backend/js/core/app-menu.js')); ?>"></script>
+<script src="<?php echo e(asset('backend/js/core/app.js')); ?>"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="<?php echo e(asset('backend/js/scripts/pages/hospital-patients-list.js')); ?>"></script>
+<!-- END: Page JS-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+    function calculateTotal(row) {
+        var quantity = row.find('input[name="quantite[]"]').val();
+        var price = row.find('input[name="prix_unitaire[]"]').val();
+        var discount = row.find('input[name="reduction[]"]').val();
+        var total = (quantity * price) - (quantity * price * (discount / 100));
+        row.find('input[type="text"]:last').val(total.toFixed(2) + " FCFA");
+
+        updateInvoiceTotals();
+    }
+
+    function updateInvoiceTotals() {
+        var totalHT = 0;
+        var remise = parseFloat($('#remise').val()) || 0;
+        var taxe = 0;
+
+        $('#products-table tbody tr').each(function() {
+            var quantity = parseInt($(this).find('input[name="quantite[]"]').val()) || 0;
+            var price = parseFloat($(this).find('input[name="prix_unitaire[]"]').val()) || 0;
+            var reduction = parseFloat($(this).find('input[name="reduction[]"]').val()) || 0;
+            var total = (quantity * price) - (quantity * price * (reduction / 100));
+            totalHT += total;
+        });
+
+        taxe = totalHT * 0.2;
+
+        $('#montant_total_ht').val(totalHT.toFixed(2) + " FCFA");
+        $('#taxe').val(taxe.toFixed(2) + " FCFA");
+        $('#montant_net').val((totalHT + taxe - remise).toFixed(2) + " FCFA");
+
+        updateReste();
+    }
+
+    function updateReste() {
+        var avance = parseFloat($('#avance').val()) || 0;
+        var montantTotal = parseFloat($('#montant_total_ht').val().replace(' FCFA', '')) || 0;
+        var reste = montantTotal - avance;
+        $('#reste').val(reste.toFixed(2));
+    }
+
+    $(document).ready(function() {
+        // Ajouter une nouvelle ligne de produit
+        $('#add-product-row').on('click', function() {
+            var newRow = $('.product-template').clone();
+            newRow.removeClass('product-template');
+            newRow.find('input').val('');
+            newRow.find('input[type="text"]:last').prop('readonly', true);
+            newRow.appendTo('#products-table tbody');
+        });
+
+        // Supprimer une ligne de produit
+        $(document).on('click', '.btn-remove-row', function() {
+            $(this).closest('tr').remove();
+            updateInvoiceTotals();
+        });
+
+        // Calculer le total lors de la saisie des valeurs
+        $(document).on('input', '#products-table input', function() {
+            var row = $(this).closest('tr');
+            calculateTotal(row);
+        });
+
+        // Mettre à jour les totaux initiaux lors du chargement de la page
+        updateInvoiceTotals();
+
+        // Mettre à jour le reste lorsque l'avance change
+        $('#avance').on('input', function() {
+            updateReste();
+        });
+
+        // Afficher les champs spécifiques selon le produit sélectionné
+        $(document).on('change', '.produit-select', function() {
+            var selectedValue = $(this).val();
+
+            if (selectedValue === 'VERRES') {
+                $('#verres-details').show();
+                // $('#monture-details').hide();
+            } else if (selectedValue === 'MONTURE') {
+                // $('#verres-details').hide();
+                $('#monture-details').show();
+
+                $.ajax({
+                    url: '<?php echo e(route("get.brands")); ?>',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var marqueSelect = $('#marque-select');
+                        marqueSelect.empty();
+                        marqueSelect.append('<option value="" disabled selected>Veuillez sélectionner</option>');
+                        $.each(data, function(index, brand) {
+                            marqueSelect.append('<option value="'+ brand.id +'" data-name="'+ brand.name +'">'+ brand.name +'</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#verres-details').hide();
+                $('#monture-details').hide();
+            }
+        });
+
+        // Récupérer les codes en fonction de la marque sélectionnée
+        $(document).on('change', '#marque-select', function() {
+            var brandId = $(this).val();
+            var brandName = $(this).find(':selected').data('name');
+            $('#marque-name').val(brandName); // Mettre à jour le champ caché avec le nom de la marque
+
+            $.ajax({
+                url: '<?php echo e(url("get-codes")); ?>/' + brandId,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var codeSelect = $('#code-select');
+                    codeSelect.empty();
+                    codeSelect.append('<option value="" disabled selected>Veuillez sélectionner</option>');
+                    $.each(data, function(index, code) {
+                        codeSelect.append('<option value="'+ code.id +'" data-code="'+ code.code +'">'+ code.code +'</option>');
+                    });
+                }
+            });
+        });
+
+        // Mettre à jour le champ caché avec le code sélectionné
+        $(document).on('change', '#code-select', function() {
+            var codeName = $(this).find(':selected').data('code');
+            $('#code-name').val(codeName); // Mettre à jour le champ caché avec le code
+        });
+
+        // Afficher les détails de verres si nécessaire
+        $('.produit-select').trigger('change');
+    });
+</script>
+
+
+
+
+
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\line\Calex_op\Calex-optique\resources\views/caisse/facture.blade.php ENDPATH**/ ?>
